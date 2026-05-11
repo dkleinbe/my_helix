@@ -11,7 +11,7 @@ on:
 permissions:
   contents: read
   packages: write
-  
+
 jobs:
   build-server:
     name: Build Helix Server
@@ -34,7 +34,7 @@ jobs:
         run: npm run build
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: server
           path: ./server/build
@@ -60,7 +60,7 @@ jobs:
         run: npm run ci
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: client
           path: ./client/dist
