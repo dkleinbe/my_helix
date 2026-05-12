@@ -39,7 +39,7 @@ const create = async (req: Request, res: Response) => {
 };
 
 const read = async (req: Request, res: Response) => {
-  const patientId = req.params.id;
+  const patientId = req.params.id as string;
   const sqlQuery = `
       SELECT *
       FROM patients
@@ -50,7 +50,7 @@ const read = async (req: Request, res: Response) => {
 };
 
 const update = async (req: Request, res: Response) => {
-  const patientId = req.params.id;
+  const patientId = req.params.id as string;
   const sqlQuery = `
       UPDATE
           patients
@@ -85,7 +85,7 @@ const update = async (req: Request, res: Response) => {
 };
 
 const delete_ = async (req: Request, res: Response) => {
-  const patientId = req.params.id;
+  const patientId = req.params.id as string;
   const sqlQuery = `
       DELETE
       FROM patients

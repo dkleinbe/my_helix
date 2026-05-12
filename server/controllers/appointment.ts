@@ -31,7 +31,7 @@ const create = async (req: Request, res: Response) => {
 };
 
 const read = async (req: Request, res: Response) => {
-  const { id } = req.params;
+  const id = req.params.id as string;
   const sqlQuery = `
       SELECT app.id     AS appID,
              e.start    AS date,
@@ -66,7 +66,7 @@ const read = async (req: Request, res: Response) => {
 };
 
 const updateContent = async (req: Request, res: Response) => {
-  const appointmentId = req.params.id;
+  const appointmentId = req.params.id as string;
   const sqlQuery = `
       UPDATE appointments
       SET content = ?,
@@ -104,7 +104,7 @@ const getFromEvent = async (req: Request, res: Response) => {
   `;
   const values = [req.params.id];
 
-  await queries.pull(req, res, sqlQuery, values, { id: req.params.id, name: 'Appointment', verb: 'returned' });
+  await queries.pull(req, res, sqlQuery, values, { id: req.params.id as string, name: 'Appointment', verb: 'returned' });
 };
 
 export default module.exports = {

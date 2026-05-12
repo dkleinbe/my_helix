@@ -53,7 +53,7 @@ const readOne = async (req: Request, res: Response) => {
       FROM users
       WHERE uid = ?
   `;
-  await queries.pull(req, res, sqlQuery, [req.params.id], { id: req.params.id, name: 'User', verb: 'returned' });
+  await queries.pull(req, res, sqlQuery, [req.params.id], { id: req.params.id as string, name: 'User', verb: 'returned' });
 };
 
 const create = async (req: Request, res: Response) => {
@@ -90,7 +90,7 @@ const disable = async (req: Request, res: Response) => {
       SET state = "disabled"
       WHERE uid = ?
   `;
-  await queries.push(req, res, sqlQuery, [req.params.id], { id: req.params.id, name: 'User', verb: 'disabled' });
+  await queries.push(req, res, sqlQuery, [req.params.id], { id: req.params.id as string, name: 'User', verb: 'disabled' });
 };
 
 const enable = async (req: Request, res: Response) => {
@@ -100,7 +100,7 @@ const enable = async (req: Request, res: Response) => {
       SET state = "regular"
       WHERE uid = ?
   `;
-  await queries.push(req, res, sqlQuery, [req.params.id], { id: req.params.id, name: 'User', verb: 'enabled' });
+  await queries.push(req, res, sqlQuery, [req.params.id], { id: req.params.id as string, name: 'User', verb: 'enabled' });
 };
 
 export default {

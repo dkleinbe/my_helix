@@ -21,7 +21,7 @@ const getEvents = async (req: Request, res: Response) => {
 };
 
 const getByCalendar = async (req: Request, res: Response) => {
-  const calendar = req.params.calendar;
+  const calendar = req.params.calendar as string;
   const sqlQuery = `
       SELECT *
       FROM events
@@ -31,7 +31,7 @@ const getByCalendar = async (req: Request, res: Response) => {
 };
 
 const updateDate = async (req: Request, res: Response) => {
-  const event = req.params.id;
+  const event = req.params.id as string;
   const sqlQuery = `
       UPDATE events
       SET start = ?,
@@ -43,7 +43,7 @@ const updateDate = async (req: Request, res: Response) => {
 };
 
 const updateCalendar = async (req: Request, res: Response) => {
-  const event = req.params.id;
+  const event = req.params.id as string;
   const sqlQuery = `
       UPDATE events
       SET calendar = ?
@@ -54,7 +54,7 @@ const updateCalendar = async (req: Request, res: Response) => {
 };
 
 const addAppointment = async (req: Request, res: Response) => {
-  const event = req.params.id;
+  const event = req.params.id as string;
   const sqlQuery = `
       UPDATE events
       SET appID = ?
@@ -69,7 +69,7 @@ const addAppointment = async (req: Request, res: Response) => {
 };
 
 const delete_ = async (req: Request, res: Response) => {
-  const event = req.params.id;
+  const event = req.params.id as string;
   const sqlQuery = `
       DELETE
       FROM events

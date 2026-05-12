@@ -83,7 +83,7 @@ const facture = async (req: Request, res: Response) => {
   `;
   const values = [req.params.id];
 
-  await queries.pull(req, res, sqlQuery, values, { id: req.params.id, name: 'Facture', verb: 'returned' });
+  await queries.pull(req, res, sqlQuery, values, { id: req.params.id as string, name: 'Facture', verb: 'returned' });
 };
 
 const getByPatient = async (req: Request, res: Response) => {
@@ -98,7 +98,7 @@ const getByPatient = async (req: Request, res: Response) => {
   `;
   const values = [req.params.id];
 
-  await queries.pull(req, res, sqlQuery, values, { id: req.params.id, name: 'Transactions', verb: 'returned' });
+  await queries.pull(req, res, sqlQuery, values, { id: req.params.id as string, name: 'Transactions', verb: 'returned' });
 };
 
 export default {
