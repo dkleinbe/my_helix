@@ -14,7 +14,8 @@
 		},
 		"ghcr.io/devcontainers-extra/features/actionlint:1": {
 			"version": "latest"
-		},
+		}
+	},
     "forwardPorts": [8080],
     "customizations": {
       "vscode": {
@@ -34,8 +35,7 @@
         }
       }
     }
-	}
-
+	
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
 
