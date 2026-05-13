@@ -3,6 +3,7 @@ import { useAppFormContext } from './form-context';
 import { IconCurrencyEuro } from '@tabler/icons-react';
 import cnf from '../../config/config';
 import { DateTimePicker } from '@mantine/dates';
+import { JSX } from 'react';
 
 interface IProps {
   view: boolean;

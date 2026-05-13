@@ -42,6 +42,9 @@ const HelixTableSort = ({
     setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value }));
   };
 
+  const handleSetSorting = (field: string) => {
+    setSorting(field as keyof RowData);
+  };
   return (
     <>
       <TextInput
@@ -64,7 +67,7 @@ const HelixTableSort = ({
           <Table.Thead>
             <Table.Tr>
               <Table.Th>ID</Table.Th>
-              <TableHeader type={type} callback={setSorting} sortBy={sortBy} reversed={reverseSortDirection} />
+              <TableHeader type={type} callback={handleSetSorting} sortBy={sortBy as string} reversed={reverseSortDirection} />
               <Table.Th>Actions</Table.Th>
             </Table.Tr>
           </Table.Thead>

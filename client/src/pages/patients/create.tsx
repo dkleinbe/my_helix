@@ -12,6 +12,7 @@ import {
 } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
 import useComponentLogic from './create.logic';
+import { JSX } from 'react';
 
 interface IProps {
   show: boolean;

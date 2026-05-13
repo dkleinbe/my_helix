@@ -42,7 +42,7 @@ const useComponentLogic = (handleClose: () => void) => {
 
     const handleClick = async (e: { preventDefault: () => void }) => {
         e.preventDefault();
-        if (form.validate().hasErrors) return;
+        if ((await form.validate()).hasErrors) return;
         const patient = {
             ...form.values,
             birthDate: moment(form.values.birthDate).format(cnf.formatDate),

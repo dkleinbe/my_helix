@@ -23,7 +23,7 @@ const useUserCreate = (handleClose: () => void) => {
 
     const handleClick = async (e: { preventDefault: () => void }) => {
         e.preventDefault();
-        if (form.validate().hasErrors) return;
+        if ((await form.validate()).hasErrors) return;
         try {
             const res = await routes.users.create(form.values);
             setNotification(false, res.data.message);

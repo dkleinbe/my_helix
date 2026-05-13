@@ -1,4 +1,12 @@
 import { LogtoConfig, LogtoProvider, UserScope } from '@logto/react';
+import { createContext } from 'react';
+
+type AuthContextType = {
+  auth: any;
+  setAuth: any;
+  persist: any;
+  setPersist: any;
+};
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // TODO: Replace with env variables and proxy
@@ -11,5 +19,5 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   return <LogtoProvider config={authConfig}>{children}</LogtoProvider>;
 };
-
+export const AuthContext = createContext<AuthContextType | null>(null);
 export default AuthProvider;

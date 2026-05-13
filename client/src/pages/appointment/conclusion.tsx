@@ -1,6 +1,7 @@
 import { Textarea, Title, Grid, Paper } from '@mantine/core';
 import nbLines from '../../helpers/get-lines';
 import { useAppFormContext } from './form-context';
+import { JSX } from 'react';
 
 const Conclusion = ({ view }: { view: boolean }): JSX.Element => {
     const form = useAppFormContext();

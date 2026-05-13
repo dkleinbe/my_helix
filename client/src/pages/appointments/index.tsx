@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { JSX, useEffect, useState } from 'react';
 import {
   ActionIcon,
   Badge,
@@ -150,7 +150,7 @@ const Appointments = ({ add }: { add?: boolean }): JSX.Element => {
       ) : (
         <Paper shadow="sm" radius="md" p="lg" withBorder my="lg">
           {isGrid ? (
-            <Grid columns={12} gutter="lg">
+            <Grid columns={12} >
               {appointments.map((appointment: IAppointmentExtended) => (
                 <Grid.Col key={appointment.id} span={3}>
                   <AppItemGrid key={appointment.id} appointment={appointment} />

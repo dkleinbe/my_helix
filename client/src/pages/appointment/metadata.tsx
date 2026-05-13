@@ -1,11 +1,12 @@
 import { Grid, Paper, TextInput, Title } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { IAppointmentData } from './types';
+import { JSX } from 'react';
 
 const Metadata = ({ data }: { data: UseFormReturnType<IAppointmentData> }): JSX.Element => (
   <Paper shadow="sm" radius="md" p="lg" withBorder my="lg">
     <Title order={2}>Appointment Data</Title>
-    <Grid columns={12} gutter="lg" grow mt="md">
+    <Grid columns={12} grow mt="md">
       <Grid.Col span={3}>
         <TextInput label="Date" readOnly defaultValue={data.values.date} />
       </Grid.Col>

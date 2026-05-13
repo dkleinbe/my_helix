@@ -4,6 +4,7 @@ import '@mantine/dates/styles.css';
 import '@mantine/notifications/styles.css';
 import '@mantine/spotlight/styles.css';
 import '@mantine/tiptap/styles.css';
+import { JSX } from 'react';
 
 const helixTheme = createTheme({
   colors: {

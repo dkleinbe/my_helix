@@ -1,4 +1,5 @@
 import { Badge } from '@mantine/core';
+import { JSX } from 'react';
 
 const ID = ({ id, color }: { id: string; color?: string }): JSX.Element => (
     <Badge color={color ?? 'gray'} variant="dot" size="md">

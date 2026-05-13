@@ -4,6 +4,7 @@ import { IAppointmentExtended } from '../../types/interfaces';
 import { useNavigate } from 'react-router-dom';
 import cnf from '../../config/config';
 import moment from 'moment';
+import { JSX } from 'react';
 
 interface IProps {
   appointment: IAppointmentExtended;

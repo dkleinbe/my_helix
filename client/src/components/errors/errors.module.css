@@ -10,7 +10,7 @@
     font-family: var(--mantine-font-family);
 }
 
-@media (max-width: var(--mantine-breakpoint-sm)) {
+@media (max-width: 48em) {
     .title {
         font-size: 2rem;
     }
@@ -24,7 +24,7 @@
     }
 }
 
-@media (min-width: var(--mantine-breakpoint-sm)) {
+@media (min-width: 48em) {
     .mobileImage {
         display: none;
     }

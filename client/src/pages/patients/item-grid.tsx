@@ -2,6 +2,7 @@ import { Button, Card, Group, Text } from '@mantine/core';
 import { ID, Sex } from '../../components/custom-badges';
 import { useNavigate } from 'react-router-dom';
 import { IPatientGridView } from './types';
+import { JSX } from 'react';
 
 function PatientItemGrid({ patient }: { patient: IPatientGridView }): JSX.Element {
   const navigate = useNavigate();

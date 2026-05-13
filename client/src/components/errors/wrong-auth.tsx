@@ -1,5 +1,6 @@
 import { Alert, Code } from '@mantine/core';
 import { IconAlertOctagon } from '@tabler/icons-react';
+import { JSX } from 'react';
 
 const WrongAuth = ({ show, message }: { show: boolean; message: string }): JSX.Element => {
     return (

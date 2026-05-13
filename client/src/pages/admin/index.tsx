@@ -1,5 +1,6 @@
 import { Card, Center, Title } from '@mantine/core';
 import { ListUsers } from './users';
+import { JSX } from 'react';
 
 const AdminPanel = (): JSX.Element => (
   <Card shadow="sm" padding="lg" radius="md" withBorder>

@@ -9,7 +9,7 @@
     display: flex;
 }
 
-@media (max-width: var(--mantine-breakpoint-sm)) {
+@media (max-width: 48em) {
     .links {
         display: none;
     }
@@ -19,7 +19,7 @@
     display: none;
 }
 
-@media (max-width: var(--mantine-breakpoint-sm)) {
+@media (max-width: 48em) {
     .burger {
         display: block;
     }

@@ -2,12 +2,14 @@ import { Button, Grid, Group, Modal, PasswordInput, Text } from '@mantine/core';
 import { isNotEmpty, useForm } from '@mantine/form';
 import { ForceOMeter } from '../../components/force-o-meter';
 import ModalOverlay from '../../components/modal-overlay';
+import { JSX } from 'react';
 
 const ChangePassword = ({ show, toggleModal }: { show: boolean; toggleModal: () => void }): JSX.Element => {
   const handleClose = () => toggleModal();
 
-  const handleClick = () => {
-    if (form.validate().hasErrors) return;
+  const handleClick = async () => {
+    const validation = await form.validate();
+    if (validation.hasErrors) return;
     console.log(form.values);
   };
 

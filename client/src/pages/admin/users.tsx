@@ -2,6 +2,7 @@ import { ModalAddUser } from './create';
 import { Badge, Button, Divider, Group, Title } from '@mantine/core';
 import { useUsers } from './users.logic';
 import HelixTableSort from '../../components/list-view';
+import { JSX } from 'react';
 
 const ListUsers = (): JSX.Element => {
   const { users, toggleModal, disableUser, enableUser, show } = useUsers();
@@ -69,7 +70,7 @@ const ListUsers = (): JSX.Element => {
       {/*    ))}*/}
       {/*  </tbody>*/}
       {/*</Table>*/}
-      <HelixTableSort data={users} type="users" />
+      <HelixTableSort data={users} type="users" callbacks={[]} />
       <ModalAddUser show={show} toggleModal={toggleModal} />
     </>
   );

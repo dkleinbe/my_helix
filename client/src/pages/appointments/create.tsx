@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { JSX, useEffect, useState } from 'react';
 import { Button, Grid, Group, Modal, Select, Text, useMantineColorScheme, useMantineTheme } from '@mantine/core';
 import { DateTimePicker } from '@mantine/dates';
 import { isNotEmpty, useForm } from '@mantine/form';
@@ -25,7 +25,7 @@ const ModalCreateApp = ({ show, toggleModal }: IProps): JSX.Element => {
 
   const handleClick = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    if (form.validate().hasErrors) return;
+    if ((await form.validate()).hasErrors) return;
     const patient = patients.find((patient: any) => patient.value === form.values.patientId) as any;
     const event = {
       title: `${patient?.label}`,

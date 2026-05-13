@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { JSX, useEffect, useState } from 'react';
 import { Badge, Button, Grid, Group, Paper, Title, useMantineColorScheme } from '@mantine/core';
 import { ModalAddPatient } from './create';
 // import { PatientsStyles } from './patients.styles';

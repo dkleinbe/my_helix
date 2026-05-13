@@ -1,5 +1,6 @@
 import { Badge, Title } from '@mantine/core';
 import { IPassif } from '../../types/interfaces';
+import { JSX } from 'react';
 
 interface IProps {
     passif: IPassif;

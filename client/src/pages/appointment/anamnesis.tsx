@@ -2,6 +2,7 @@ import { Grid, Paper, Textarea, Title } from '@mantine/core';
 import nbLines from '../../helpers/get-lines';
 import { useAppFormContext } from './form-context';
 import HelixRichEditor from '../../components/rich-editor';
+import { JSX } from 'react';
 
 const Anamnesis = ({ view }: { view: boolean }): JSX.Element => {
   const form = useAppFormContext();

@@ -3,6 +3,7 @@ import ExportAccounting from './export';
 import ViewPDF from '../../components/pdf/viewer';
 import { useTransactions } from './transactions.logic';
 import HelixTableSort from '../../components/list-view';
+import { JSX } from 'react';
 
 const Transactions = (): JSX.Element => {
   const { transactions, handleClick, toggleModal, view, setView, showFacture, id } = useTransactions();

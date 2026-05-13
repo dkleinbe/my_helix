@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { JSX, useEffect, useState } from 'react';
 import { Button, Title, TextInput, Card, Center, Grid } from '@mantine/core';
 import ChangePassword from './change-password';
 import { IUsers } from '../../types/interfaces';

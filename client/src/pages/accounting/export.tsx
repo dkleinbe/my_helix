@@ -5,7 +5,7 @@ import { useTransactionsExport } from './export.logic';
 import cnf from '../../config/config';
 import ModalOverlay from '../../components/modal-overlay';
 import moment from 'moment';
-import { useState } from 'react';
+import { JSX, useState } from 'react';
 
 const header = ['Transaction ID', 'Date', 'Amount', 'Method', 'Patient'];
 

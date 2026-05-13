@@ -4,10 +4,11 @@ import { params } from './utils';
 import { Badge, Button, Center, Grid, Paper, Tabs, Textarea, TextInput, Title } from '@mantine/core';
 import { useAppointmentPatient } from './patient.logic';
 import { UseFormReturnType } from '@mantine/form';
+import { JSX } from 'react';
 // import GrantAccess from '../../components/auth/grant-access';
 
 const Biodatas = ({ data, view }: { data: UseFormReturnType<IAppointmentData>; view: boolean }): JSX.Element => (
-  <Grid columns={12} gutter="lg">
+  <Grid columns={12} >
     <Grid.Col span={4}>
       <TextInput label="Name" {...data.getInputProps('name')} {...params(view)} />
     </Grid.Col>
