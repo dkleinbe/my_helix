@@ -33,13 +33,13 @@ api.use('/api', server);
 
 // Client
 api.use(express.static(path.join(__dirname, 'www')));
-api.get('*', (req: Request, res: Response) => {
+api.get('*aze', (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, 'www', 'index.html'));
   logger.success(req, res, 'Return client');
 });
 
 // 404
-api.all('*', (req: Request, res: Response) => {
+api.all('*aze', (req: Request, res: Response) => {
   res.status(sc.NOT_FOUND).json({ error: 'Route not found' });
   logger.fail(req, res, 'Not found');
 });
