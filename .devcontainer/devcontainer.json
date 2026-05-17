@@ -16,7 +16,7 @@
 			"version": "latest"
 		}
 	},
-    "forwardPorts": [8080],
+	"forwardPorts": [8080],
     "customizations": {
       "vscode": {
         "extensions": [

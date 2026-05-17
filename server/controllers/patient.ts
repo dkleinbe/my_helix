@@ -18,7 +18,7 @@ const create = async (req: Request, res: Response) => {
                             job,
                             doctor,
                             passif)
-      VALUES (?)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
   const values = [
     id,
@@ -35,7 +35,7 @@ const create = async (req: Request, res: Response) => {
     req.body.passif,
   ];
 
-  await queries.push(req, res, sqlQuery, [values], { id, name: 'Patient', verb: 'created' });
+  await queries.push(req, res, sqlQuery, values, { id, name: 'Patient', verb: 'created' });
 };
 
 const read = async (req: Request, res: Response) => {
