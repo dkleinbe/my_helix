@@ -87,7 +87,7 @@ const HelixNavbar = () => {
         <UnstyledButton onClick={() => navigate('/')} className={classes.link}>
           <Group>
             <Avatar src={logo} size="md" />
-            <Title order={1}>Helix</Title>
+            <Title order={1}>Hypnotix</Title>
             <Code>v{packageJson.version}</Code>
           </Group>
         </UnstyledButton>

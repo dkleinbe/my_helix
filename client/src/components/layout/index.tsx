@@ -1,24 +1,30 @@
-import { AppShell } from '@mantine/core';
+import { AppShell, Burger, Group } from '@mantine/core';
 import { Outlet } from 'react-router-dom';
+import { useDisclosure } from '@mantine/hooks';
 import HelixNavbar from './navbar';
 
 const Layout = () => {
-  // const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
-  // const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(false);
+   const [mobileOpened, { toggle }] = useDisclosure();
+  
 
   return (
     <AppShell
-      // header={{ height: rem(60) }}
+      header={{ height: 60 }}
       padding="md"
       navbar={{
         width: 300,
-        breakpoint: 'xs',
-        //   collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
+        breakpoint: 'sm',
+           collapsed: { mobile: !mobileOpened },
       }}
     >
-      <AppShell.Header>{/*<HeaderApp />*/}</AppShell.Header>
-      <AppShell.Navbar>
-        <HelixNavbar />
+      <AppShell.Header>    
+        <Group h="100%" px="md">      
+          <Burger opened={mobileOpened} onClick={toggle} hiddenFrom="sm" size="sm" />
+            {/* Header has a burger icon below sm breakpoint */}
+          </Group>
+      </AppShell.Header>
+      <AppShell.Navbar p='md'>
+       <HelixNavbar />
       </AppShell.Navbar>
       <AppShell.Main>
         <Outlet />
