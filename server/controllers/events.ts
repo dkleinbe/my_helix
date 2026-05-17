@@ -8,10 +8,10 @@ const create = async (req: Request, res: Response) => {
   const sqlQuery = `
       INSERT INTO events
           (id, title, start, end, calendar, appID)
-      VALUES (?)
+      VALUES (?, ?, ?, ?, ?, ?)
   `;
   const values = [id, req.body.title, req.body.start, req.body.end, req.body.calendar, req.body.appID ?? ''];
-  await queries.push(req, res, sqlQuery, [values], { id, name: 'Event', verb: 'created' });
+  await queries.push(req, res, sqlQuery, values, { id, name: 'Event', verb: 'created' });
 };
 
 const getEvents = async (req: Request, res: Response) => {

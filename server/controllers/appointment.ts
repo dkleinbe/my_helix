@@ -8,7 +8,7 @@ const create = async (req: Request, res: Response) => {
   const sqlQuery = `
       INSERT INTO appointments
           (id, patientId, event, kind, content, status)
-      VALUES (?)
+      VALUES (?, ?, ?, ?, ?, ?)
   `;
   const values = [
     id,
@@ -27,7 +27,7 @@ const create = async (req: Request, res: Response) => {
     'pending',
   ];
 
-  await queries.push(req, res, sqlQuery, [values], { id, name: 'Appointment', verb: 'created' });
+  await queries.push(req, res, sqlQuery, values, { id, name: 'Appointment', verb: 'created' });
 };
 
 const read = async (req: Request, res: Response) => {

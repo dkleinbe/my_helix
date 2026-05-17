@@ -27,24 +27,37 @@ const addAppointment = async (req: Request, res: Response, next: NextFunction) =
             UPDATE
                 patients
             SET
-                passif = JSON_ARRAY_APPEND(passif, "$.lastAppointments", ?)
+                passif = json_insert(passif, '$[#]', ?)
             WHERE
                 id = ?
         `;
         const values = [req.body.appId];
-
-        db.query(sqlQuery, [...values, patientId], (err: any, data: any) => {
-            if (err) {
-                res.status(sc.METHOD_FAILURE).json({ message: 'Method fails' });
-                logger.fail(req, res, err);
-            } else if (data.affectedRows === 0) {
-                res.status(sc.NOT_FOUND).json({ message: `Patient ${patientId} not found` });
+        const update =db.prepare(sqlQuery);
+        try {
+            const info = update.run(...values, patientId);
+            if (info.changes === 0) {
                 logger.fail(req, res, `Patient ${patientId} not found`);
+                res.status(sc.NOT_FOUND).json({ message: `Patient ${patientId} not found` });
             } else {
                 logger.success(req, res, `Appointment ${req.body.id} added to patient ${patientId}`);
                 next();
             }
-        });
+        } catch (err) {
+            logger.fail(req, res, err);
+            res.status(sc.METHOD_FAILURE).json({ message: 'Method fails' });
+        }
+        // db.query(sqlQuery, [...values, patientId], (err: any, data: any) => {
+        //     if (err) {
+        //         res.status(sc.METHOD_FAILURE).json({ message: 'Method fails' });
+        //         logger.fail(req, res, err);
+        //     } else if (data.affectedRows === 0) {
+        //         res.status(sc.NOT_FOUND).json({ message: `Patient ${patientId} not found` });
+        //         logger.fail(req, res, `Patient ${patientId} not found`);
+        //     } else {
+        //         logger.success(req, res, `Appointment ${req.body.id} added to patient ${patientId}`);
+        //         next();
+        //     }
+        // });
     }
 };
 

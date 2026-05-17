@@ -11,11 +11,11 @@ const create = async (req: Request, res: Response) => {
   const sqlQuery = `
       INSERT INTO accounting
           (uid, amount, method, date, appointment)
-      VALUES (?)
+      VALUES (?, ?, ?, ?, ?)
   `;
   const values = [id, req.body.amount, req.body.method, req.body.date, req.body.appointment];
 
-  await queries.push(req, res, sqlQuery, [values], { id, name: 'Transaction', verb: 'created' });
+  await queries.push(req, res, sqlQuery, values, { id, name: 'Transaction', verb: 'created' });
 };
 
 const getTransactions = async (req: Request, res: Response) => {

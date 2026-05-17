@@ -23,7 +23,7 @@ const getForConnection = async (req: Request, res: Response) => {
              lastName,
              uid
       FROM users
-      WHERE state != "disabled"
+      WHERE state != 'disabled'
       ORDER BY name ASC
   `;
   await queries.pull(req, res, sqlQuery, [], { id: '', name: 'Users', verb: 'returned for connection' });
@@ -35,8 +35,8 @@ const getPractitioners = async (req: Request, res: Response) => {
              lastName,
              uid
       FROM users
-      WHERE role = "practitioner"
-        AND state != "disabled"
+      WHERE role = 'practitioner'
+        AND state != 'disabled'
       ORDER BY name ASC
   `;
   await queries.pull(req, res, sqlQuery, [], { id: '', name: 'Practitioners', verb: 'returned for appointment' });
@@ -67,7 +67,7 @@ const create = async (req: Request, res: Response) => {
                          state,
                          password,
                          lastActive)
-      VALUES (?)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
   `;
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
   const values = [
@@ -80,14 +80,14 @@ const create = async (req: Request, res: Response) => {
     '1970-01-01 00:00:00',
   ];
 
-  await queries.push(req, res, sqlQuery, [values], { id, name: 'User', verb: 'created' });
+  await queries.push(req, res, sqlQuery, values, { id, name: 'User', verb: 'created' });
 };
 
 const disable = async (req: Request, res: Response) => {
   const sqlQuery = `
       UPDATE
           users
-      SET state = "disabled"
+      SET state = 'disabled'
       WHERE uid = ?
   `;
   await queries.push(req, res, sqlQuery, [req.params.id], { id: req.params.id as string, name: 'User', verb: 'disabled' });
@@ -97,7 +97,7 @@ const enable = async (req: Request, res: Response) => {
   const sqlQuery = `
       UPDATE
           users
-      SET state = "regular"
+      SET state = 'regular'
       WHERE uid = ?
   `;
   await queries.push(req, res, sqlQuery, [req.params.id], { id: req.params.id as string, name: 'User', verb: 'enabled' });
