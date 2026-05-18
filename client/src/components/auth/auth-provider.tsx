@@ -1,23 +1,12 @@
-import { LogtoConfig, LogtoProvider, UserScope } from '@logto/react';
-import { createContext } from 'react';
+import { createContext, JSX, useState } from 'react';
 
-type AuthContextType = {
-  auth: any;
-  setAuth: any;
-  persist: any;
-  setPersist: any;
+const AuthContext = createContext({});
+
+export const AuthProvider = ({ children }: { children: JSX.Element }) => {
+    const [auth, setAuth] = useState({});
+    const [persist, setPersist] = useState(localStorage.getItem('persist') ?? false);
+
+    return <AuthContext.Provider value={{ auth, setAuth, persist, setPersist }}>{children}</AuthContext.Provider>;
 };
 
-const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  // TODO: Replace with env variables and proxy
-  const authConfig: LogtoConfig = {
-    endpoint: 'http://localhost:3010/',
-    appId: 'hhm8fu4f01r4hlw9q7n1s',
-    scopes: [UserScope.Email, UserScope.Identities, UserScope.Organizations, UserScope.Roles, 'api:read', 'api:write'],
-    resources: ['http://localhost:3001/api'],
-  };
-
-  return <LogtoProvider config={authConfig}>{children}</LogtoProvider>;
-};
-export const AuthContext = createContext<AuthContextType | null>(null);
-export default AuthProvider;
+export default AuthContext;
