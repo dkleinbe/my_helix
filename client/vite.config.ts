@@ -9,6 +9,7 @@ export default ({ mode }: ConfigEnv) => {
       emptyOutDir: true,
       outDir: mode === 'production' ? './dist' : '../server/build/www',
       rollupOptions: {},
+      sourcemap: true,
     },
     server: {
       host: process.env.VITE_HOST,
