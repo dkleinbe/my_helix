@@ -5,53 +5,49 @@ import bcrypt from 'bcrypt';
 
 const readAll = async (req: Request, res: Response) => {
   const sqlQuery = `
-      SELECT uid,
-             name,
-             lastName,
+      SELECT id,
+             login,
              lastActive,
              state,
              role
       FROM users
-      ORDER BY name ASC
+      ORDER BY login ASC
   `;
   await queries.pull(req, res, sqlQuery, [], { id: '', name: 'Users', verb: 'returned' });
 };
 
 const getForConnection = async (req: Request, res: Response) => {
   const sqlQuery = `
-      SELECT name,
-             lastName,
-             uid
+      SELECT login,
+             id
       FROM users
       WHERE state != 'disabled'
-      ORDER BY name ASC
+      ORDER BY login ASC
   `;
   await queries.pull(req, res, sqlQuery, [], { id: '', name: 'Users', verb: 'returned for connection' });
 };
 
 const getPractitioners = async (req: Request, res: Response) => {
   const sqlQuery = `
-      SELECT name,
-             lastName,
-             uid
+      SELECT login,
+             id
       FROM users
       WHERE role = 'practitioner'
         AND state != 'disabled'
-      ORDER BY name ASC
+      ORDER BY login ASC
   `;
   await queries.pull(req, res, sqlQuery, [], { id: '', name: 'Practitioners', verb: 'returned for appointment' });
 };
 
 const readOne = async (req: Request, res: Response) => {
   const sqlQuery = `
-      SELECT uid,
-             name,
-             lastName,
+      SELECT id,
+             login,
              lastActive,
              state,
              role
       FROM users
-      WHERE uid = ?
+      WHERE id = ?
   `;
   await queries.pull(req, res, sqlQuery, [req.params.id], { id: req.params.id as string, name: 'User', verb: 'returned' });
 };
@@ -61,8 +57,8 @@ const create = async (req: Request, res: Response) => {
   while (await queries.checkId(id, 'users', 'uid')) id = uuid();
   const sqlQuery = `
       INSERT INTO users (uid,
-                         name,
-                         lastName,
+                         login,
+                         lastlogin,
                          role,
                          state,
                          password,
@@ -72,8 +68,8 @@ const create = async (req: Request, res: Response) => {
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
   const values = [
     id,
-    req.body.name,
-    req.body.lastName,
+    req.body.login,
+    req.body.lastlogin,
     req.body.role,
     'first-time',
     hashedPassword,

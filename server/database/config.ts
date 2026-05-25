@@ -14,13 +14,13 @@ const db = mysql.createConnection({
 */
 let db
 try {  
-  db = new sqlite3('./build/database/helix.db');
+  db = new sqlite3('./build/database/Hypnobase.db');
   logger.info('Connected to database');
 } catch (err) {
   logger.error(err);
 }
 
-const creationQuery = fs.readFileSync('./build/database/creation.sql', 'utf8');
+const creationQuery = fs.readFileSync('./build/database/Hypnobase.sql', 'utf8');
 db.exec(creationQuery);
 
 export default db;
