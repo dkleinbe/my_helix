@@ -1,12 +1,13 @@
 import cors from './config/cors';
 import credentials from './middleware/credentials';
 import errorHandler from './tools/errors';
-import express, { Express, Request, Response } from 'express';
+import express, { Express, Request, Response, NextFunction } from 'express';
 import logger from './tools/logger';
 import log from './tools/newLogger';
 import path from 'path';
 import sc from './tools/status-codes';
 import server from './routers/api';
+import { nextTick } from 'process';
 // import rateLimit from 'express-rate-limit';
 
 require('dotenv').config();
