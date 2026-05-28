@@ -54,9 +54,9 @@ const readOne = async (req: Request, res: Response) => {
 
 const create = async (req: Request, res: Response) => {
   let id = uuid();
-  while (await queries.checkId(id, 'users', 'uid')) id = uuid();
+  while (await queries.checkId(id, 'users', 'id')) id = uuid();
   const sqlQuery = `
-      INSERT INTO users (uid,
+      INSERT INTO users (id,
                          login,
                          lastlogin,
                          role,
@@ -84,7 +84,7 @@ const disable = async (req: Request, res: Response) => {
       UPDATE
           users
       SET state = 'disabled'
-      WHERE uid = ?
+      WHERE id = ?
   `;
   await queries.push(req, res, sqlQuery, [req.params.id], { id: req.params.id as string, name: 'User', verb: 'disabled' });
 };
@@ -94,7 +94,7 @@ const enable = async (req: Request, res: Response) => {
       UPDATE
           users
       SET state = 'regular'
-      WHERE uid = ?
+      WHERE id = ?
   `;
   await queries.push(req, res, sqlQuery, [req.params.id], { id: req.params.id as string, name: 'User', verb: 'enabled' });
 };

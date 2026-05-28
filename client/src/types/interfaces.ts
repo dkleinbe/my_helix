@@ -96,8 +96,8 @@ export interface IAppointmentDataEdit {
 }
 
 export interface IUsers {
-    uid?: string;
-    name: string;
+    id: number;
+    login: string;
     lastName: string;
     role: string;
     state: string;

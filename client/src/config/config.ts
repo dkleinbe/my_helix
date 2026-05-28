@@ -50,9 +50,9 @@ const cnf: IConfig = {
   nbWorkDays: 5,
   nbWorkHours: 8,
   roles: {
-    ADMIN: 2003,
-    PRACTITIONER: 1998,
-    SECRETARY: 1515,
+    ADMIN: 0,
+    PRACTITIONER: 1,
+    SECRETARY: 2,
   },
   cabinet: {
     name: 'Cabinet de la Grande Place',

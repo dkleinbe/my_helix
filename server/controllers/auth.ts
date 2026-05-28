@@ -33,7 +33,7 @@ const login = async (req: Request, res: Response) => {
     const { id, password } = req.body;
     let user: IUser;
     try {
-        user = await queryAuth(`SELECT * FROM users WHERE uid = ?`, [id], req);
+        user = await queryAuth(`SELECT * FROM users WHERE id = ?`, [id], req);
     } catch (err: any) {
         res.status(sc.UNAUTHORIZED).json({ message: err.message });
         return logger.fail(req, res, err);
@@ -53,17 +53,17 @@ const login = async (req: Request, res: Response) => {
     const accessToken = jwt.sign(
         {
             userData: {
-                id: user.uid,
+                id: user.id,
                 role: roleCode,
             },
         },
         process.env.ACCESS_TOKEN_SECRET as string,
         { expiresIn: '10m' }
     );
-    const refreshToken = jwt.sign({ id: user.uid }, process.env.REFRESH_TOKEN_SECRET as string, { expiresIn: '12h' });
+    const refreshToken = jwt.sign({ id: user.id }, process.env.REFRESH_TOKEN_SECRET as string, { expiresIn: '12h' });
 
-    const sqlQuery = 'UPDATE users SET refreshToken = ?, `lastActive` = ? WHERE uid = ?';
-    const values = [refreshToken, moment().format('YYYY-MM-DD HH:mm:ss'), user.uid];
+    const sqlQuery = 'UPDATE users SET refreshToken = ?, `lastActive` = ? WHERE id = ?';
+    const values = [refreshToken, moment().format('YYYY-MM-DD HH:mm:ss'), user.id];
     const select = db.prepare(sqlQuery);
     try {
         const rows = select.run(values);
@@ -108,7 +108,7 @@ const refreshToken = async (req: Request, res: Response) => {
     }
 
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET as string, (err: any, decoded: any) => {
-        if (err || user.uid !== decoded.id) {
+        if (err || user.id !== decoded.id) {
             res.status(sc.FORBIDDEN).json({ message: err });
             logger.fail(req, res, err);
         } else {
@@ -123,13 +123,13 @@ const refreshToken = async (req: Request, res: Response) => {
                 { expiresIn: '10m' }
             );
             res.status(sc.ACCEPTED).json({
-                id: user.uid,
+                id: user.id,
                 name: user.name,
                 role: role.getCode(user.role),
-                message: `User ${user.uid} successfully refreshed token`,
+                message: `User ${user.id} successfully refreshed token`,
                 token: accessToken,
             });
-            logger.success(req, res, `User ${user.uid} successfully refreshed token`);
+            logger.success(req, res, `User ${user.id} successfully refreshed token`);
         }
     });
 };
@@ -156,8 +156,8 @@ const logout = async (req: Request, res: Response) => {
         return logger.fail(req, res, 'User not found, already logged out?');
     }
 
-    const sqlQuery = `UPDATE users SET refreshToken = NULL WHERE uid = ?`;
-    const values = [user.uid];
+    const sqlQuery = `UPDATE users SET refreshToken = NULL WHERE id = ?`;
+    const values = [user.id];
     const select = db.prepare(sqlQuery);
     try {
         const rows = select.run(values);
@@ -174,8 +174,8 @@ const logout = async (req: Request, res: Response) => {
     //     logger.success(req, res, 'Refresh token removed from database');
     // });
     res.clearCookie('jwt', { httpOnly: true, maxAge: 12 * 60 * 60 * 1000, sameSite: 'none', secure: true });
-    res.status(sc.ACCEPTED).json({ id: user.uid, message: `User ${user.uid} successfully logged out` });
-    logger.success(req, res, `User ${user.uid} successfully logged out`);
+    res.status(sc.ACCEPTED).json({ id: user.id, message: `User ${user.id} successfully logged out` });
+    logger.success(req, res, `User ${user.id} successfully logged out`);
 };
 
 export default module.exports = {

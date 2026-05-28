@@ -88,12 +88,12 @@ const CreateRows = ({ type, item, callbacks }: { type: string; item: any; callba
 
   if (type === 'users') {
     return (
-      <Table.Tr key={item.uid}>
+      <Table.Tr key={item.id}>
         <Table.Td>
-          <ID id={item.uid ?? ''} color="blue" />
+          <ID id={item.id ?? ''} color="blue" />
         </Table.Td>
         <Table.Td>
-          {item.name} {item.lastName}
+          {item.login}
         </Table.Td>
         <Table.Td>
           <UserStatus status={item.state} />

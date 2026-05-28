@@ -57,8 +57,8 @@ const read = async (req: Request, res: Response) => {
       FROM appointments app
                INNER JOIN patients p ON app.patientId = p.id
                INNER JOIN events e ON app.event = e.id
-               INNER JOIN users u ON e.calendar = u.uid
-               LEFT JOIN accounting a ON app.payment = a.uid
+               INNER JOIN users u ON e.calendar = u.id
+               LEFT JOIN accounting a ON app.payment = a.id
       WHERE app.id = ?
   `;
 
@@ -98,7 +98,7 @@ const getFromEvent = async (req: Request, res: Response) => {
              a.status
       FROM events e
                INNER JOIN appointments a ON e.appID = a.id
-               INNER JOIN users u ON e.calendar = u.uid
+               INNER JOIN users u ON e.calendar = u.id
                INNER JOIN patients p ON a.patientId = p.id
       WHERE e.id = ?
   `;
