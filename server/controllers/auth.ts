@@ -79,7 +79,7 @@ const login = async (req: Request, res: Response) => {
     //     }
     //     logger.success(req, res, 'Refresh token added to database');
     // });
-    res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 12 * 60 * 60 * 1000, sameSite: 'none', secure: true });
+    res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 12 * 60 * 60 * 1000, sameSite: 'lax', secure: true });
     res.status(sc.ACCEPTED).json({
         id: id,
         name: user.name,

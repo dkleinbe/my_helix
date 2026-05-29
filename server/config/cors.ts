@@ -5,6 +5,7 @@ import logger from '../tools/logger';
 const corsOptions: CorsOptions = {
     origin: (origin, callback) => {
         if (allowedOrigins.indexOf(origin ?? '') !== -1 || !origin) {
+            logger.error(`Origin ${origin} Recieved by CORS`);
             callback(null, true);
         } else {
             logger.error(`Origin ${origin} not allowed by CORS`);
@@ -12,6 +13,7 @@ const corsOptions: CorsOptions = {
         }
     },
     optionsSuccessStatus: 200,
+    credentials: true,
 };
 
 export default () => cors(corsOptions);

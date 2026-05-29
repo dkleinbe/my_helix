@@ -7,6 +7,7 @@ const allowedOrigins = [
   'https://dev.example.com',
   'https://3001.example.com',
   'http://192.168.0.47:3001',
+  'http://192.168.0.47:443',
 ];
 
 export default allowedOrigins;

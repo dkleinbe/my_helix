@@ -1,12 +1,14 @@
 import cors from './config/cors';
 import credentials from './middleware/credentials';
 import errorHandler from './tools/errors';
-import express, { Express, Request, Response } from 'express';
+import express, { Express, Request, Response, } from 'express';
+import cookieParser from 'cookie-parser';
 import logger from './tools/logger';
 import log from './tools/newLogger';
 import path from 'path';
 import sc from './tools/status-codes';
 import server from './routers/api';
+
 // import rateLimit from 'express-rate-limit';
 
 require('dotenv').config();
@@ -18,6 +20,14 @@ const port = 3001;
 //     windowMs: 60 * 1000,
 //     max: 40,
 // });
+
+api.use(cookieParser());
+api.set('trust proxy', 1);
+api.use((req, res, next) => {
+  console.log('Cookie Header:', req.headers.cookie || '(empty)');
+  console.log('res.cookies:', req.cookies || '(empty)');
+  next();
+});
 
 api.use(express.json());
 api.use(express.urlencoded({ extended: true }));
@@ -46,6 +56,8 @@ api.all('*aze', (req: Request, res: Response) => {
 
 // Errors
 api.use(errorHandler);
+
+
 
 // Start
 api.listen(port, () => {
