@@ -5,12 +5,14 @@ import bcrypt from 'bcrypt';
 
 const readAll = async (req: Request, res: Response) => {
   const sqlQuery = `
-      SELECT id,
+      SELECT users.id,
              login,
              lastActive,
-             state,
-             role
+             user_roles.label role,
+             user_states.label state
       FROM users
+        INNER JOIN user_roles ON users.role = user_roles.id
+        INNER JOIN user_states ON users.state = user_states.id
       ORDER BY login ASC
   `;
   await queries.pull(req, res, sqlQuery, [], { id: '', name: 'Users', verb: 'returned' });

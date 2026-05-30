@@ -1,5 +1,6 @@
 import { Card, Center, Title } from '@mantine/core';
 import { ListUsers } from './users';
+import { GettingStartedExample } from '../../components/table-view'
 import { JSX } from 'react';
 
 const AdminPanel = (): JSX.Element => (
@@ -8,6 +9,7 @@ const AdminPanel = (): JSX.Element => (
       <Title order={2}>Admin Panel</Title>
     </Center>
     <ListUsers />
+    <GettingStartedExample />
   </Card>
 );
 
