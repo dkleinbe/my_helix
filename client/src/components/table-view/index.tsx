@@ -1,32 +1,35 @@
 'use client';
-import { useEffect, useState } from 'react';
+import sortBy from 'lodash/sortBy';
+import { useEffect, useState, useRef, useCallback } from 'react';
 
 import { Box } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
-import { DataTable } from 'mantine-datatable';
+import { DataTable, DataTableSortStatus  } from 'mantine-datatable';
 import setNotification from '../../components/errors/feedback-notification';
 import useApplicationRoutes from '../../api/routes';
+import { IUsers } from '../../types/interfaces';
 
-export function GettingStartedExample() {
-  const [loading, setLoading] = useState(false);
+interface IProps {
+  data: any;
+  fetching: boolean;
+}
+
+export function GettingStartedExample({ data ,  fetching }
+  : IProps)
+{
+  const [fetch, setFetch] = useState(fetching);
+  const [sortedData, setSortedData] = useState(data);
   const [records, setRecords] = useState([]);
   const routes = useApplicationRoutes();
+  const [sortStatus, setSortStatus] = useState<DataTableSortStatus<IUsers>>({
+    columnAccessor: 'login',
+    direction: 'asc',
+  });
 
   useEffect(() => {
-      setLoading(true);
-      const fetchAllUsers = async () => {
-          try {
-              const res = await routes.users.getAll();
-              setRecords(res.data);
-          } catch (error: any) {
-              if (!error?.response) setNotification(true, 'Network error');
-              else if (error.response.status !== 404)
-                  setNotification(true, `${error.message}: ${error.response.data.message}`);
-          }
-      };  
-      fetchAllUsers();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const data_ = sortBy(data, sortStatus.columnAccessor) as IUsers[];
+    setSortedData(sortStatus.direction === 'desc' ? data_.reverse() : data_);
+  }, [sortStatus, data]);
 
   return (
     <DataTable
@@ -36,7 +39,8 @@ export function GettingStartedExample() {
       striped
       highlightOnHover
       // 👇 provide data
-      records={records}
+      records={sortedData}
+      fetching={fetch}
       // 👇 define columns
       columns={[
         {
@@ -46,10 +50,10 @@ export function GettingStartedExample() {
           // 👇 right-align column
           textAlign: 'left',
         },
-        { accessor: 'login' },
-        { accessor: 'role' },
-        { accessor: 'state' },
-        { accessor: 'lastActive' },
+        { accessor: 'login', sortable: true },
+        { accessor: 'role', sortable: true },
+        { accessor: 'state', sortable: true },
+        { accessor: 'lastActive', sortable: false },
       ]}
       // 👇 execute this callback when a row is clicked
       onRowClick={({ record: { login } }) =>
@@ -59,6 +63,10 @@ export function GettingStartedExample() {
           withBorder: true,
         })
       }
+      sortStatus={sortStatus}
+      onSortStatusChange={setSortStatus}
     />
   );
-}
+};
+
+export default GettingStartedExample;
