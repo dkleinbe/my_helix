@@ -3,6 +3,7 @@ import { Badge, Button, Divider, Group, Title } from '@mantine/core';
 import { useUsers } from './users.logic';
 import HelixTableSort from '../../components/list-view';
 import GettingStartedExample from '../../components/table-view'
+import UsersTable from './usersTabe'
 
 export function ListUsers() {
   const { users, fetching, toggleModal, disableUser, enableUser, show } = useUsers();
@@ -18,8 +19,7 @@ export function ListUsers() {
         <Button onClick={toggleModal}>New User</Button>
       </Group>
       <Divider my="lg" />
-      <HelixTableSort data={users} type="users" callbacks={[]} />
-      <GettingStartedExample data={users} fetching={fetching}/>
+      <UsersTable data={users} fetching={fetching}/>
       <ModalAddUser show={show} toggleModal={toggleModal} />
     </>
   );

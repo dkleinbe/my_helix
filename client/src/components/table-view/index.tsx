@@ -17,9 +17,7 @@ interface IProps {
 export function GettingStartedExample({ data ,  fetching }
   : IProps)
 {
-  const [fetch, setFetch] = useState(fetching);
   const [sortedData, setSortedData] = useState(data);
-  const [records, setRecords] = useState([]);
   const routes = useApplicationRoutes();
   const [sortStatus, setSortStatus] = useState<DataTableSortStatus<IUsers>>({
     columnAccessor: 'login',
