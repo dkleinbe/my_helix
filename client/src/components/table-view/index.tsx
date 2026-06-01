@@ -25,7 +25,7 @@ export function GettingStartedExample({ data ,  fetching }
     columnAccessor: 'login',
     direction: 'asc',
   });
-
+  
   useEffect(() => {
     const data_ = sortBy(data, sortStatus.columnAccessor) as IUsers[];
     setSortedData(sortStatus.direction === 'desc' ? data_.reverse() : data_);
@@ -40,7 +40,8 @@ export function GettingStartedExample({ data ,  fetching }
       highlightOnHover
       // 👇 provide data
       records={sortedData}
-      fetching={fetch}
+      loaderSize='xl'
+      fetching={fetching}
       // 👇 define columns
       columns={[
         {
