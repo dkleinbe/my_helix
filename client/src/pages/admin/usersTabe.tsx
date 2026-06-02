@@ -16,12 +16,7 @@ interface IProps {
   fetching: boolean;
 }
 
-
-
-
-
-export function UsersTable({ data ,  fetching }
-  : IProps)
+export function UsersTable({ data ,  fetching } : IProps)
 {
   const [sortedData, setSortedData] = useState(data);
   const [query, setQuery] = useState('');
@@ -44,13 +39,6 @@ export function UsersTable({ data ,  fetching }
   const toggleModal = () => {
       setShow(!show);
       setRefresh(!refresh);
-  };
-
-  function toto(bob: IUsers) {
-    console.log(bob);
-    setUser(bob);
-    toggleModal();
-
   };
 
   const initialRecords = data;
@@ -176,9 +164,10 @@ export function UsersTable({ data ,  fetching }
                 size="sm"
                 variant="subtle"
                 color="red"
-                onClick={() => 
-                  toto(user
-                  )
+                onClick={() => {
+                    setUser(user);
+                    toggleModal();
+                  }
                 }
               >
                 <IconTrash size={16} />
