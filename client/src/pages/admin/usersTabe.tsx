@@ -1,19 +1,24 @@
 'use client';
 import sortBy from 'lodash/sortBy';
 import { useEffect, useState, useMemo, useRef, useCallback } from 'react';
-import { IconSearch, IconX } from '@tabler/icons-react';
-import { TextInput, ActionIcon, MultiSelect } from '@mantine/core';
+import { IconSearch, IconX, IconEye, IconEdit, IconTrash } from '@tabler/icons-react';
+import { Box, Group, TextInput, ActionIcon, MultiSelect, Modal, Text } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
-import { useDebouncedValue } from '@mantine/hooks';
+import { useDebouncedValue, useDisclosure } from '@mantine/hooks';
 import { DataTable, DataTableSortStatus  } from 'mantine-datatable';
 import setNotification from '../../components/errors/feedback-notification';
 import useApplicationRoutes from '../../api/routes';
 import { IUsers } from '../../types/interfaces';
+import { ModalAddUser } from './create';
 
 interface IProps {
   data: IUsers[];
   fetching: boolean;
 }
+
+
+
+
 
 export function UsersTable({ data ,  fetching }
   : IProps)
@@ -32,6 +37,12 @@ export function UsersTable({ data ,  fetching }
   }, [data]);
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
 
+  const [refresh, setRefresh] = useState(false);
+  const [show, setShow] = useState(false);
+  const toggleModal = () => {
+      setShow(!show);
+      setRefresh(!refresh);
+  };
 
   const initialRecords = data;
 
@@ -60,12 +71,16 @@ export function UsersTable({ data ,  fetching }
   }, [sortStatus, data]);
 
   return (
+    <>
+    <ModalAddUser show={show} toggleModal={toggleModal} />
     <DataTable
+      backgroundColor={{ dark: '#232b25ff', light: '#f0f7f1ff' }}
       withTableBorder
       borderRadius="sm"
       withColumnBorders
       striped
       highlightOnHover
+      pinLastColumn 
       // 👇 provide data
       records={sortedData}
       loaderSize='xl'
@@ -120,18 +135,58 @@ export function UsersTable({ data ,  fetching }
         },
         { accessor: 'state', sortable: true },
         { accessor: 'lastActive', sortable: false },
+        {
+          accessor: 'actions',
+          title: <Box mr={6}>Row actions</Box>,
+          textAlign: 'right',
+          render: (user) => (
+            <Group gap={4} justify="right" wrap="nowrap">
+              <ActionIcon
+                size="sm"
+                variant="subtle"
+                color="green"
+                onClick={toggleModal}
+              >
+                <IconEye size={16} />
+              </ActionIcon>
+              <ActionIcon
+                size="sm"
+                variant="subtle"
+                color="blue"
+                onClick={() =>
+                  showNotification({
+                    title: `Clicked on ${user.login}`,
+                    message: `You clicked on ${user.id}, a user`,
+                    withBorder: true,
+                  })
+                }
+              >
+                <IconEdit size={16} />
+              </ActionIcon>
+              <ActionIcon
+                size="sm"
+                variant="subtle"
+                color="red"
+                onClick={toggleModal}
+              >
+                <IconTrash size={16} />
+              </ActionIcon>
+            </Group>
+          ),
+        },
       ]}
       // 👇 execute this callback when a row is clicked
-      onRowClick={({ record: { login } }) =>
-        showNotification({
-          title: `Clicked on ${login}`,
-          message: `You clicked on ${login}, a user`,
-          withBorder: true,
-        })
-      }
+      // onRowClick={({ record: { login } }) =>
+      //   showNotification({
+      //     title: `Clicked on ${login}`,
+      //     message: `You clicked on ${login}, a user`,
+      //     withBorder: true,
+      //   })
+      // }
       sortStatus={sortStatus}
       onSortStatusChange={setSortStatus}
     />
+    </>
   );
 };
 
