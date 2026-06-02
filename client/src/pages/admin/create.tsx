@@ -1,15 +1,26 @@
 import { Button, Grid, Group, Modal, PasswordInput, Select, Text, TextInput } from '@mantine/core';
 import { useUserCreate } from './create.logic';
 import ModalOverlay from '../../components/modal-overlay';
-import { JSX } from 'react';
+import { JSX, useEffect } from 'react';
+import { IUsers } from '../../types/interfaces';
 
 interface IProps {
   show: boolean;
   toggleModal: () => void;
+  user: IUsers
 }
 
-const ModalAddUser = ({ show, toggleModal }: IProps): JSX.Element => {
+const ModalAddUser = ({ show, toggleModal, user }: IProps): JSX.Element => {
   const { form, handleClick } = useUserCreate(toggleModal);
+
+  useEffect(() => {
+    form.setValues({
+              name: user.login,
+              lastName: 'tutu',
+              role: '',
+              password: '',
+          });
+  }, [user]);
 
   return (
     <Modal.Root opened={show} onClose={toggleModal} padding={12}>

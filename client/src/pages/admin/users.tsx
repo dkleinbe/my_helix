@@ -20,7 +20,6 @@ export function ListUsers() {
       </Group>
       <Divider my="lg" />
       <UsersTable data={users} fetching={fetching}/>
-      <ModalAddUser show={show} toggleModal={toggleModal} />
     </>
   );
 };

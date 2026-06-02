@@ -1,7 +1,7 @@
 'use client';
 import sortBy from 'lodash/sortBy';
 import { useEffect, useState, useMemo, useRef, useCallback } from 'react';
-import { IconSearch, IconX, IconEye, IconEdit, IconTrash } from '@tabler/icons-react';
+import { IconSearch, IconX, IconEye, IconEdit, IconTrash, IconUser } from '@tabler/icons-react';
 import { Box, Group, TextInput, ActionIcon, MultiSelect, Modal, Text } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { useDebouncedValue, useDisclosure } from '@mantine/hooks';
@@ -36,12 +36,21 @@ export function UsersTable({ data ,  fetching }
     return [...roles];
   }, [data]);
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
-
   const [refresh, setRefresh] = useState(false);
   const [show, setShow] = useState(false);
+  const aze : IUsers = {id: 0, login: 'aze', lastName: 'laz', role: '0', state: '0', password: '', clearPassword: '', lastActive: ''};
+  const[user, setUser] = useState<IUsers>(aze);
+
   const toggleModal = () => {
       setShow(!show);
       setRefresh(!refresh);
+  };
+
+  function toto(bob: IUsers) {
+    console.log(bob);
+    setUser(bob);
+    toggleModal();
+
   };
 
   const initialRecords = data;
@@ -72,7 +81,7 @@ export function UsersTable({ data ,  fetching }
 
   return (
     <>
-    <ModalAddUser show={show} toggleModal={toggleModal} />
+    <ModalAddUser show={show} toggleModal={toggleModal} user={user} />
     <DataTable
       backgroundColor={{ dark: '#232b25ff', light: '#f0f7f1ff' }}
       withTableBorder
@@ -145,7 +154,7 @@ export function UsersTable({ data ,  fetching }
                 size="sm"
                 variant="subtle"
                 color="green"
-                onClick={toggleModal}
+                onClick={() => {}}
               >
                 <IconEye size={16} />
               </ActionIcon>
@@ -167,7 +176,10 @@ export function UsersTable({ data ,  fetching }
                 size="sm"
                 variant="subtle"
                 color="red"
-                onClick={toggleModal}
+                onClick={() => 
+                  toto(user
+                  )
+                }
               >
                 <IconTrash size={16} />
               </ActionIcon>
