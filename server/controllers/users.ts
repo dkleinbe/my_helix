@@ -78,30 +78,28 @@ const readOne = async (req: Request, res: Response) => {
 };
 
 const create = async (req: Request, res: Response) => {
-  let id = uuid();
-  while (await queries.checkId(id, 'users', 'id')) id = uuid();
+  //let id = uuid();
+  //while (await queries.checkId(id, 'users', 'id')) id = uuid();
   const sqlQuery = `
-      INSERT INTO users (id,
+      INSERT INTO users (
                          login,
-                         lastlogin,
                          role,
                          state,
                          password,
-                         lastActive)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
+                         lastActive
+                        )
+      VALUES (?, ?, ?, ?, ?)
   `;
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
   const values = [
-    id,
     req.body.login,
-    req.body.lastlogin,
     req.body.role,
-    'first-time',
+    req.body.state,
     hashedPassword,
-    '1970-01-01 00:00:00',
+    'first-time',
   ];
 
-  await queries.push(req, res, sqlQuery, values, { id, name: 'User', verb: 'created' });
+  await queries.push(req, res, sqlQuery, values, { id: 'id', name: 'User', verb: 'created' });
 };
 
 const disable = async (req: Request, res: Response) => {

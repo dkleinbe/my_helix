@@ -100,6 +100,7 @@ export interface IUsers {
     login: string;
     role_id: number;
     role: string;
+    state_id: number,
     state: string;
     password: string;
     clearPassword: string;

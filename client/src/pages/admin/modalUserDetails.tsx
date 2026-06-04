@@ -67,8 +67,8 @@ const ModalUserDetails = ({ mode, show, toggleModal, user }: IProps): JSX.Elemen
     if (user !== undefined)
       form.setValues({
                 login: user.login,
-                lastName: user.role,
                 role: user.role_id,
+                state: user.state_id,
                 password: '',
             });
     else
