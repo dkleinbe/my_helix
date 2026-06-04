@@ -9,7 +9,7 @@ import setNotification from '../../components/errors/feedback-notification';
 interface IProps {
   show: boolean;
   toggleModal: () => void;
-  user: IUsers
+  user: IUsers | undefined
 }
 
 const ModalAddUser = ({ show, toggleModal, user }: IProps): JSX.Element => {
@@ -41,13 +41,16 @@ const ModalAddUser = ({ show, toggleModal, user }: IProps): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    form.setValues({
-              login: user.login,
-              lastName: user.role,
-              role: user.role_id,
-              password: '',
-          });
-  }, [user, roles]);
+    if (user !== undefined)
+      form.setValues({
+                login: user.login,
+                lastName: user.role,
+                role: user.role_id,
+                password: '',
+            });
+    else
+      form.reset();
+  }, [show, user, roles]);
 
   return (
     <Modal.Root opened={show} onClose={toggleModal} padding={12}>

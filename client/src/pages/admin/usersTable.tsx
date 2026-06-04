@@ -6,6 +6,7 @@ import { Box, Group, TextInput, ActionIcon, MultiSelect, Modal, Text } from '@ma
 import { showNotification } from '@mantine/notifications';
 import { useDebouncedValue, useDisclosure } from '@mantine/hooks';
 import { DataTable, DataTableSortStatus  } from 'mantine-datatable';
+import { ID, KindAppointment, Role, UserStatus } from '../../components/custom-badges';
 import setNotification from '../../components/errors/feedback-notification';
 import useApplicationRoutes from '../../api/routes';
 import { IUsers } from '../../types/interfaces';
@@ -33,8 +34,7 @@ export function UsersTable({ data ,  fetching } : IProps)
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [show, setShow] = useState(false);
-  const aze : IUsers = {id: 0, login: 'aze', lastName: 'laz', role_id: 0, role: '0', state: '0', password: '', clearPassword: '', lastActive: ''};
-  const[user, setUser] = useState<IUsers>(aze);
+  const[user, setUser] = useState<IUsers|undefined>();
 
   const toggleModal = () => {
       setShow(!show);
@@ -113,6 +113,7 @@ export function UsersTable({ data ,  fetching } : IProps)
           sortable: true },
         { 
           accessor: 'role', 
+          render: (user) => (<Role role={user.role} />),
           filter: (
             <MultiSelect
               label="Roles"
@@ -130,7 +131,10 @@ export function UsersTable({ data ,  fetching } : IProps)
           filtering: selectedRoles.length > 0,
           sortable: true 
         },
-        { accessor: 'state', sortable: true },
+        { 
+          accessor: 'state', 
+          render: (user) => (<UserStatus status={user.state} />),
+          sortable: true },
         { accessor: 'lastActive', sortable: false },
         {
           accessor: 'actions',

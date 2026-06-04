@@ -10,7 +10,7 @@ const useUserCreate = (handleClose: () => void) => {
         initialValues: {
             login: '',
             lastName: '',
-            role: 2,
+            role: -1,
             password: '',
         },
 
