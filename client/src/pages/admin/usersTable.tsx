@@ -10,7 +10,7 @@ import { ID, KindAppointment, Role, UserStatus } from '../../components/custom-b
 import setNotification from '../../components/errors/feedback-notification';
 import useApplicationRoutes from '../../api/routes';
 import { IUsers } from '../../types/interfaces';
-import { ModalAddUser, Mode } from './create';
+import { ModalUserDetails, Mode } from './modalUserDetails';
 
 interface IProps {
   data: IUsers[];
@@ -31,7 +31,12 @@ export function UsersTable({ data ,  fetching } : IProps)
     const roles = new Set(data.map((e) => e.role));
     return [...roles];
   }, [data]);
+  const states = useMemo(() => {
+    const states = new Set(data.map((e) => e.state));
+    return [...states];
+  }, [data]);
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
+  const [selectedStates, setSelectedStates] = useState<string[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [show, setShow] = useState(false);
   const[user, setUser] = useState<IUsers|undefined>();
@@ -45,7 +50,7 @@ export function UsersTable({ data ,  fetching } : IProps)
 
   useEffect(() => {
     setSortedData(
-      initialRecords.filter(({ login, role }: { login: string, role: string }) => {
+      initialRecords.filter(({ login, role, state }: { login: string, role: string, state: string }) => {
         if (
           debouncedQuery !== '' &&
           !`${login}`.toLowerCase().includes(debouncedQuery.trim().toLowerCase()) 
@@ -54,12 +59,15 @@ export function UsersTable({ data ,  fetching } : IProps)
 
         if (selectedRoles.length && !selectedRoles.some((d) => d === role)) 
           return false;
-        
+
+        if (selectedStates.length && !selectedStates.some((d) => d === state)) 
+          return false;
+
         return true;
       })
-      
     );
-  }, [debouncedQuery, selectedRoles]);
+    
+  }, [debouncedQuery, selectedRoles, selectedStates]);
   
   
   useEffect(() => {
@@ -69,7 +77,7 @@ export function UsersTable({ data ,  fetching } : IProps)
 
   return (
     <>
-    <ModalAddUser mode={Mode.Edit} show={show} toggleModal={toggleModal} user={user} />
+    <ModalUserDetails mode={Mode.Edit} show={show} toggleModal={toggleModal} user={user} />
     <DataTable
       backgroundColor={{ dark: '#232b25ff', light: '#f0f7f1ff' }}
       withTableBorder
@@ -134,6 +142,21 @@ export function UsersTable({ data ,  fetching } : IProps)
         { 
           accessor: 'state', 
           render: (user) => (<UserStatus status={user.state} />),
+          filter: (
+            <MultiSelect
+              label="States"
+              description="Show all users with state"
+              data={states}
+              value={selectedStates}
+              placeholder="Search statess..."
+              onChange={setSelectedStates}
+              leftSection={<IconSearch size={16} />}
+              comboboxProps={{ withinPortal: false }}
+              clearable
+              searchable
+            />
+          ),
+          filtering: selectedRoles.length > 0,          
           sortable: true },
         { accessor: 'lastActive', sortable: false },
         {

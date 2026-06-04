@@ -27,8 +27,19 @@ const readAllRoles = async (req: Request, res: Response) => {
     FROM user_roles
     ORDER BY label ASC
   `;
-  await queries.pull(req, res, sqlQuery, [], { id: '', name: 'Users', verb: 'returned' });
+  await queries.pull(req, res, sqlQuery, [], { id: '', name: 'Roles', verb: 'returned' });
 };
+
+const readAllStates = async (req: Request, res: Response) => {
+  const sqlQuery = `
+    SELECT user_states.id value,
+           user_states.label label
+    FROM user_states
+    ORDER BY label ASC
+  `;
+  await queries.pull(req, res, sqlQuery, [], { id: '', name: 'States', verb: 'returned' });
+};
+
 
 const getForConnection = async (req: Request, res: Response) => {
   const sqlQuery = `
@@ -116,6 +127,7 @@ const enable = async (req: Request, res: Response) => {
 export default {
   readAll,
   readAllRoles,
+  readAllStates,
   create,
   getForConnection,
   readOne,

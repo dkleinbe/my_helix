@@ -1,8 +1,8 @@
 import { Button, Grid, Group, Modal, PasswordInput, Select, Text, TextInput } from '@mantine/core';
-import { useUserCreate } from './create.logic';
+import { useModalUserDetails } from './modalUserDetails.logic';
 import ModalOverlay from '../../components/modal-overlay';
 import { JSX, useEffect, useState } from 'react';
-import { IUsers, IRoles } from '../../types/interfaces';
+import { IUsers, IRoles, IStates } from '../../types/interfaces';
 import useApplicationRoutes from '../../api/routes';
 import setNotification from '../../components/errors/feedback-notification';
 import { CreateRows } from '../../components/list-view/rows';
@@ -15,9 +15,10 @@ interface IProps {
   user: IUsers | undefined
 }
 
-const ModalAddUser = ({ mode, show, toggleModal, user }: IProps): JSX.Element => {
-  const { form, handleSave } = useUserCreate(mode, toggleModal);
+const ModalUserDetails = ({ mode, show, toggleModal, user }: IProps): JSX.Element => {
+  const { form, handleSave } = useModalUserDetails(mode, toggleModal);
   const [roles, setRoles] = useState<IRoles[]>([]);
+  const [states, setStates] = useState<IStates[]>([]);
   const routes = useApplicationRoutes();
 
   useEffect(() => {
@@ -39,7 +40,26 @@ const ModalAddUser = ({ mode, show, toggleModal, user }: IProps): JSX.Element =>
                 setNotification(true, `${error.message}: ${error.response.data.message}`);
         }
     };
+    const fetchAllStates = async () => {
+        //setFetching(true);
+        try {
+            const res = await routes.users.getAllStates();
+            /*
+            if (isMounted()) {
+                setUsers(res.data);
+                setFetching(false);
+            }
+            */
+            setStates(res.data);
+
+        } catch (error: any) {
+            if (!error?.response) setNotification(true, 'Network error');
+            else if (error.response.status !== 404)
+                setNotification(true, `${error.message}: ${error.response.data.message}`);
+        }
+    };    
     fetchAllRoles();
+    fetchAllStates();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -79,14 +99,6 @@ const ModalAddUser = ({ mode, show, toggleModal, user }: IProps): JSX.Element =>
                 />
               </Grid.Col>
               <Grid.Col span={6}>
-                <TextInput
-                  label="Last Name"
-                  placeholder="Last Name"
-                  withAsterisk
-                  {...form.getInputProps('lastName')}
-                />
-              </Grid.Col>
-              <Grid.Col span={12}>
                 <Select<number>
                   label="Role"
                   placeholder="Role"
@@ -94,7 +106,7 @@ const ModalAddUser = ({ mode, show, toggleModal, user }: IProps): JSX.Element =>
                   withAsterisk
                   {...form.getInputProps('role')}
                 />
-              </Grid.Col>
+              </Grid.Col> 
               <Grid.Col span={12}>
                 <PasswordInput
                   label="Password"
@@ -103,6 +115,15 @@ const ModalAddUser = ({ mode, show, toggleModal, user }: IProps): JSX.Element =>
                   {...form.getInputProps('password')}
                 />
               </Grid.Col>
+              <Grid.Col span={12}>
+                <Select<number>
+                  label="State"
+                  placeholder="State"
+                  data={states}
+                  withAsterisk
+                  {...form.getInputProps('state')}
+                />
+              </Grid.Col>                           
             </Grid>
             <Group align="right" p="md">
               <Button variant="light" color="red" onClick={toggleModal}>
@@ -123,4 +144,4 @@ const ModalAddUser = ({ mode, show, toggleModal, user }: IProps): JSX.Element =>
   );
 };
 
-export { ModalAddUser, Mode };
+export { ModalUserDetails, Mode };

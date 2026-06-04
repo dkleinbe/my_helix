@@ -42,7 +42,7 @@ const Account = ({ id }: { id: string }): JSX.Element => {
                         <TextInput label="login" defaultValue={user?.login} readOnly />
                     </Grid.Col>
                     <Grid.Col span={6}>
-                        <TextInput label="Last Name" defaultValue={user?.lastName} readOnly />
+                        <TextInput label="Last Name" defaultValue={user?.login} readOnly />
                     </Grid.Col>
                     <Grid.Col span={6}>
                         <TextInput label="Status" defaultValue={user?.state} readOnly />

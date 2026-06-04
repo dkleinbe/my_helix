@@ -98,7 +98,6 @@ export interface IAppointmentDataEdit {
 export interface IUsers {
     id: number;
     login: string;
-    lastName: string;
     role_id: number;
     role: string;
     state: string;
@@ -108,6 +107,11 @@ export interface IUsers {
 }
 
 export interface IRoles {
+    value: number;
+    label: string;
+}
+
+export interface IStates {
     value: number;
     label: string;
 }
