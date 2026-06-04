@@ -10,7 +10,7 @@ import { ID, KindAppointment, Role, UserStatus } from '../../components/custom-b
 import setNotification from '../../components/errors/feedback-notification';
 import useApplicationRoutes from '../../api/routes';
 import { IUsers } from '../../types/interfaces';
-import { ModalAddUser } from './create';
+import { ModalAddUser, Mode } from './create';
 
 interface IProps {
   data: IUsers[];
@@ -69,7 +69,7 @@ export function UsersTable({ data ,  fetching } : IProps)
 
   return (
     <>
-    <ModalAddUser show={show} toggleModal={toggleModal} user={user} />
+    <ModalAddUser mode={Mode.Edit} show={show} toggleModal={toggleModal} user={user} />
     <DataTable
       backgroundColor={{ dark: '#232b25ff', light: '#f0f7f1ff' }}
       withTableBorder

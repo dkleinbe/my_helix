@@ -1,9 +1,10 @@
-import { ModalAddUser } from './create';
+import { ModalAddUser, Mode } from './create';
 import { Badge, Button, Divider, Group, Title } from '@mantine/core';
 import { useUsers } from './users.logic';
 import HelixTableSort from '../../components/list-view';
 import GettingStartedExample from '../../components/table-view'
 import UsersTable from './usersTable'
+import ModalCreateApp from '../appointments/create';
 
 export function ListUsers() {
   const { users, fetching, toggleModal, disableUser, enableUser, show } = useUsers();
@@ -20,7 +21,7 @@ export function ListUsers() {
       </Group>
       <Divider my="lg" />
       <UsersTable data={users} fetching={fetching}/>
-      <ModalAddUser show={show} toggleModal={toggleModal} user={undefined} />
+      <ModalAddUser mode={Mode.Create} show={show} toggleModal={toggleModal} user={undefined} />
     </>
   );
 };

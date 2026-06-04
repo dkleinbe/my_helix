@@ -5,15 +5,18 @@ import { JSX, useEffect, useState } from 'react';
 import { IUsers, IRoles } from '../../types/interfaces';
 import useApplicationRoutes from '../../api/routes';
 import setNotification from '../../components/errors/feedback-notification';
+import { CreateRows } from '../../components/list-view/rows';
 
+enum Mode {Create, Edit};
 interface IProps {
+  mode: Mode;
   show: boolean;
   toggleModal: () => void;
   user: IUsers | undefined
 }
 
-const ModalAddUser = ({ show, toggleModal, user }: IProps): JSX.Element => {
-  const { form, handleClick } = useUserCreate(toggleModal);
+const ModalAddUser = ({ mode, show, toggleModal, user }: IProps): JSX.Element => {
+  const { form, handleSave } = useUserCreate(mode, toggleModal);
   const [roles, setRoles] = useState<IRoles[]>([]);
   const routes = useApplicationRoutes();
 
@@ -107,10 +110,10 @@ const ModalAddUser = ({ show, toggleModal, user }: IProps): JSX.Element => {
               </Button>
               <Button
                 color="green"
-                onClick={handleClick}
+                onClick={handleSave}
                 // type="submit"
               >
-                Add
+                Save
               </Button>
             </Group>
           </form>
@@ -120,4 +123,4 @@ const ModalAddUser = ({ show, toggleModal, user }: IProps): JSX.Element => {
   );
 };
 
-export { ModalAddUser };
+export { ModalAddUser, Mode };
