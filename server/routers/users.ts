@@ -4,6 +4,7 @@ import controller from '../controllers/users';
 import middleware from '../middleware/users';
 
 router.get('/', controller.readAll);
+router.get('/roles', controller.readAllRoles);
 router.get('/connexion', controller.getForConnection);
 router.get('/practitioners', controller.getPractitioners);
 router.get('/:id', controller.readOne);

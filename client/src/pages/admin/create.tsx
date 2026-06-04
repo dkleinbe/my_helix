@@ -1,8 +1,10 @@
 import { Button, Grid, Group, Modal, PasswordInput, Select, Text, TextInput } from '@mantine/core';
 import { useUserCreate } from './create.logic';
 import ModalOverlay from '../../components/modal-overlay';
-import { JSX, useEffect } from 'react';
-import { IUsers } from '../../types/interfaces';
+import { JSX, useEffect, useState } from 'react';
+import { IUsers, IRoles } from '../../types/interfaces';
+import useApplicationRoutes from '../../api/routes';
+import setNotification from '../../components/errors/feedback-notification';
 
 interface IProps {
   show: boolean;
@@ -12,15 +14,40 @@ interface IProps {
 
 const ModalAddUser = ({ show, toggleModal, user }: IProps): JSX.Element => {
   const { form, handleClick } = useUserCreate(toggleModal);
+  const [roles, setRoles] = useState<IRoles[]>([]);
+  const routes = useApplicationRoutes();
+
+  useEffect(() => {
+    const fetchAllRoles = async () => {
+        //setFetching(true);
+        try {
+            const res = await routes.users.getAllRoles();
+            /*
+            if (isMounted()) {
+                setUsers(res.data);
+                setFetching(false);
+            }
+            */
+            setRoles(res.data);
+
+        } catch (error: any) {
+            if (!error?.response) setNotification(true, 'Network error');
+            else if (error.response.status !== 404)
+                setNotification(true, `${error.message}: ${error.response.data.message}`);
+        }
+    };
+    fetchAllRoles();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     form.setValues({
-              name: user.login,
-              lastName: 'tutu',
-              role: '',
+              login: user.login,
+              lastName: user.role,
+              role: user.role_id,
               password: '',
           });
-  }, [user]);
+  }, [user, roles]);
 
   return (
     <Modal.Root opened={show} onClose={toggleModal} padding={12}>
@@ -29,7 +56,7 @@ const ModalAddUser = ({ show, toggleModal, user }: IProps): JSX.Element => {
         <Modal.Header>
           <Modal.Title>
             <Text size="xl" fw={700}>
-              Add User
+              Edit User
             </Text>
           </Modal.Title>
           <Modal.CloseButton />
@@ -39,10 +66,10 @@ const ModalAddUser = ({ show, toggleModal, user }: IProps): JSX.Element => {
             <Grid columns={12}>
               <Grid.Col span={6}>
                 <TextInput
-                  label="Name"
-                  placeholder="Name"
+                  label="Login"
+                  placeholder="Login"
                   withAsterisk
-                  {...form.getInputProps('name')}
+                  {...form.getInputProps('login')}
                 />
               </Grid.Col>
               <Grid.Col span={6}>
@@ -54,14 +81,10 @@ const ModalAddUser = ({ show, toggleModal, user }: IProps): JSX.Element => {
                 />
               </Grid.Col>
               <Grid.Col span={12}>
-                <Select
+                <Select<number>
                   label="Role"
                   placeholder="Role"
-                  data={[
-                    { label: 'Admin', value: 'admin' },
-                    { label: 'Practitioner', value: 'practitioner' },
-                    { label: 'Secretary', value: 'secretary' },
-                  ]}
+                  data={roles}
                   withAsterisk
                   {...form.getInputProps('role')}
                 />

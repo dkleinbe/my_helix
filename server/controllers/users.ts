@@ -5,15 +5,27 @@ import bcrypt from 'bcrypt';
 
 const readAll = async (req: Request, res: Response) => {
   const sqlQuery = `
-      SELECT users.id,
-             login,
-             lastActive,
-             user_roles.label role,
-             user_states.label state
-      FROM users
-        INNER JOIN user_roles ON users.role = user_roles.id
-        INNER JOIN user_states ON users.state = user_states.id
-      ORDER BY login ASC
+    SELECT users.id,
+            login,
+            lastActive,
+            user_roles.id role_id,
+            user_roles.label role,
+            user_states.id state_id,
+            user_states.label state
+    FROM users
+    INNER JOIN user_roles ON users.role = user_roles.id
+    INNER JOIN user_states ON users.state = user_states.id
+    ORDER BY login ASC
+  `;
+  await queries.pull(req, res, sqlQuery, [], { id: '', name: 'Users', verb: 'returned' });
+};
+
+const readAllRoles = async (req: Request, res: Response) => {
+  const sqlQuery = `
+    SELECT user_roles.id value,
+           user_roles.label label
+    FROM user_roles
+    ORDER BY label ASC
   `;
   await queries.pull(req, res, sqlQuery, [], { id: '', name: 'Users', verb: 'returned' });
 };
@@ -103,6 +115,7 @@ const enable = async (req: Request, res: Response) => {
 
 export default {
   readAll,
+  readAllRoles,
   create,
   getForConnection,
   readOne,

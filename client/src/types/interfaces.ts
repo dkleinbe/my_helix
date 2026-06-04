@@ -99,11 +99,17 @@ export interface IUsers {
     id: number;
     login: string;
     lastName: string;
+    role_id: number;
     role: string;
     state: string;
     password: string;
     clearPassword: string;
     lastActive: string;
+}
+
+export interface IRoles {
+    value: number;
+    label: string;
 }
 
 export interface IEvent {

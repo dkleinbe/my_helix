@@ -8,14 +8,14 @@ const useUserCreate = (handleClose: () => void) => {
 
     const form = useForm({
         initialValues: {
-            name: '',
+            login: '',
             lastName: '',
-            role: '',
+            role: 2,
             password: '',
         },
 
         validate: {
-            name: (value) => (value.length < 2 ? 'Name must be at least 2 chars' : null),
+            login: (value) => (value.length < 2 ? 'Name must be at least 2 chars' : null),
             lastName: (value) => (value.length < 2 ? 'Last name must be at least 2 chars' : null),
             role: isNotEmpty('Role is required'),
             password: isNotEmpty('Password is required'),

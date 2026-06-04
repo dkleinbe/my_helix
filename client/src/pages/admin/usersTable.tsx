@@ -33,7 +33,7 @@ export function UsersTable({ data ,  fetching } : IProps)
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [show, setShow] = useState(false);
-  const aze : IUsers = {id: 0, login: 'aze', lastName: 'laz', role: '0', state: '0', password: '', clearPassword: '', lastActive: ''};
+  const aze : IUsers = {id: 0, login: 'aze', lastName: 'laz', role_id: 0, role: '0', state: '0', password: '', clearPassword: '', lastActive: ''};
   const[user, setUser] = useState<IUsers>(aze);
 
   const toggleModal = () => {
@@ -149,6 +149,18 @@ export function UsersTable({ data ,  fetching } : IProps)
               <ActionIcon
                 size="sm"
                 variant="subtle"
+                color="red"
+                onClick={() => {
+                    setUser(user);
+                    toggleModal();
+                  }
+                }
+              >
+                <IconEdit size={16} />
+              </ActionIcon>              
+              <ActionIcon
+                size="sm"
+                variant="subtle"
                 color="blue"
                 onClick={() =>
                   showNotification({
@@ -156,18 +168,6 @@ export function UsersTable({ data ,  fetching } : IProps)
                     message: `You clicked on ${user.id}, a user`,
                     withBorder: true,
                   })
-                }
-              >
-                <IconEdit size={16} />
-              </ActionIcon>
-              <ActionIcon
-                size="sm"
-                variant="subtle"
-                color="red"
-                onClick={() => {
-                    setUser(user);
-                    toggleModal();
-                  }
                 }
               >
                 <IconTrash size={16} />

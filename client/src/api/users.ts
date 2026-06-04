@@ -1,9 +1,9 @@
 import useSecureAPI from '../hooks/use-secure-api';
 
 interface ICreateUser {
-    name: string;
+    login: string;
     lastName: string;
-    role: string;
+    role: number;
     password: string;
 }
 
@@ -27,6 +27,10 @@ const useUsersRoute = () => {
         return await api.get(baseUrl);
     };
 
+    const getAllRoles = async () => {
+        return await api.get(`${baseUrl}/roles`);
+    };
+    
     const getOne = async (id: string) => {
         return await api.get(`${baseUrl}/${id}`);
     };
@@ -40,6 +44,7 @@ const useUsersRoute = () => {
         disable,
         enable,
         getAll,
+        getAllRoles,
         getOne,
         getPractitioners,
     };
