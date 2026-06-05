@@ -10,6 +10,7 @@ const useModalUserDetails = (mode: Mode, handleClose: () => void) => {
 
     const form = useForm({
         initialValues: {
+            id: -1,
             login: '',
             role: -1,
             state: -1,
@@ -40,7 +41,16 @@ const useModalUserDetails = (mode: Mode, handleClose: () => void) => {
             }
         }
         else {
-            console.log(form.values);
+            try {
+                const res = await routes.users.update(form.values);
+                setNotification(false, res.data.message);
+                console.log(form.values);
+                form.reset();
+                handleClose();
+            } catch (error: any) {
+                if (!error?.response) setNotification(true, 'Network error');
+                else setNotification(true, `${error.message}: ${error.response.data.message}`);
+            }
         }
     };
 

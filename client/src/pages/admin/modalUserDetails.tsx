@@ -66,6 +66,7 @@ const ModalUserDetails = ({ mode, show, toggleModal, user }: IProps): JSX.Elemen
   useEffect(() => {
     if (user !== undefined)
       form.setValues({
+                id: user.id,
                 login: user.login,
                 role: user.role_id,
                 state: user.state_id,
@@ -90,6 +91,14 @@ const ModalUserDetails = ({ mode, show, toggleModal, user }: IProps): JSX.Elemen
         <Modal.Body>
           <form>
             <Grid columns={12}>
+              <Grid.Col span={6}>
+                <TextInput
+                  label="ID"
+                  placeholder="ID"
+                  withAsterisk
+                  {...form.getInputProps('id')}
+                />
+              </Grid.Col>              
               <Grid.Col span={6}>
                 <TextInput
                   label="Login"

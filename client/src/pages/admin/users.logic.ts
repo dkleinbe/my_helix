@@ -45,7 +45,7 @@ const useUsers = () => {
         };
         fetchAllUsers();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [refresh]);
 
     const disableUser = async (uid: string) => {
         try {

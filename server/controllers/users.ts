@@ -76,7 +76,12 @@ const readOne = async (req: Request, res: Response) => {
   `;
   await queries.pull(req, res, sqlQuery, [req.params.id], { id: req.params.id as string, name: 'User', verb: 'returned' });
 };
-
+/**
+ * Create new user
+ * 
+ * @param req 
+ * @param res 
+ */
 const create = async (req: Request, res: Response) => {
   //let id = uuid();
   //while (await queries.checkId(id, 'users', 'id')) id = uuid();
@@ -100,6 +105,29 @@ const create = async (req: Request, res: Response) => {
   ];
 
   await queries.push(req, res, sqlQuery, values, { id: 'id', name: 'User', verb: 'created' });
+};
+
+const update = async (req: Request, res: Response) => {
+  //let id = uuid();
+  //while (await queries.checkId(id, 'users', 'id')) id = uuid();
+  const sqlQuery = `
+      UPDATE users SET
+                         login = ?,
+                         role = ?,
+                         state = ?,
+                         password = ?
+                   WHERE id = ?
+  `;
+  const hashedPassword = await bcrypt.hash(req.body.password, 10);
+  const values = [
+    req.body.login,
+    req.body.role,
+    req.body.state,
+    hashedPassword,
+    req.body.id,
+  ];
+
+  await queries.push(req, res, sqlQuery, values, { id: 'id', name: 'User', verb: 'updated' });
 };
 
 const disable = async (req: Request, res: Response) => {
@@ -127,6 +155,7 @@ export default {
   readAllRoles,
   readAllStates,
   create,
+  update,
   getForConnection,
   readOne,
   getPractitioners,

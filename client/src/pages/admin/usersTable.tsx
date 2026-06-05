@@ -39,7 +39,7 @@ export function UsersTable({ data ,  fetching } : IProps)
   const [selectedStates, setSelectedStates] = useState<string[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [show, setShow] = useState(false);
-  const[user, setUser] = useState<IUsers|undefined>();
+  const [user, setUser] = useState<IUsers|undefined>();
 
   const toggleModal = () => {
       setShow(!show);

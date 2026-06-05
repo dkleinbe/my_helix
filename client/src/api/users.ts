@@ -7,12 +7,24 @@ interface ICreateUser {
     password: string;
 }
 
+interface IUpdateUser {
+    id: number;
+    login: string;
+    role: number;
+    state: number;
+    password: string;
+}
+
 const useUsersRoute = () => {
     const api = useSecureAPI();
     const baseUrl = '/users';
 
     const create = async (data: ICreateUser) => {
         return await api.post(`${baseUrl}/add`, data);
+    };
+
+    const update = async (data: IUpdateUser) => {
+        return await api.post(`${baseUrl}/update`, data);
     };
 
     const disable = async (id: string) => {
@@ -45,6 +57,7 @@ const useUsersRoute = () => {
 
     return {
         create,
+        update,
         disable,
         enable,
         getAll,

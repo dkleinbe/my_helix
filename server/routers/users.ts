@@ -12,5 +12,6 @@ router.get('/:id', controller.readOne);
 router.delete('/:id', controller.disable);
 router.put('/:id/enable', controller.enable);
 router.post('/add', middleware.create, controller.create);
+router.post('/update', middleware.update, controller.update);
 
 export default router;
