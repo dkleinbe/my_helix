@@ -14,6 +14,18 @@ const create = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const update = (req: Request, res: Response, next: NextFunction) => {
+  const isValid = validate.userUpdate(req.body);
+  if (!isValid) {
+    logger.fail(req, res, 'Invalid request body');
+    res.status(sc.NOT_ACCEPTABLE).json(validate.userUpdate.errors);
+  } else {
+    logger.success(req, res, 'Valid request body');
+    next();
+  }
+};
+
 export default module.exports = {
   create,
+  update,
 };

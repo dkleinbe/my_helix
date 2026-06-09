@@ -71,8 +71,8 @@ const TableHeader = ({
   if (type === 'users') {
     return (
       <>
-        <Th sorted={sortBy === 'name'} reversed={reversed} onSort={() => callback('name')}>
-          Account
+        <Th sorted={sortBy === 'login'} reversed={reversed} onSort={() => callback('login')}>
+          Login
         </Th>
         <Th sorted={sortBy === 'state'} reversed={reversed} onSort={() => callback('state')}>
           State

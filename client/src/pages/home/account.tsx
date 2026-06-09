@@ -33,16 +33,16 @@ const Account = ({ id }: { id: string }): JSX.Element => {
                 </Center>
                 <Grid columns={12} p="md">
                     <Grid.Col span={6}>
-                        <TextInput label="Account ID" defaultValue={user?.uid?.toUpperCase()} readOnly />
+                        <TextInput label="Account ID" defaultValue={user?.id} readOnly />
                     </Grid.Col>
                     <Grid.Col span={6}>
                         <TextInput label="Role" defaultValue={user?.role} readOnly />
                     </Grid.Col>
                     <Grid.Col span={6}>
-                        <TextInput label="Name" defaultValue={user?.name} readOnly />
+                        <TextInput label="login" defaultValue={user?.login} readOnly />
                     </Grid.Col>
                     <Grid.Col span={6}>
-                        <TextInput label="Last Name" defaultValue={user?.lastName} readOnly />
+                        <TextInput label="Last Name" defaultValue={user?.login} readOnly />
                     </Grid.Col>
                     <Grid.Col span={6}>
                         <TextInput label="Status" defaultValue={user?.state} readOnly />

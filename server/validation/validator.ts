@@ -5,6 +5,7 @@ import schemaAppointmentCreate from './schemas/create-appointment.json';
 import schemaAppointmentUpdate from './schemas/update-appointment.json';
 import schemaAddAppointment from './schemas/add-appointment.json';
 import schemaUserCreate from './schemas/create-user.json';
+import schemaUserUpdate from './schemas/update-user.json';
 import schemaLogin from './schemas/login.json';
 import schemaAccountingCreate from './schemas/create-accounting.json';
 import schemaEventCreate from './schemas/create-event.json';
@@ -21,6 +22,7 @@ export default module.exports = {
   appointmentUpdate: ajv.compile(schemaAppointmentUpdate),
   addAppointment: ajv.compile(schemaAddAppointment),
   userCreate: ajv.compile(schemaUserCreate),
+  userUpdate: ajv.compile(schemaUserUpdate),
   login: ajv.compile(schemaLogin),
   accountingCreate: ajv.compile(schemaAccountingCreate),
 };

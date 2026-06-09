@@ -3,7 +3,9 @@ import { RowData } from './types.ts';
 
 const filterData = (data: RowData[], search: string) => {
   const query = search.toLowerCase().trim();
-  return data.filter((item) => keys(data[0]).some((key) => item[key].toLowerCase().includes(query)));
+  // TODO: Fix that !
+  return data;
+  //return data.filter((item) => keys(data[0]).some((key) => item[key].toLowerCase().includes(query)));
 };
 
 const sortData = (data: RowData[], payload: { sortBy: keyof RowData | null; reversed: boolean; search: string }) => {
@@ -16,10 +18,10 @@ const sortData = (data: RowData[], payload: { sortBy: keyof RowData | null; reve
   return filterData(
     [...data].sort((a, b) => {
       if (payload.reversed) {
-        return b[sortBy].localeCompare(a[sortBy]);
+        return b[sortBy].toString().localeCompare(a[sortBy]);
       }
 
-      return a[sortBy].localeCompare(b[sortBy]);
+      return a[sortBy].toString().localeCompare(b[sortBy]);
     }),
     payload.search
   );

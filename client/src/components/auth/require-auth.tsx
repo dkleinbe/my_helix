@@ -7,9 +7,10 @@ const RequireAuth = ({ allowedRoles }: { allowedRoles: number[] }) => {
     const location = useLocation();
 
     const decoded: any = auth?.accessToken ? jwtDecode(auth.accessToken) : undefined;
+    
     const role = [decoded?.userData.role];
 
-    return role?.find((r: number) => allowedRoles.includes(r)) ? (
+    return (role?.find((r: number) => allowedRoles.includes(r)) !== undefined) ? (
         <Outlet />
     ) : auth?.id ? (
         <Navigate to="/unauthorized" state={{ from: location }} replace />

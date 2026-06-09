@@ -34,8 +34,8 @@ const Login = () => {
       const response = await routes.unsecured.getUsers();
       setUsers(
         response.data.map((user: any) => ({
-          label: `${user.name} ${user.lastName}`,
-          value: user.uid,
+          label: `${user.login} ${user.login}`,
+          value: user.id,
         }))
       );
     } catch (error: any) {

@@ -45,6 +45,7 @@ const HelixTableSort = ({
   const handleSetSorting = (field: string) => {
     setSorting(field as keyof RowData);
   };
+  
   return (
     <>
       <TextInput

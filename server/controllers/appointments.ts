@@ -48,8 +48,8 @@ const getByPatient = async (req: Request, res: Response) => {
              acc.method
       FROM appointments app
                INNER JOIN events e ON app.id = e.appID
-               INNER JOIN users u ON e.calendar = u.uid
-               LEFT JOIN accounting acc ON app.payment = acc.uid
+               INNER JOIN users u ON e.calendar = u.id
+               LEFT JOIN accounting acc ON app.payment = acc.id
       WHERE patientId = ?
       ORDER BY e.start DESC;
   `;

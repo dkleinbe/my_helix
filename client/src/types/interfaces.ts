@@ -96,14 +96,25 @@ export interface IAppointmentDataEdit {
 }
 
 export interface IUsers {
-    uid?: string;
-    name: string;
-    lastName: string;
+    id: number;
+    login: string;
+    role_id: number;
     role: string;
+    state_id: number,
     state: string;
     password: string;
     clearPassword: string;
     lastActive: string;
+}
+
+export interface IRoles {
+    value: number;
+    label: string;
+}
+
+export interface IStates {
+    value: number;
+    label: string;
 }
 
 export interface IEvent {
