@@ -7,9 +7,15 @@ const useUsers = () => {
     const routes = useApplicationRoutes();
     const [show, setShow] = useState(false);
     const toggleModal = () => {
+        if (show)
+            setRefresh(!refresh);
         setShow(!show);
+    };
+
+    const reload = () => {
         setRefresh(!refresh);
     };
+
     const [users, setUsers] = useState<IUsers[]>([]);
     const [refresh, setRefresh] = useState(false);
     const [fetching, setFetching] = useState(false);
@@ -69,7 +75,7 @@ const useUsers = () => {
         }
     };
 
-    return { users, fetching, show, toggleModal, disableUser, enableUser };
+    return { users, fetching, show, toggleModal, reload, disableUser, enableUser };
 };
 
 export { useUsers };

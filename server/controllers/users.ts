@@ -104,7 +104,7 @@ const create = async (req: Request, res: Response) => {
     'first-time',
   ];
 
-  await queries.push(req, res, sqlQuery, values, { id: 'id', name: 'User', verb: 'created' });
+  await queries.push(req, res, sqlQuery, values, { id: req.body.login, name: 'User', verb: 'created' });
 };
 
 const update = async (req: Request, res: Response) => {
@@ -127,7 +127,7 @@ const update = async (req: Request, res: Response) => {
     req.body.id,
   ];
 
-  await queries.push(req, res, sqlQuery, values, { id: 'id', name: 'User', verb: 'updated' });
+  await queries.push(req, res, sqlQuery, values, { id: req.body.login, name: 'User', verb: 'updated' });
 };
 
 const disable = async (req: Request, res: Response) => {

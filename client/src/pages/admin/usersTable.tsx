@@ -15,9 +15,10 @@ import { ModalUserDetails, Mode } from './modalUserDetails';
 interface IProps {
   data: IUsers[];
   fetching: boolean;
+  onAction: () => void;
 }
 
-export function UsersTable({ data ,  fetching } : IProps)
+export function UsersTable({ data ,  fetching, onAction } : IProps)
 {
   const [sortedData, setSortedData] = useState(data);
   const [query, setQuery] = useState('');
@@ -42,8 +43,13 @@ export function UsersTable({ data ,  fetching } : IProps)
   const [user, setUser] = useState<IUsers|undefined>();
 
   const toggleModal = () => {
-      setShow(!show);
+    if (show)
+    {
       setRefresh(!refresh);
+      onAction();
+    }
+    setShow(!show);
+      
   };
 
   const initialRecords = data;
@@ -165,15 +171,7 @@ export function UsersTable({ data ,  fetching } : IProps)
           textAlign: 'right',
           render: (user) => (
             <Group gap={4} justify="right" wrap="nowrap">
-              <ActionIcon
-                size="sm"
-                variant="subtle"
-                color="green"
-                onClick={() => {}}
-              >
-                <IconEye size={16} />
-              </ActionIcon>
-              <ActionIcon
+               <ActionIcon
                 size="sm"
                 variant="subtle"
                 color="red"

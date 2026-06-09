@@ -7,7 +7,7 @@ import UsersTable from './usersTable'
 import ModalCreateApp from '../appointments/create';
 
 export function ListUsers() {
-  const { users, fetching, toggleModal, disableUser, enableUser, show } = useUsers();
+  const { users, fetching, toggleModal, reload, disableUser, enableUser, show } = useUsers();
   return (
     <>
       <Group align="apart">
@@ -20,7 +20,7 @@ export function ListUsers() {
         <Button onClick={toggleModal}>New User</Button>
       </Group>
       <Divider my="lg" />
-      <UsersTable data={users} fetching={fetching}/>
+      <UsersTable data={users} fetching={fetching} onAction={reload} />
       <ModalUserDetails mode={Mode.Create} show={show} toggleModal={toggleModal} user={undefined} />
     </>
   );

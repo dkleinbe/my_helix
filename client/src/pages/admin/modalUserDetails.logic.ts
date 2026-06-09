@@ -9,6 +9,7 @@ const useModalUserDetails = (mode: Mode, handleClose: () => void) => {
     const routes = useApplicationRoutes();
 
     const form = useForm({
+        
         initialValues: {
             id: -1,
             login: '',
@@ -30,7 +31,12 @@ const useModalUserDetails = (mode: Mode, handleClose: () => void) => {
         if ((await form.validate()).hasErrors) return;
         if (mode == Mode.Create) {
             try {
-                const res = await routes.users.create(form.values);
+                const res = await routes.users.create({ 
+                                                        login: form.values.login, 
+                                                        password: form.values.password,
+                                                        role: form.values.role,
+                                                        state: form.values.state,
+                                                    });
                 setNotification(false, res.data.message);
                 console.log(form.values);
                 form.reset();
@@ -42,7 +48,12 @@ const useModalUserDetails = (mode: Mode, handleClose: () => void) => {
         }
         else {
             try {
-                const res = await routes.users.update(form.values);
+                const res = await routes.users.update({ id: form.values.id,
+                                                        login: form.values.login, 
+                                                        password: form.values.password,
+                                                        role: form.values.role,
+                                                        state: form.values.state,
+                                                    });
                 setNotification(false, res.data.message);
                 console.log(form.values);
                 form.reset();
