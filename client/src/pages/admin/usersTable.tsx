@@ -38,14 +38,12 @@ export function UsersTable({ data ,  fetching, onAction } : IProps)
   }, [data]);
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
   const [selectedStates, setSelectedStates] = useState<string[]>([]);
-  const [refresh, setRefresh] = useState(false);
   const [show, setShow] = useState(false);
   const [user, setUser] = useState<IUsers|undefined>();
 
   const toggleModal = () => {
     if (show)
     {
-      setRefresh(!refresh);
       onAction();
     }
     setShow(!show);
@@ -100,10 +98,12 @@ export function UsersTable({ data ,  fetching, onAction } : IProps)
       columns={[
         {
           accessor: 'id',
+          width: 130,
           // 👇 this column has a custom title
           title: '#',
           // 👇 right-align column
           textAlign: 'left',
+          render: (user) => (<ID id={user.id.toString()} />),
         },
         { 
           accessor: 'login', 
@@ -124,7 +124,8 @@ export function UsersTable({ data ,  fetching, onAction } : IProps)
             />
           ),
           filtering: query !== '',
-          sortable: true },
+          sortable: true 
+        },
         { 
           accessor: 'role', 
           render: (user) => (<Role role={user.role} />),
@@ -163,10 +164,15 @@ export function UsersTable({ data ,  fetching, onAction } : IProps)
             />
           ),
           filtering: selectedRoles.length > 0,          
-          sortable: true },
-        { accessor: 'lastActive', sortable: false },
+          sortable: true 
+        },
+        { 
+          accessor: 'lastActive', 
+          sortable: true 
+        },
         {
           accessor: 'actions',
+          width: '0%',
           title: <Box mr={6}>Row actions</Box>,
           textAlign: 'right',
           render: (user) => (

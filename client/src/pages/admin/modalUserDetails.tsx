@@ -92,9 +92,10 @@ const ModalUserDetails = ({ mode, show, toggleModal, user }: IProps): JSX.Elemen
           <form>
             <Grid columns={12}>
               { (mode === Mode.Edit) &&
-                <Grid.Col span={6}>
+                <Grid.Col span={12}>
                   
                   <TextInput
+                    disabled
                     label="ID"
                     placeholder="ID"
                     withAsterisk
@@ -103,7 +104,7 @@ const ModalUserDetails = ({ mode, show, toggleModal, user }: IProps): JSX.Elemen
                   />
                 </Grid.Col>              
               }
-              <Grid.Col span={6}>
+              <Grid.Col span={12}>
                 <TextInput
                   label="Login"
                   placeholder="Login"
@@ -120,15 +121,7 @@ const ModalUserDetails = ({ mode, show, toggleModal, user }: IProps): JSX.Elemen
                   {...form.getInputProps('role')}
                 />
               </Grid.Col> 
-              <Grid.Col span={12}>
-                <PasswordInput
-                  label="Password"
-                  placeholder="Password"
-                  withAsterisk
-                  {...form.getInputProps('password')}
-                />
-              </Grid.Col>
-              <Grid.Col span={12}>
+              <Grid.Col span={6}>
                 <Select<number>
                   label="State"
                   placeholder="State"
@@ -136,7 +129,15 @@ const ModalUserDetails = ({ mode, show, toggleModal, user }: IProps): JSX.Elemen
                   withAsterisk
                   {...form.getInputProps('state')}
                 />
-              </Grid.Col>                           
+              </Grid.Col>      
+              <Grid.Col span={12}>
+                <PasswordInput
+                  label="Password"
+                  placeholder="Password"
+                  withAsterisk={(mode === Mode.Create) ? true : false}
+                  {...form.getInputProps('password')}
+                />
+              </Grid.Col>                                   
             </Grid>
             <Group align="right" p="md">
               <Button variant="light" color="red" onClick={toggleModal}>

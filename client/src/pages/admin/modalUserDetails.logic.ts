@@ -22,7 +22,7 @@ const useModalUserDetails = (mode: Mode, handleClose: () => void) => {
             login: (value) => (value.length < 2 ? 'Name must be at least 2 chars' : null),
             role: isNotEmpty('Role is required'),
             state: isNotEmpty('State is required'),
-            password: isNotEmpty('Password is required'),
+            password: (value) => (mode === Mode.Create && value === "") ? 'Password is required' : null,
         },
     });
 
