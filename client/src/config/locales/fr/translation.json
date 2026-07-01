@@ -1,5 +1,15 @@
 {
-    "admin_panel": "Administration",
-    "user": "Utilisateur",
-    "new_user": "Nouvel utilisateur"
+  "admin_panel": "Administration",
+  "user": "Utilisateur",
+  "new_user": "Nouvel utilisateur",
+  "login": "Login",
+  "employees": "employé",
+  "show-users-whose-login-include-the-specified-text": "Utilisateurs dont le login contient le text spécifié",
+  "search-users": "Recherche utilisateur",
+  "role": "Rôle",
+  "show-all-users-with-role": "Utilisateurs avec le rôle",
+  "state": "Statut",
+  "show-all-users-with-state": "Utilisateurs avec le status",
+  "last-active": "Dernière connexion",
+  "actions": "Actions"
 }

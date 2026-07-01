@@ -11,6 +11,7 @@ import setNotification from '../../components/errors/feedback-notification';
 import useApplicationRoutes from '../../api/routes';
 import { IUsers } from '../../types/interfaces';
 import { ModalUserDetails, Mode } from './modalUserDetails';
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
   data: IUsers[];
@@ -20,6 +21,7 @@ interface IProps {
 
 export function UsersTable({ data ,  fetching, onAction } : IProps)
 {
+  const { t } = useTranslation();
   const [sortedData, setSortedData] = useState(data);
   const [query, setQuery] = useState('');
   const routes = useApplicationRoutes();
@@ -106,13 +108,14 @@ export function UsersTable({ data ,  fetching, onAction } : IProps)
           render: (user) => (<ID id={user.id.toString()} />),
         },
         { 
-          accessor: 'login', 
+          accessor: 'login',
+          title: t('login'), 
           render: ({login}) => `${login}`,
           filter: (
             <TextInput
-              label="Employees"
-              description="Show employees whose names include the specified text"
-              placeholder="Search employees..."
+              label={t('login')}
+              description={t('show-users-whose-login-include-the-specified-text')}
+              placeholder={t('search-users')}
               leftSection={<IconSearch size={16} />}
               rightSection={
                 <ActionIcon size="sm" variant="transparent" c="dimmed" onClick={() => setQuery('')}>
@@ -128,14 +131,15 @@ export function UsersTable({ data ,  fetching, onAction } : IProps)
         },
         { 
           accessor: 'role', 
+          title: t('role'),
           render: (user) => (<Role role={user.role} />),
           filter: (
             <MultiSelect
-              label="Roles"
-              description="Show all users with role"
+              label={t('role')}
+              description={t('show-all-users-with-role')}
               data={roles}
               value={selectedRoles}
-              placeholder="Search roles..."
+              placeholder={t('search-users')}
               onChange={setSelectedRoles}
               leftSection={<IconSearch size={16} />}
               comboboxProps={{ withinPortal: false }}
@@ -148,14 +152,15 @@ export function UsersTable({ data ,  fetching, onAction } : IProps)
         },
         { 
           accessor: 'state', 
+          title: t('state'),
           render: (user) => (<UserStatus status={user.state} />),
           filter: (
             <MultiSelect
-              label="States"
-              description="Show all users with state"
+              label={t('state')}
+              description={t('show-all-users-with-state')}
               data={states}
               value={selectedStates}
-              placeholder="Search statess..."
+              placeholder={t('search-users')}
               onChange={setSelectedStates}
               leftSection={<IconSearch size={16} />}
               comboboxProps={{ withinPortal: false }}
@@ -168,12 +173,13 @@ export function UsersTable({ data ,  fetching, onAction } : IProps)
         },
         { 
           accessor: 'lastActive', 
+          title: t('last-active'),
           sortable: true 
         },
         {
           accessor: 'actions',
           width: '0%',
-          title: <Box mr={6}>Row actions</Box>,
+          title: <Box mr={6}>{t('actions')}</Box>,
           textAlign: 'right',
           render: (user) => (
             <Group gap={4} justify="right" wrap="nowrap">

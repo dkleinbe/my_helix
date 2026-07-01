@@ -1,5 +1,15 @@
 {
-    "admin_panel": "Admin Panel",
-    "user": "User",    
-    "new_user": "New user"
+  "admin_panel": "Admin Panel",
+  "user": "User",
+  "new_user": "New user",
+  "employees": "employee",
+  "login": "Login",
+  "show-users-whose-login-include-the-specified-text": "Show users whose login include the specified text",
+  "search-users": "Search users...",
+  "role": "Role",
+  "show-all-users-with-role": "Show all users with role",
+  "state": "State",
+  "show-all-users-with-state": "Show all users with state",
+  "last-active": "Last Active",
+  "actions": "Actions"
 }
