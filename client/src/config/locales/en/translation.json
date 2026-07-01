@@ -11,5 +11,13 @@
   "state": "State",
   "show-all-users-with-state": "Show all users with state",
   "last-active": "Last Active",
-  "actions": "Actions"
+  "actions": "Actions",
+  "id": "ID",
+  "password": "Password",
+  "cancel": "Cancel",
+  "save": "Save",
+  "name-must-be-at-least-2-chars": "Login must be at least 2 chars",
+  "role-is-required": "Role is required",
+  "state-is-required": "State is required",
+  "password-is-required": "Password is required"
 }

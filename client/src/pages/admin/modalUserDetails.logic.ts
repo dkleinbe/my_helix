@@ -4,8 +4,10 @@ import setNotification from '../../components/errors/feedback-notification';
 import { IUsers } from '../../types/interfaces';
 import { Mode } from './modalUserDetails'
 import { create, fromPairs } from 'lodash';
+import { useTranslation } from 'react-i18next';
 
 const useModalUserDetails = (mode: Mode, handleClose: () => void) => {
+    const { t } = useTranslation();
     const routes = useApplicationRoutes();
 
     const form = useForm({
@@ -19,10 +21,10 @@ const useModalUserDetails = (mode: Mode, handleClose: () => void) => {
         },
 
         validate: {
-            login: (value) => (value.length < 2 ? 'Name must be at least 2 chars' : null),
-            role: isNotEmpty('Role is required'),
-            state: isNotEmpty('State is required'),
-            password: (value) => (mode === Mode.Create && value === "") ? 'Password is required' : null,
+            login: (value) => (value.length < 2 ? t('name-must-be-at-least-2-chars') : null),
+            role: (value) => (value === -1) ? t('role-is-required') : null,
+            state: (value) => (value === -1) ? t('state-is-required') : null,
+            password: (value) => (mode === Mode.Create && value === "") ? t('password-is-required') : null,
         },
     });
 

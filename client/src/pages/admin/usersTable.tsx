@@ -102,7 +102,7 @@ export function UsersTable({ data ,  fetching, onAction } : IProps)
           accessor: 'id',
           width: 130,
           // 👇 this column has a custom title
-          title: '#',
+          title: t('id'),
           // 👇 right-align column
           textAlign: 'left',
           render: (user) => (<ID id={user.id.toString()} />),
