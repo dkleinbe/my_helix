@@ -20,8 +20,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import setNotification from '../../components/errors/feedback-notification';
 import logo from '../../assets/logo.png';
 import useApplicationRoutes from '../../api/routes';
+import { useTranslation } from 'react-i18next';
 
 const Login = () => {
+  const { t } = useTranslation();
   const routes = useApplicationRoutes();
   const { setAuth, persist, setPersist } = useAuth();
   const navigate = useNavigate();
@@ -63,8 +65,8 @@ const Login = () => {
       password: '',
     },
     validate: {
-      id: isNotEmpty('Account is required'), // validate onBlur
-      password: isNotEmpty('Password is required'),
+      id: isNotEmpty(t('account-is-required')), // validate onBlur
+      password: isNotEmpty(t('password-is-required')),
     },
   });
 
@@ -97,25 +99,25 @@ const Login = () => {
       <Center>
         <Image src={logo} alt="Helix" fallbackSrc="https://placehold.co/200x200?text=Logo" width={200} height="auto" />
       </Center>
-      <Title ta="center">Welcome to Helix</Title>
+      <Title ta="center">{t('welcome-to-helix')}</Title>
 
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
         <form onSubmit={handleSubmit}>
           <Select
-            label="Select your Account"
-            placeholder="Account"
+            label={t('select-your-account')}
+            placeholder={t('account')}
             withAsterisk
             {...form.getInputProps('id')}
             leftSection={<IconUserSearch size="1rem" />}
             data={users}
             searchable
-            nothingFoundMessage="No Account found, contact administrator"
+            nothingFoundMessage={t('no-account-found-contact-administrator')}
             rightSection={<IconSelector size="1rem" />}
             allowDeselect
           />
           <PasswordInput
-            label="Enter your Password"
-            placeholder="Password"
+            label={t('enter-your-password')}
+            placeholder={t('password')}
             withAsterisk
             mt="md"
             rightSection={<IconLock size="1rem" />}
@@ -123,18 +125,18 @@ const Login = () => {
           />
           <Group align="left" mt="md">
             <Checkbox
-              label="Stay logged in"
+              label={t('stay-logged-in')}
               onChange={(e) => {
                 setPersist(e.currentTarget.checked);
               }}
             />
           </Group>
           <Button fullWidth mt="xl" type="submit" loading={loading}>
-            {loading ? '' : 'Sign in'}
+            {loading ? '' : t('sign-in')}
           </Button>
           <Group align="center" mt="lg">
             <Anchor component="a" size="sm" href="mailto:helix@xavier2p.fr">
-              Contact administrator
+              {t('contact-administrator')}
             </Anchor>
           </Group>
         </form>

@@ -19,5 +19,15 @@
   "name-must-be-at-least-2-chars": "Le login doit contenir au moins 2 caractères",
   "role-is-required": "Le role est requis",
   "state-is-required": "Le statut est requis",
-  "password-is-required": "Mot de passe requis"
+  "password-is-required": "Mot de passe requis",
+  "welcome-to-helix": "Bienvenue sur Helix",
+  "edit-user": "Edition Utilisateur",
+  "select-your-account": "Sélectionner votre compte",
+  "account": "Compte",
+  "no-account-found-contact-administrator": "Pas de compte trouvé, contacter l'administrateur",
+  "enter-your-password": "Saisissez votre mot de passe",
+  "stay-logged-in": "Restez connecté",
+  "sign-in": "Connexion",
+  "contact-administrator": "Contacter l'administrateur",
+  "account-is-required": "Le compte est requis"
 }

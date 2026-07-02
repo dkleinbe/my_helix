@@ -19,5 +19,15 @@
   "name-must-be-at-least-2-chars": "Login must be at least 2 chars",
   "role-is-required": "Role is required",
   "state-is-required": "State is required",
-  "password-is-required": "Password is required"
+  "password-is-required": "Password is required",
+  "welcome-to-helix": "Welcome to Helix",
+  "edit-user": "Edit User",
+  "select-your-account": "Select your Account",
+  "account": "Account",
+  "no-account-found-contact-administrator": "No Account found, contact administrator",
+  "enter-your-password": "Enter your Password",
+  "stay-logged-in": "Stay logged in",
+  "sign-in": "Sign in",
+  "contact-administrator": "Contact administrator",
+  "account-is-required": "Account is required"
 }

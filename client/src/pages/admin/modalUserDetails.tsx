@@ -85,7 +85,7 @@ const ModalUserDetails = ({ mode, show, toggleModal, user }: IProps): JSX.Elemen
         <Modal.Header>
           <Modal.Title>
             <Text size="xl" fw={700}>
-              Edit User
+              {t('edit-user')}
             </Text>
           </Modal.Title>
           <Modal.CloseButton />
