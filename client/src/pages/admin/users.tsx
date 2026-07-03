@@ -5,19 +5,21 @@ import HelixTableSort from '../../components/list-view';
 import GettingStartedExample from '../../components/table-view'
 import UsersTable from './usersTable'
 import ModalCreateApp from '../appointments/create';
+import { useTranslation } from 'react-i18next';
 
 export function ListUsers() {
+  const { t } = useTranslation();
   const { users, fetching, toggleModal, reload, disableUser, enableUser, show } = useUsers();
   return (
     <>
       <Group align="apart">
         <Title order={2}>
-          Users{' '}
+          {t('user')}{' '}
           <Badge size="lg" radius="lg" variant="filled">
             {users.length}
           </Badge>
         </Title>
-        <Button onClick={toggleModal}>New User</Button>
+        <Button onClick={toggleModal}>{t('new_user')}</Button>
       </Group>
       <Divider my="lg" />
       <UsersTable data={users} fetching={fetching} onAction={reload} />

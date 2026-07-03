@@ -6,6 +6,7 @@ import { IUsers, IRoles, IStates } from '../../types/interfaces';
 import useApplicationRoutes from '../../api/routes';
 import setNotification from '../../components/errors/feedback-notification';
 import { CreateRows } from '../../components/list-view/rows';
+import { useTranslation } from 'react-i18next';
 
 enum Mode {Create, Edit};
 interface IProps {
@@ -16,6 +17,7 @@ interface IProps {
 }
 
 const ModalUserDetails = ({ mode, show, toggleModal, user }: IProps): JSX.Element => {
+  const { t } = useTranslation();
   const { form, handleSave } = useModalUserDetails(mode, toggleModal);
   const [roles, setRoles] = useState<IRoles[]>([]);
   const [states, setStates] = useState<IStates[]>([]);
@@ -83,7 +85,7 @@ const ModalUserDetails = ({ mode, show, toggleModal, user }: IProps): JSX.Elemen
         <Modal.Header>
           <Modal.Title>
             <Text size="xl" fw={700}>
-              Edit User
+              {t('edit-user')}
             </Text>
           </Modal.Title>
           <Modal.CloseButton />
@@ -96,8 +98,8 @@ const ModalUserDetails = ({ mode, show, toggleModal, user }: IProps): JSX.Elemen
                   
                   <TextInput
                     disabled
-                    label="ID"
-                    placeholder="ID"
+                    label={t('id')}
+                    placeholder={t('id')}
                     withAsterisk
                     {...form.getInputProps('id')}
                 
@@ -106,16 +108,16 @@ const ModalUserDetails = ({ mode, show, toggleModal, user }: IProps): JSX.Elemen
               }
               <Grid.Col span={12}>
                 <TextInput
-                  label="Login"
-                  placeholder="Login"
+                  label={t('login')}
+                  placeholder={t('login')}
                   withAsterisk
                   {...form.getInputProps('login')}
                 />
               </Grid.Col>
               <Grid.Col span={6}>
                 <Select<number>
-                  label="Role"
-                  placeholder="Role"
+                  label={t('role')}
+                  placeholder={t('role')}
                   data={roles}
                   withAsterisk
                   {...form.getInputProps('role')}
@@ -123,8 +125,8 @@ const ModalUserDetails = ({ mode, show, toggleModal, user }: IProps): JSX.Elemen
               </Grid.Col> 
               <Grid.Col span={6}>
                 <Select<number>
-                  label="State"
-                  placeholder="State"
+                  label={t('state')}
+                  placeholder={t('state')}
                   data={states}
                   withAsterisk
                   {...form.getInputProps('state')}
@@ -132,8 +134,8 @@ const ModalUserDetails = ({ mode, show, toggleModal, user }: IProps): JSX.Elemen
               </Grid.Col>      
               <Grid.Col span={12}>
                 <PasswordInput
-                  label="Password"
-                  placeholder="Password"
+                  label={t('password')}
+                  placeholder={t('password')}
                   withAsterisk={(mode === Mode.Create) ? true : false}
                   {...form.getInputProps('password')}
                 />
@@ -141,14 +143,14 @@ const ModalUserDetails = ({ mode, show, toggleModal, user }: IProps): JSX.Elemen
             </Grid>
             <Group align="right" p="md">
               <Button variant="light" color="red" onClick={toggleModal}>
-                Cancel
+                {t('cancel')}
               </Button>
               <Button
                 color="green"
                 onClick={handleSave}
                 // type="submit"
               >
-                Save
+                {t('save')}
               </Button>
             </Group>
           </form>
