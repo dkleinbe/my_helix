@@ -6,9 +6,11 @@
   "private": true,
   "scripts": {
     "build": "npx tsc",
+    "rebuild": "npx tsc --build --force",
     "start": "node build/server.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q build/server.js\"",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "copy_data": "mkdir -p build/data/database/migrations && cp database/scripts/*.sql build/data/database/migrations",
     "clean": "rm -rf build"
   },
   "author": {
@@ -24,6 +26,7 @@
     "better-sqlite3": "^12.10.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
+    "date-fns": "^4.4.0",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "express-rate-limit": "^8.5.1",
@@ -35,10 +38,14 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/mysql": "^2.15.27",
     "@types/node": "^25.7.0",
-    "concurrently": "^9.2.1"
+    "concurrently": "^9.2.1",
+    "cpy-cli": "^7.0.0"
   }
 }

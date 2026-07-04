@@ -43,7 +43,8 @@ const addAppointment = async (req: Request, res: Response, next: NextFunction) =
                 next();
             }
         } catch (err) {
-            logger.fail(req, res, err);
+            if (err instanceof Error)
+                logger.fail(req, res, err.message);
             res.status(sc.METHOD_FAILURE).json({ message: 'Method fails' });
         }
         // db.query(sqlQuery, [...values, patientId], (err: any, data: any) => {

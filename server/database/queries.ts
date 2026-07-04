@@ -19,10 +19,11 @@ const checkId = async (id: string, table: string, parameter: string): Promise<bo
     
     const select = db.prepare(sqlQuery);
     try {
-      const rows = select.all(values);
+      const rows = select.all(values) as { count: number }[];
       resolve(rows[0].count !== 0);
     } catch (error) {
-      log.message(error);
+      if (error instanceof Error) 
+        log.message(error.message);
       reject(error);
     }
 
@@ -49,7 +50,8 @@ const push = async (req: Request, res: Response, sqlQuery: string, values: any[]
       res.status(sc.OK).json({ id: meta.id, message: `${meta.name} ${meta.id} ${meta.verb ?? 'pushed'}` });
     }
   } catch (err) {
-    log.message(err);
+    if (err instanceof Error) 
+      log.message(err.message);
     res.status(sc.BAD_REQUEST).json({ message: 'Bad Request' });
   }
   // db.query(sqlQuery, values, (err: any, data: any) => {
@@ -78,7 +80,8 @@ const pull = async (req: Request, res: Response, sqlQuery: string, values: any[]
       res.status(sc.OK).json(rows);
     }
   } catch (err) {
-    log.message(err);
+    if (err instanceof Error)
+      log.message(err.message);
     res.status(sc.BAD_REQUEST).json({ message: 'Bad request' });
   }
   // db.query(sqlQuery, values, (err: any, data: any) => {

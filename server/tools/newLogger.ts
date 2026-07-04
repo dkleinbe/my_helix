@@ -17,9 +17,12 @@ class LoggerBuilder {
 
     this.storage.run({ message: 'Request Completed' }, () => {
       res.on('finish', () => {
-        const { message } = this.storage.getStore();
+        const message = this.storage.getStore();
         const level = res.statusCode < 400 ? 'INF' : 'ERR';
-        this.log(level, req.method, req.originalUrl, res.statusCode, message);
+        if (message)
+          this.log(level, req.method, req.originalUrl, res.statusCode, message.message);
+        else
+          this.log(level, req.method, req.originalUrl, res.statusCode, 'no message');
       });
 
       res.on('error', (err) => {

@@ -93,4 +93,15 @@ const UserStatus = ({ status }: { status: string }): JSX.Element => {
     );
 };
 
-export { ID, KindAppointment, PaymentMethod, Sex, StateAppointment, Role, UserStatus };
+const ContactStatus = UserStatus;
+
+export { 
+    ID, 
+    KindAppointment, 
+    PaymentMethod, 
+    Sex, 
+    StateAppointment, 
+    Role, 
+    UserStatus, 
+    ContactStatus 
+};

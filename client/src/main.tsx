@@ -1,3 +1,4 @@
+
 import { createRoot } from 'react-dom/client';
 import { disableReactDevTools } from '@fvilers/disable-react-devtools';
 import Helix from './helix';

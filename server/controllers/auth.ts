@@ -14,7 +14,7 @@ const queryAuth = async (query: string, values: any, req: Request): Promise<IUse
     return new Promise((resolve, reject) => {
         const select = db.prepare(query);
         try {
-            const rows = select.all(values);
+            const rows: IUser[] = select.all(values) as IUser[];
             resolve(rows[0]);
         } catch (error) {
             reject(error);
@@ -69,8 +69,10 @@ const login = async (req: Request, res: Response) => {
         const rows = select.run(values);
         logger.success(req, res, 'Refresh token added to database');
     } catch (error) {
-        res.status(sc.METHOD_FAILURE).json({ message: error.message });
-        return logger.fail(req, res, error);
+        if (error instanceof Error) {
+            res.status(sc.METHOD_FAILURE).json({ message: error.message });
+            return logger.fail(req, res, error.message);
+        }
     }
     // db.query(sqlQuery, values, (err: any, data: any) => {
     //     if (err) {
@@ -163,8 +165,10 @@ const logout = async (req: Request, res: Response) => {
         const rows = select.run(values);
         logger.success(req, res, 'Refresh token added to database');
     } catch (error) {
-        res.status(sc.METHOD_FAILURE).json({ message: error.message });
-        return logger.fail(req, res, error);
+        if (error instanceof Error) {
+            res.status(sc.METHOD_FAILURE).json({ message: error.message });
+            return logger.fail(req, res, error.message);
+        }
     }    
     // db.query(sqlQuery, values, (err: any, data: any) => {
     //     if (err) {

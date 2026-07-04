@@ -6,7 +6,10 @@
         "outDir": "./build",
         "resolveJsonModule": true,
         "skipLibCheck": true,
-        "strict": false,
-        "target": "es6"
+        "strict": true,
+        "target": "es6",
+        "paths": {
+          "@/*": ["./*"]
+        }
     }
 }

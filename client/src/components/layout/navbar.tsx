@@ -30,6 +30,7 @@ import { useNavigate } from 'react-router-dom';
 import useLogout from '../../hooks/use-logout.ts';
 import logo from '../../assets/logo.png';
 import packageJson from '../../../package.json';
+import { useTranslation } from 'react-i18next';
 
 interface ILink {
   label: string;
@@ -39,26 +40,45 @@ interface ILink {
   desc: string;
 }
 
-const links: ILink[] = [
-  { label: 'Patients', link: '/patients', icon: IconUsersGroup, color: 'yellow', desc: 'Gérer les patients' },
-  {
-    label: 'Rendez-vous',
-    link: '/appointments',
-    icon: IconClipboardText,
-    color: 'orange',
-    desc: 'Voir les rendez-vous',
-  },
-  {
-    label: 'Comptabilité',
-    link: '/accounting',
-    icon: IconCurrencyBitcoin,
-    color: 'teal',
-    desc: 'Gérer la comptabilité',
-  },
-  { label: 'Calendrier', link: '/calendar', icon: IconCalendarWeek, color: 'blue', desc: 'Gérer le calendrier' },
-];
+function links_(): ILink[] {
+  const { t } = useTranslation();
+  const aze: ILink[] =
+        [
+          { 
+            label: t('contacts'), 
+            link: '/contacts', 
+            icon: IconUsersGroup, 
+            color: 'yellow', 
+            desc: t('manage_contacts') 
+          },  
+          { 
+            label: 'Patients', 
+            link: '/patients', 
+            icon: IconUsersGroup, 
+            color: 'yellow', 
+            desc: 'Gérer les patients' 
+          },
+          {
+            label: 'Rendez-vous',
+            link: '/appointments',
+            icon: IconClipboardText,
+            color: 'orange',
+            desc: 'Voir les rendez-vous',
+          },
+          {
+            label: 'Comptabilité',
+            link: '/accounting',
+            icon: IconCurrencyBitcoin,
+            color: 'teal',
+            desc: 'Gérer la comptabilité',
+          },
+          { label: 'Calendrier', link: '/calendar', icon: IconCalendarWeek, color: 'blue', desc: 'Gérer le calendrier' },
+        ];
+  return aze;
+}
 
 const MenuItem = (item: ILink) => {
+
   const { label, link, icon: Icon, color, desc } = item;
   const navigate = useNavigate();
 
@@ -85,6 +105,7 @@ const MenuItem = (item: ILink) => {
 const HelixNavbar = () => {
   const logout = useLogout();
   const navigate = useNavigate();
+  const links = links_();
   return (
     <>
       <AppShell.Section>

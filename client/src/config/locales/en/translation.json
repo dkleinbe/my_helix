@@ -29,5 +29,8 @@
   "stay-logged-in": "Stay logged in",
   "sign-in": "Sign in",
   "contact-administrator": "Contact administrator",
-  "account-is-required": "Account is required"
+  "account-is-required": "Account is required",
+  "contacts": "Contacts",
+  "manage_contacts": "Manage contacts",
+  "name": "First name"
 }

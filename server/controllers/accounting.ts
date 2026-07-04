@@ -49,7 +49,7 @@ const getSum = async (req: Request, res: Response) => {
   `;
   const values = [req.params.start, req.params.end];
   const select = db.prepare(sqlQuery);
-  const rows = select.all(values);
+  const rows = select.all(values) as { checks: string, cards: string, cashs: string}[];
   log.message('rows: '+ rows );
   const sum = rows[0].checks + rows[0].cards + rows[0].cashs;
   log.message('Returned transaction sum');

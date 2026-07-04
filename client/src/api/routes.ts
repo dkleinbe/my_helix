@@ -4,6 +4,8 @@ import { useEventsRoute } from './events';
 import { usePatientsRoute } from './patients';
 import { useUnsecuredRoute } from './unsecured';
 import { useUsersRoute } from './users';
+import { useContactsRoute } from './contacts';
+
 
 const useApplicationRoutes = () => {
     return {
@@ -13,6 +15,7 @@ const useApplicationRoutes = () => {
         patients: usePatientsRoute(),
         unsecured: useUnsecuredRoute(),
         users: useUsersRoute(),
+        contacts: useContactsRoute(),
     };
 };
 

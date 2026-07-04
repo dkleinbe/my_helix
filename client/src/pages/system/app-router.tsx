@@ -10,6 +10,7 @@ import Accounting from '../accounting';
 import Appointment from '../appointment';
 import Appointments from '../appointments';
 import Home from '../home';
+import Contacts from '../contacts'
 import Patient from '../patient';
 import Patients from '../patients';
 // Errors
@@ -34,6 +35,9 @@ const AppRouter = () => {
         <Route element={<PersistentLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN, ROLES.PRACTITIONER, ROLES.SECRETARY]} />}>
             <Route path="/" element={<Home />} />
+            <Route path='contacts'>
+              <Route index element={<Contacts />} />
+            </Route>
             <Route path="patients">
               <Route index element={<Patients add={false} />} />
               <Route path="add" element={<Patients add={true} />} />

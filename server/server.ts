@@ -8,10 +8,13 @@ import log from './tools/newLogger';
 import path from 'path';
 import sc from './tools/status-codes';
 import server from './routers/api';
+import { setupDatabase } from './database/config'
+
 // import rateLimit from 'express-rate-limit';
 
 require('dotenv').config();
 
+logger.info(`Launching server...`);
 // Config
 const api: Express = express();
 const port = 3001;
@@ -56,9 +59,13 @@ api.all('*aze', (req: Request, res: Response) => {
 // Errors
 api.use(errorHandler);
 
+// Database migration, do it before starting server
+//createBundle('./build/database/migrations');
+//const bundle = readBundle('./build/database/migrations/bundle.json')
 
-
-// Start
-api.listen(port, () => {
-  logger.info(`Server listening on port ${port}`);
-});
+setupDatabase(process.env.DB_PATH + '/migrations/').then(() => {
+  // Start
+  api.listen(port, () => {
+    logger.info(`Server listening on port ${port}`);
+  });
+})

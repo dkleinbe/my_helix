@@ -5,16 +5,16 @@ class Auth {
   private scopes: string[];
 
   constructor() {
-    this.middleware = this.middleware.bind(this);
+    //this.middleware = this.middleware.bind(this);
     this.scopes = [];
   }
 
   getScopes() {
     return this.scopes;
   }
-
+  /* 
   async middleware(req, res, next) {
- /*   
+   
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       log.message('Authorization header is missing / not in Bearer scheme');
@@ -42,9 +42,10 @@ class Auth {
       log.message('Insufficient scope');
       return res.status(403).json({ error: 'Insufficient scope' });
     }
-*/
+
     return next();
   }
+  */
 }
 
 export default new Auth();

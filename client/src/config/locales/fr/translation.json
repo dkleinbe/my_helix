@@ -29,5 +29,8 @@
   "stay-logged-in": "Restez connecté",
   "sign-in": "Connexion",
   "contact-administrator": "Contacter l'administrateur",
-  "account-is-required": "Le compte est requis"
+  "account-is-required": "Le compte est requis",
+  "contacts": "Contacts",
+  "manage_contacts": "Gérer les contacts",
+  "name": "Prénom"
 }
