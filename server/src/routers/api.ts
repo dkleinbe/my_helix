@@ -7,6 +7,7 @@ import events from './events';
 import patients from './patients';
 import unsecured from './unsecured';
 import users from './users';
+import contacts from './contacts';
 import logger from '../tools/logger';
 import sc from '../tools/status-codes';
 
@@ -26,6 +27,7 @@ router.use(auth.verifyToken);
 router.use('/patients', patients);
 router.use('/appointments', appointments);
 router.use('/users', users);
+router.use('/contacts', contacts);
 router.use('/accounting', accounting);
 router.use('/events', events);
 

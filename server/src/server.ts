@@ -26,8 +26,8 @@ const port = 3001;
 api.use(cookieParser());
 api.set('trust proxy', 1);
 api.use((req, res, next) => {
-  console.log('Cookie Header:', req.headers.cookie || '(empty)');
-  console.log('res.cookies:', req.cookies || '(empty)');
+  //console.log('Cookie Header:', req.headers.cookie || '(empty)');
+  //console.log('res.cookies:', req.cookies || '(empty)');
   next();
 });
 

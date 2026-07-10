@@ -1,0 +1,43 @@
+{
+    "type": "object",
+    "properties": {
+        "firstName": {
+            "type": "string"
+        },
+        "lastName": {
+            "type": "string"
+        },
+        "birthDate": {
+            "type": "string"
+        },
+        "sex": {
+            "type": "string"
+        },
+        "email": {
+            "type": "string"
+        },     
+        "phone": {
+            "type": "string"
+        },
+        "address": {
+            "type": "string"
+        },
+        "city": {
+            "type": "string"
+        },
+        "job": {
+            "type": "string"
+        }                  
+    },
+    "required": [
+        "firstName",
+        "lastName",
+        "birthDate",
+        "sex",
+        "phone",
+        "email",
+        "address",
+        "city"
+    ],
+    "additionalProperties": false
+}
