@@ -1,7 +1,7 @@
 import { Response, Request, NextFunction } from 'express';
-import validate from '../validation/validator';
-import logger from '../tools/logger';
-import sc from '../tools/status-codes';
+import validate from '../validation/validator.js';
+import logger from '../tools/logger.js';
+import sc from '../tools/status-codes.js';
 
 const create = (req: Request, res: Response, next: NextFunction) => {
     const isValid = validate.patientCreate(req.body);
@@ -25,7 +25,7 @@ const update = (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-export default module.exports = {
+export default  {
     update,
     create,
 };

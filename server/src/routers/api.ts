@@ -1,15 +1,15 @@
 import { Router, Request, Response } from 'express';
-import accounting from './accounting';
-import appointments from './appointments';
-import auth from '../middleware/auth';
-import authORoute from './auth';
-import events from './events';
-import patients from './patients';
-import unsecured from './unsecured';
-import users from './users';
-import contacts from './contacts';
-import logger from '../tools/logger';
-import sc from '../tools/status-codes';
+import accounting from './accounting.js';
+import appointments from './appointments.js';
+import auth from '../middleware/auth.js';
+import authORoute from './auth.js';
+import events from './events.js';
+import patients from './patients.js';
+import unsecured from './unsecured.js';
+import users from './users.js';
+import contacts from './contacts.js';
+import logger from '../tools/logger.js';
+import sc from '../tools/status-codes.js';
 
 const router: Router = Router();
 

@@ -1,13 +1,13 @@
 
-import logger from '../tools/logger';
+import logger from '../tools/logger.js';
 import fs from 'node:fs';
 import sqlite3 from 'better-sqlite3'; 
 import type { Database } from 'better-sqlite3'
-import { createBundle, readBundle } from './migrations/bundler'
-import { runBundle } from './migrations/runner';
+import { createBundle, readBundle } from './migrations/bundler.js'
+import { runBundle } from './migrations/runner.js';
+import dotenv from 'dotenv'
 
-
-require('dotenv').config();
+dotenv.config();
 
 
 export async function setupDatabase(migrationDir: string) {

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import db from '../database/config';
-import sc from '../tools/status-codes';
-import log from '../tools/newLogger';
+import db from '../database/config.js';
+import sc from '../tools/status-codes.js';
+import log from '../tools/newLogger.js';
 
 interface IId {
   id: string;
@@ -98,7 +98,7 @@ const pull = async (req: Request, res: Response, sqlQuery: string, values: any[]
   // });
 };
 
-export default module.exports = {
+export default {
   checkId,
   push,
   pull,

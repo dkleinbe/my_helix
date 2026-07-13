@@ -1,13 +1,14 @@
 import { Response, Request } from 'express';
-import db from '../database/config';
-import logger from '../tools/logger';
-import sc from '../tools/status-codes';
+import db from '../database/config.js';
+import logger from '../tools/logger.js';
+import sc from '../tools/status-codes.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { IUser } from '../tools/interfaces';
-import role from '../config/roles';
+import { IUser } from '../tools/interfaces.js';
+import role from '../config/roles.js';
 import moment from 'moment';
-require('dotenv').config();
+import dotenv from 'dotenv'
+dotenv.config()
 
 const queryAuth = async (query: string, values: any, req: Request): Promise<IUser> => {
 
@@ -182,7 +183,7 @@ const logout = async (req: Request, res: Response) => {
     logger.success(req, res, `User ${user.id} successfully logged out`);
 };
 
-export default module.exports = {
+export default  {
     login,
     refreshToken,
     logout,

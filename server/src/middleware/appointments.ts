@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
-import validate from '../validation/validator';
-import logger from '../tools/logger';
-import log from '../tools/newLogger';
-import sc from '../tools/status-codes';
+import validate from '../validation/validator.js';
+import logger from '../tools/logger.js';
+import log from '../tools/newLogger.js';
+import sc from '../tools/status-codes.js';
 
 const create = async (req: Request, res: Response, next: NextFunction) => {
   const isValid = validate.appointmentCreate(req.body);

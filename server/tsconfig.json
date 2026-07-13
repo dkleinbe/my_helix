@@ -3,13 +3,14 @@
         
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
-        "module": "commonjs",
+        "module": "nodenext",
         "rootDir": "./src",
         "outDir": "./build",
+        "moduleResolution": "nodenext",
         "resolveJsonModule": true,
         "skipLibCheck": true,
         "strict": true,
-        "target": "es6",
+        "target": "es2018",
         "paths": {
           "@/*": ["./*"]
         }

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import queries from '../database/queries';
+import queries from '../database/queries.js';
 import bcrypt from 'bcrypt';
 
 const readAll = async (req: Request, res: Response) => {

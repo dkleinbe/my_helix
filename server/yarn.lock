@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@logtape/logtape@^2.2.4":
+  version "2.2.4"
+  resolved "https://registry.npmjs.org/@logtape/logtape/-/logtape-2.2.4.tgz"
+  integrity sha512-2rALzv9m4ibE5FyB8/FMm5MPMMlK7ujgy3ufricVKIxj6e7SZbw4w6J16/fRAsXgdDlOXPUA0aa6XoEQvdlKxw==
+
 "@logto/client@^3.1.8":
   version "3.1.8"
   resolved "https://registry.npmjs.org/@logto/client/-/client-3.1.8.tgz"

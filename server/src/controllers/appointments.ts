@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import moment from 'moment';
-import queries from '../database/queries';
+import queries from '../database/queries.js';
 
 const readAll = async (req: Request, res: Response) => {
   const sqlQuery = `
@@ -61,7 +61,7 @@ const getByPatient = async (req: Request, res: Response) => {
   });
 };
 
-export default module.exports = {
+export default  {
   readAll,
   getByPatient,
 };

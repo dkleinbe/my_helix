@@ -1,6 +1,7 @@
 {
   "name": "server",
   "version": "2.0.0",
+  "type": "module",
   "description": "The server part of the Helix Project",
   "main": "server.ts",
   "private": true,
@@ -20,6 +21,7 @@
   },
   "license": "GPL-3.0",
   "dependencies": {
+    "@logtape/logtape": "^2.2.4",
     "@logto/express": "^3.0.15",
     "ajv": "^8.20.0",
     "bcrypt": "^6.0.0",

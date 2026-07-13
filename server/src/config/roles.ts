@@ -16,7 +16,7 @@ const getCode = (role: number) => {
     // }
 };
 
-export default module.exports = {
+export default  {
     roles,
     getCode,
 };

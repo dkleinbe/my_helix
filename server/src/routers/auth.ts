@@ -1,7 +1,7 @@
 import { Router } from 'express';
 const router: Router = Router();
-import controller from '../controllers/auth';
-import middleware from '../middleware/auth';
+import controller from '../controllers/auth.js';
+import middleware from '../middleware/auth.js';
 
 router.post('/login', middleware.login, controller.login);
 router.get('/refresh-token', controller.refreshToken);

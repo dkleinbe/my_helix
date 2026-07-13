@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import queries from '../database/queries';
+import queries from '../database/queries.js';
 
 const readAll = async (req: Request, res: Response) => {
   const sqlQuery = `
@@ -19,7 +19,7 @@ const readAllConnexion = async (req: Request, res: Response) => {
   await queries.pull(req, res, sqlQuery, [], { id: '', name: 'Patients', verb: 'returned for appointment' });
 };
 
-export default module.exports = {
+export default  {
   readAll,
   readAllConnexion,
 };

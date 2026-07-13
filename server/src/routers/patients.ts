@@ -1,8 +1,8 @@
 import { Router } from 'express';
 const router: Router = Router();
-import controller from '../controllers/patient';
-import controllerAll from '../controllers/patients';
-import middleware from '../middleware/patients';
+import controller from '../controllers/patient.js';
+import controllerAll from '../controllers/patients.js';
+import middleware from '../middleware/patients.js';
 
 router.get('/', controllerAll.readAll);
 

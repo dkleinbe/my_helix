@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import sc from './status-codes';
-import log from './newLogger';
+import sc from './status-codes.js';
+import log from './newLogger.js';
 
 const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
   log.message(err.message);

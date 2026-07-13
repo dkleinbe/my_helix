@@ -1,6 +1,6 @@
 import cors, { CorsOptions } from 'cors';
-import allowedOrigins from './allowed-origins';
-import logger from '../tools/logger';
+import allowedOrigins from './allowed-origins.js';
+import logger from '../tools/logger.js';
 
 const corsOptions: CorsOptions = {
     origin: (origin, callback) => {

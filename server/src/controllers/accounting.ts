@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import db from '../database/config';
-import sc from '../tools/status-codes';
-import uuid from '../tools/uuid';
-import queries from '../database/queries';
-import log from '../tools/newLogger';
+import db from '../database/config.js';
+import sc from '../tools/status-codes.js';
+import uuid from '../tools/uuid.js';
+import queries from '../database/queries.js';
+import log from '../tools/newLogger.js';
 
 const create = async (req: Request, res: Response) => {
   let id = uuid();

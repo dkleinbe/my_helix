@@ -1,8 +1,8 @@
 import { Response, Request, NextFunction } from 'express';
-import validate from '../validation/validator';
-import logger from '../tools/logger';
-import sc from '../tools/status-codes';
-import db from '../database/config';
+import validate from '../validation/validator.js';
+import logger from '../tools/logger.js';
+import sc from '../tools/status-codes.js';
+import db from '../database/config.js';
 
 const create = async (req: Request, res: Response, next: NextFunction) => {
     const isValid = validate.eventCreate(req.body);

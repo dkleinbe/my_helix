@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import controller from '../controllers/accounting';
-import middleware from '../middleware/accounting';
+import controller from '../controllers/accounting.js';
+import middleware from '../middleware/accounting.js';
 
 const router: Router = Router();
 

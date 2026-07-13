@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import uuid from '../tools/uuid';
-import queries from '../database/queries';
+import uuid from '../tools/uuid.js';
+import queries from '../database/queries.js';
 
 const create = async (req: Request, res: Response) => {
   let id = uuid();

@@ -1,4 +1,4 @@
-import log from '../tools/newLogger';
+import log from '../tools/newLogger.js';
 import { createRemoteJWKSet, jwtVerify } from 'jose';
 
 class Auth {

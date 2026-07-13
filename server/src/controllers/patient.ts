@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import uuid from '../tools/uuid';
-import queries from '../database/queries';
+import uuid from '../tools/uuid.js';
+import queries from '../database/queries.js';
 
 const create = async (req: Request, res: Response) => {
   let id = uuid();
@@ -94,7 +94,7 @@ const delete_ = async (req: Request, res: Response) => {
   await queries.push(req, res, sqlQuery, [patientId], { id: patientId, name: 'Patient', verb: 'deleted' });
 };
 
-export default module.exports = {
+export default  {
   create,
   read,
   update,

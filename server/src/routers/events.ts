@@ -1,7 +1,7 @@
 import { Router } from 'express';
 const router: Router = Router();
-import controller from '../controllers/events';
-import middleware from '../middleware/events';
+import controller from '../controllers/events.js';
+import middleware from '../middleware/events.js';
 
 router.get('/', controller.getEvents);
 router.post('/', middleware.create, controller.create);

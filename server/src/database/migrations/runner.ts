@@ -1,9 +1,9 @@
 
 import fs from "fs";
-import logger from '../../tools/logger';
-import db from '../../database/config'
+import logger from '../../tools/logger.js';
+import db from '../../database/config.js'
 import type { Database as IDatabase } from 'better-sqlite3'
-import type { BundleItem, BundleHeader } from './bundler';
+import type { BundleItem, BundleHeader } from './bundler.js';
 import { format } from 'date-fns'
 
 const dbTable = "schema_versions";

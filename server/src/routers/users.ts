@@ -1,7 +1,7 @@
 import { Router } from 'express';
 const router: Router = Router();
-import controller from '../controllers/users';
-import middleware from '../middleware/users';
+import controller from '../controllers/users.js';
+import middleware from '../middleware/users.js';
 
 router.get('/', controller.readAll);
 router.get('/roles', controller.readAllRoles);

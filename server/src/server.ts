@@ -1,18 +1,27 @@
-import cors from './config/cors';
-import credentials from './middleware/credentials';
-import errorHandler from './tools/errors';
+import cors from './config/cors.js';
+import credentials from './middleware/credentials.js';
+import errorHandler from './tools/errors.js';
 import express, { Express, Request, Response, } from 'express';
 import cookieParser from 'cookie-parser';
-import logger from './tools/logger';
-import log from './tools/newLogger';
+import logger from './tools/logger.js';
+import log from './tools/newLogger.js';
 import path from 'path';
-import sc from './tools/status-codes';
-import server from './routers/api';
-import { setupDatabase } from './database/config'
+import sc from './tools/status-codes.js';
+import server from './routers/api.js';
+import { setupDatabase } from './database/config.js'
+import { configure, getConsoleSink } from "@logtape/logtape";
+const __dirname = import.meta.dirname;
 
+await configure({
+  sinks: { console: getConsoleSink() },
+  loggers: [
+    { category: "my-app", lowestLevel: "debug", sinks: ["console"] }
+  ]
+});
 // import rateLimit from 'express-rate-limit';
 
-require('dotenv').config();
+import dotenv from 'dotenv'
+dotenv.config()
 
 logger.info(`Launching server...`);
 // Config
@@ -60,8 +69,8 @@ api.all('*aze', (req: Request, res: Response) => {
 api.use(errorHandler);
 
 // Database migration, do it before starting server
-//createBundle('./build/database/migrations');
-//const bundle = readBundle('./build/database/migrations/bundle.json')
+//createBundle(./build/database/migrations.js');
+//const bundle = readBundle(./build/database/migrations/bundle.json.js')
 
 setupDatabase(process.env.DB_PATH + '/migrations/').then(() => {
   // Start

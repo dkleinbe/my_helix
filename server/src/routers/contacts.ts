@@ -1,7 +1,7 @@
 import { Router } from 'express';
 const router: Router = Router();
-import controller from '../controllers/contacts';
-import middleware from '../middleware/contacts';
+import controller from '../controllers/contacts.js';
+import middleware from '../middleware/contacts.js';
 
 router.get('/', controller.readAll);
 router.get('/:id', controller.readOne);

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import uuid from '../tools/uuid';
-import queries from '../database/queries';
+import uuid from '../tools/uuid.js';
+import queries from '../database/queries.js';
 
 const create = async (req: Request, res: Response) => {
   let id = uuid();
@@ -107,7 +107,7 @@ const getFromEvent = async (req: Request, res: Response) => {
   await queries.pull(req, res, sqlQuery, values, { id: req.params.id as string, name: 'Appointment', verb: 'returned' });
 };
 
-export default module.exports = {
+export default  {
   create,
   updateContent,
   read,
