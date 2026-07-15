@@ -1,4 +1,4 @@
-import log from '../tools/newLogger.js';
+import log from '../tools/tapeLogger.js';
 import { createRemoteJWKSet, jwtVerify } from 'jose';
 
 class Auth {

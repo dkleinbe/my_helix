@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@logtape/express@^2.2.4":
+  version "2.2.4"
+  resolved "https://registry.npmjs.org/@logtape/express/-/express-2.2.4.tgz"
+  integrity sha512-32aSXlkZpQKMOjWxGxWa+kWPaTTntC6x5fAQ8CqVdZoohstMkbjwFEiSEAY7ikH5aHySflRRtLM4A2SdII9NpA==
+
 "@logtape/logtape@^2.2.4":
   version "2.2.4"
   resolved "https://registry.npmjs.org/@logtape/logtape/-/logtape-2.2.4.tgz"
@@ -574,7 +579,7 @@ express-rate-limit@^8.5.1:
   dependencies:
     ip-address "^10.2.0"
 
-express@^5.2.1, "express@>= 4.11", express@>=4:
+"express@^4.0.0 || ^5.0.0", express@^5.2.1, "express@>= 4.11", express@>=4:
   version "5.2.1"
   resolved "https://registry.npmjs.org/express/-/express-5.2.1.tgz"
   integrity sha512-hIS4idWWai69NezIdRt2xFVofaF4j+6INOpJlVOLDO8zXGpUVEVzIYk12UUi2JzjEzWL3IOAxcTubgz9Po0yXw==

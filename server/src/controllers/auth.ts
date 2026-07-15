@@ -1,6 +1,6 @@
 import { Response, Request } from 'express';
 import db from '../database/config.js';
-import logger from '../tools/logger.js';
+import logger from '../tools/tapeLogger.js';
 import sc from '../tools/status-codes.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -37,17 +37,17 @@ const login = async (req: Request, res: Response) => {
         user = await queryAuth(`SELECT * FROM users WHERE id = ?`, [id], req);
     } catch (err: any) {
         res.status(sc.UNAUTHORIZED).json({ message: err.message });
-        return logger.fail(req, res, err);
+        return logger.failReq(req, res, err);
     }
 
     if (!user) {
         res.status(sc.UNAUTHORIZED).json({ message: 'User not found' });
-        return logger.fail(req, res, 'User not found');
+        return logger.failReq(req, res, 'User not found');
     }
 
     if (!(await bcrypt.compare(password, user.password))) {
         res.status(sc.UNAUTHORIZED).json({ message: 'Invalid password' });
-        return logger.fail(req, res, 'Invalid password');
+        return logger.failReq(req, res, 'Invalid password');
     }
 
     const roleCode = role.getCode(user.role);
@@ -68,11 +68,11 @@ const login = async (req: Request, res: Response) => {
     const select = db.prepare(sqlQuery);
     try {
         const rows = select.run(values);
-        logger.success(req, res, 'Refresh token added to database');
+        logger.successReq(req, res, 'Refresh token added to database');
     } catch (error) {
         if (error instanceof Error) {
             res.status(sc.METHOD_FAILURE).json({ message: error.message });
-            return logger.fail(req, res, error.message);
+            return logger.failReq(req, res, error.message);
         }
     }
     // db.query(sqlQuery, values, (err: any, data: any) => {
@@ -90,7 +90,7 @@ const login = async (req: Request, res: Response) => {
         message: `User ${id} successfully logged in`,
         token: accessToken,
     });
-    logger.success(req, res, `User ${id} successfully logged in`);
+    logger.successReq(req, res, `User ${id} successfully logged in`);
 };
 
 const refreshToken = async (req: Request, res: Response) => {
@@ -102,18 +102,18 @@ const refreshToken = async (req: Request, res: Response) => {
         user = await queryAuth(`SELECT * FROM users WHERE refreshToken = ?`, [refreshToken], req);
     } catch (err: any) {
         res.status(sc.FORBIDDEN).json({ message: err.message });
-        return logger.fail(req, res, err);
+        return logger.failReq(req, res, err);
     }
 
     if (!user) {
         res.status(sc.FORBIDDEN).json({ message: 'User not found' });
-        return logger.fail(req, res, 'User not found');
+        return logger.failReq(req, res, 'User not found');
     }
 
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET as string, (err: any, decoded: any) => {
         if (err || user.id !== decoded.id) {
             res.status(sc.FORBIDDEN).json({ message: err });
-            logger.fail(req, res, err);
+            logger.failReq(req, res, err);
         } else {
             const accessToken = jwt.sign(
                 {
@@ -132,7 +132,7 @@ const refreshToken = async (req: Request, res: Response) => {
                 message: `User ${user.id} successfully refreshed token`,
                 token: accessToken,
             });
-            logger.success(req, res, `User ${user.id} successfully refreshed token`);
+            logger.successReq(req, res, `User ${user.id} successfully refreshed token`);
         }
     });
 };
@@ -141,7 +141,7 @@ const logout = async (req: Request, res: Response) => {
     const cookies = req.cookies;
     if (!cookies?.jwt) {
         res.status(sc.ACCEPTED).json({ message: 'Already logged out' });
-        return logger.success(req, res, 'Already logged out');
+        return logger.successReq(req, res, 'Already logged out');
     }
     const refreshToken = cookies.jwt;
     let user: IUser;
@@ -150,13 +150,13 @@ const logout = async (req: Request, res: Response) => {
     } catch (err: any) {
         res.clearCookie('jwt', { httpOnly: true, maxAge: 12 * 60 * 60 * 1000, sameSite: 'none', secure: true });
         res.status(sc.ACCEPTED).json({ message: 'Already logged out' });
-        return logger.fail(req, res, 'User not found, already logged out?');
+        return logger.failReq(req, res, 'User not found, already logged out?');
     }
 
     if (!user) {
         res.clearCookie('jwt', { httpOnly: true, maxAge: 12 * 60 * 60 * 1000, sameSite: 'none', secure: true });
         res.status(sc.ACCEPTED).json({ message: 'Already logged out' });
-        return logger.fail(req, res, 'User not found, already logged out?');
+        return logger.failReq(req, res, 'User not found, already logged out?');
     }
 
     const sqlQuery = `UPDATE users SET refreshToken = NULL WHERE id = ?`;
@@ -164,11 +164,11 @@ const logout = async (req: Request, res: Response) => {
     const select = db.prepare(sqlQuery);
     try {
         const rows = select.run(values);
-        logger.success(req, res, 'Refresh token added to database');
+        logger.successReq(req, res, 'Refresh token added to database');
     } catch (error) {
         if (error instanceof Error) {
             res.status(sc.METHOD_FAILURE).json({ message: error.message });
-            return logger.fail(req, res, error.message);
+            return logger.failReq(req, res, error.message);
         }
     }    
     // db.query(sqlQuery, values, (err: any, data: any) => {
@@ -180,7 +180,7 @@ const logout = async (req: Request, res: Response) => {
     // });
     res.clearCookie('jwt', { httpOnly: true, maxAge: 12 * 60 * 60 * 1000, sameSite: 'none', secure: true });
     res.status(sc.ACCEPTED).json({ id: user.id, message: `User ${user.id} successfully logged out` });
-    logger.success(req, res, `User ${user.id} successfully logged out`);
+    logger.successReq(req, res, `User ${user.id} successfully logged out`);
 };
 
 export default  {

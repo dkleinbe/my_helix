@@ -1,13 +1,14 @@
 import { Request, Response } from 'express';
 import db from '../database/config.js';
 import sc from '../tools/status-codes.js';
-import log from '../tools/newLogger.js';
+import log from '../tools/tapeLogger.js';
 
 interface IId {
   id: string;
   name: string;
   verb?: string;
 }
+//type storage = AsyncLocalStorage<{ message: string; }>;
 
 const checkId = async (id: string, table: string, parameter: string): Promise<boolean> => {
   const sqlQuery = `SELECT COUNT(*) AS count
@@ -69,8 +70,9 @@ const push = async (req: Request, res: Response, sqlQuery: string, values: any[]
 };
 
 const pull = async (req: Request, res: Response, sqlQuery: string, values: any[], meta: IId) => {
-  const select = db.prepare(sqlQuery);
+  
   try {
+    const select = db.prepare(sqlQuery);
     const rows = select.all(values);
     if (rows.length === 0) {
       log.message(`${meta.name} ${meta.id} not found`);
@@ -81,7 +83,10 @@ const pull = async (req: Request, res: Response, sqlQuery: string, values: any[]
     }
   } catch (err) {
     if (err instanceof Error)
-      log.message(err.message);
+    {
+      log.message(err.message); 
+    }
+
     res.status(sc.BAD_REQUEST).json({ message: 'Bad request' });
   }
   // db.query(sqlQuery, values, (err: any, data: any) => {

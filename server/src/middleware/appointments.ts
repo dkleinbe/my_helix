@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import validate from '../validation/validator.js';
-import logger from '../tools/logger.js';
-import log from '../tools/newLogger.js';
+import logger from '../tools/tapeLogger.js';
+import log from '../tools/tapeLogger.js';
 import sc from '../tools/status-codes.js';
 
 const create = async (req: Request, res: Response, next: NextFunction) => {
@@ -10,7 +10,7 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
     log.message('Invalid request body');
     res.status(sc.NOT_ACCEPTABLE).json(validate.appointmentCreate.errors);
   } else {
-    logger.success(req, res, 'Valid request body');
+    logger.successReq(req, res, 'Valid request body');
     next();
   }
 };
@@ -21,7 +21,7 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
     log.message('Invalid request body');
     res.status(sc.NOT_ACCEPTABLE).json(validate.appointmentUpdate.errors);
   } else {
-    logger.success(req, res, 'Valid request body');
+    logger.successReq(req, res, 'Valid request body');
     next();
   }
 };

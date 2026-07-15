@@ -1,6 +1,6 @@
 
 import fs from "fs";
-import logger from '../../tools/logger.js';
+import logger from '../../tools/tapeLogger.js';
 import db from '../../database/config.js'
 import type { Database as IDatabase } from 'better-sqlite3'
 import type { BundleItem, BundleHeader } from './bundler.js';

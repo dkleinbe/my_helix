@@ -8,14 +8,14 @@ import patients from './patients.js';
 import unsecured from './unsecured.js';
 import users from './users.js';
 import contacts from './contacts.js';
-import logger from '../tools/logger.js';
+import logger from '../tools/tapeLogger.js';
 import sc from '../tools/status-codes.js';
 
 const router: Router = Router();
 
 router.get('/', (req: Request, res: Response) => {
     res.status(sc.OK).json({ message: 'Helix: A System for Patient Management [[API]]' });
-    logger.success(req, res, 'Return API');
+    logger.successReq(req, res, 'Return API');
 });
 
 // Routers

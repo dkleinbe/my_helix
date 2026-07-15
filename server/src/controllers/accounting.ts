@@ -3,7 +3,7 @@ import db from '../database/config.js';
 import sc from '../tools/status-codes.js';
 import uuid from '../tools/uuid.js';
 import queries from '../database/queries.js';
-import log from '../tools/newLogger.js';
+import log from '../tools/tapeLogger.js';
 
 const create = async (req: Request, res: Response) => {
   let id = uuid();

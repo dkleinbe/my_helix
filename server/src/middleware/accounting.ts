@@ -1,15 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
 import validate from '../validation/validator.js';
-import logger from '../tools/logger.js';
+import logger from '../tools/tapeLogger.js';
 import sc from '../tools/status-codes.js';
 
 const create = async (req: Request, res: Response, next: NextFunction) => {
     const isValid = validate.accountingCreate(req.body);
     if (!isValid) {
         res.status(sc.NOT_ACCEPTABLE).json(validate.accountingCreate.errors);
-        logger.fail(req, res, 'Invalid request body');
+        logger.failReq(req, res, 'Invalid request body');
     } else {
-        logger.success(req, res, 'Valid request body');
+        logger.successReq(req, res, 'Valid request body');
         next();
     }
 };

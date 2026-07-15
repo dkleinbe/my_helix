@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import logger from '../../tools/logger.js';
+import logger from '../../tools/tapeLogger.js';
 import { Name } from "ajv";
 
 const bundleFileName = "bundle.json";

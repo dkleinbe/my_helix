@@ -1,0 +1,156 @@
+import cors from './config/cors.js';
+import credentials from './middleware/credentials.js';
+import errorHandler from './tools/errors.js';
+import express, { Express, Request, Response, } from 'express';
+import cookieParser from 'cookie-parser';
+import logger from './tools/logger.js';
+import log from './tools/newLogger.js';
+import path from 'path';
+import sc from './tools/status-codes.js';
+import server from './routers/api.js';
+import { setupDatabase } from './database/config.js'
+//import { configureLogger } from './tools/tapeLogger.js';
+
+import { AsyncLocalStorage } from "node:async_hooks";
+import stream from "node:stream";
+import { 
+  configure, 
+  getConsoleSink,
+  getStreamSink, 
+  defaultConsoleFormatter,
+  ansiColorFormatter, 
+  jsonLinesFormatter,
+  getLogger,
+  ContextLocalStorage, 
+  LogRecord,
+  Sink
+} from "@logtape/logtape";
+import { expressLogger } from "@logtape/express";
+
+
+const __dirname = import.meta.dirname;
+
+
+// import rateLimit from 'express-rate-limit';
+
+import dotenv from 'dotenv'
+dotenv.config()
+
+const localStorage = new AsyncLocalStorage()
+// getStreamSink(stream.Writable.toWeb(process.stderr)),
+await configure({
+  sinks: { 
+    // @ts-ignore
+    stream: getStreamSink(stream.Writable.toWeb(process.stderr), {formatter: ansiColorFormatter}),
+    
+    my_console: getConsoleSink({
+      formatter(record: LogRecord): readonly unknown[] {
+        let msg = "";
+        const values: unknown[] = [];
+        for (let i = 0; i < record.message.length; i++) {
+          if (i % 2 === 0) msg += record.message[i];
+          else {
+            msg += "%o";
+            values.push(record.message[i]);
+          }
+        }
+        return [
+          `${record.level.toUpperCase()} %c${
+            record.category.join("\xb7")
+          } %c${msg}`,
+          "color: gray;",
+          "color: default;",
+          ...values,
+        ];
+      }
+    }),    
+
+    my_console3: getConsoleSink({
+      formatter: (record: LogRecord) => { 
+         
+        let str = ansiColorFormatter(record)
+        str = str.slice(0, str.length -1) + ' mess: ' + record.properties.message
+        return str
+      }
+    }),    
+    console: getConsoleSink({formatter: ansiColorFormatter}),
+  },
+  loggers: [
+    { category: ["logtape", "meta"], sinks: ["console"] },
+    { category: "my-app", lowestLevel: "debug", sinks: ["console"] },
+    { category: ["express"], sinks: ["my_console3"], lowestLevel: "info" },
+  ],
+  contextLocalStorage: new AsyncLocalStorage(),
+});
+const log2 = getLogger(["my-app"]);
+log2.info(`Launching server...`);
+
+logger.info(`Launching server...`);
+// Config
+const api: Express = express();
+const port = 3001;
+// const limiter = rateLimit({
+//     windowMs: 60 * 1000,
+//     max: 40,
+// });
+
+api.use(cookieParser());
+api.set('trust proxy', 1);
+api.use((req, res, next) => {
+  //console.log('Cookie Header:', req.headers.cookie || '(empty)');
+  //console.log('res.cookies:', req.cookies || '(empty)');
+  next();
+});
+
+api.use(express.json());
+api.use(express.urlencoded({ extended: true }));
+api.use(credentials);
+api.use(cors());
+// api.use(limiter);
+
+api.use(expressLogger())
+// api.use(expressLogger({ 
+//   immediate: false,
+//   context:  { 
+//     requestId: true, 
+//     include: ["requestId"],
+//     enrich: (req) => ({ message: 'coucou'})
+//   },
+  // format: (req, res, responseTime) => ({
+  //     method: req.method,
+  //     responseTime: responseTime,
+  //   }),  
+//  }),
+//);
+// Logger
+api.use(log.middleware);
+
+// Main
+api.use('/api', server);
+
+// Client
+api.use(express.static(path.join(__dirname, 'www')));
+api.get('*aze', (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, 'www', 'index.html'));
+  logger.success(req, res, 'Return client');
+});
+
+// 404
+api.all('*aze', (req: Request, res: Response) => {
+  res.status(sc.NOT_FOUND).json({ error: 'Route not found' });
+  logger.fail(req, res, 'Not found');
+});
+
+// Errors
+api.use(errorHandler);
+
+// Database migration, do it before starting server
+//createBundle(./build/database/migrations.js');
+//const bundle = readBundle(./build/database/migrations/bundle.json.js')
+
+setupDatabase(process.env.DB_PATH + '/migrations/').then(() => {
+  // Start
+  api.listen(port, () => {
+    logger.info(`Server listening on port ${port}`);
+  });
+})

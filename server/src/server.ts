@@ -3,27 +3,27 @@ import credentials from './middleware/credentials.js';
 import errorHandler from './tools/errors.js';
 import express, { Express, Request, Response, } from 'express';
 import cookieParser from 'cookie-parser';
-import logger from './tools/logger.js';
-import log from './tools/newLogger.js';
+import logger from './tools/tapeLogger.js';
 import path from 'path';
 import sc from './tools/status-codes.js';
 import server from './routers/api.js';
 import { setupDatabase } from './database/config.js'
-import { configure, getConsoleSink } from "@logtape/logtape";
+import log from './tools/tapeLogger.js';
+import { configureLogger } from './tools/tapeLogger.js';
+
+
 const __dirname = import.meta.dirname;
 
-await configure({
-  sinks: { console: getConsoleSink() },
-  loggers: [
-    { category: "my-app", lowestLevel: "debug", sinks: ["console"] }
-  ]
-});
+
 // import rateLimit from 'express-rate-limit';
 
 import dotenv from 'dotenv'
 dotenv.config()
 
-logger.info(`Launching server...`);
+await configureLogger()
+
+log.info(`Launching server...`)
+
 // Config
 const api: Express = express();
 const port = 3001;
@@ -56,13 +56,13 @@ api.use('/api', server);
 api.use(express.static(path.join(__dirname, 'www')));
 api.get('*aze', (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, 'www', 'index.html'));
-  logger.success(req, res, 'Return client');
+  logger.successReq(req, res, 'Return client');
 });
 
 // 404
 api.all('*aze', (req: Request, res: Response) => {
   res.status(sc.NOT_FOUND).json({ error: 'Route not found' });
-  logger.fail(req, res, 'Not found');
+  logger.failReq(req, res, 'Not found');
 });
 
 // Errors
