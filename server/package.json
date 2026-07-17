@@ -23,6 +23,7 @@
   "dependencies": {
     "@logtape/express": "^2.2.4",
     "@logtape/logtape": "^2.2.4",
+    "@logtape/pretty": "^2.2.4",
     "@logto/express": "^3.0.15",
     "ajv": "^8.20.0",
     "bcrypt": "^6.0.0",

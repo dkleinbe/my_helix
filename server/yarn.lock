@@ -12,6 +12,11 @@
   resolved "https://registry.npmjs.org/@logtape/logtape/-/logtape-2.2.4.tgz"
   integrity sha512-2rALzv9m4ibE5FyB8/FMm5MPMMlK7ujgy3ufricVKIxj6e7SZbw4w6J16/fRAsXgdDlOXPUA0aa6XoEQvdlKxw==
 
+"@logtape/pretty@^2.2.4":
+  version "2.2.4"
+  resolved "https://registry.npmjs.org/@logtape/pretty/-/pretty-2.2.4.tgz"
+  integrity sha512-eUaa7+Y3WieTDeSSo3osGDE3m1ohTPGCjqOY9006sYrEZGPRvf4HyU+kbMcKm7Q3syWLF6RkSyJ1WhxTs1Ccvg==
+
 "@logto/client@^3.1.8":
   version "3.1.8"
   resolved "https://registry.npmjs.org/@logto/client/-/client-3.1.8.tgz"
