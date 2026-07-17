@@ -24,7 +24,7 @@ const checkId = async (id: string, table: string, parameter: string): Promise<bo
       resolve(rows[0].count !== 0);
     } catch (error) {
       if (error instanceof Error) 
-        log.message(error.message);
+        log.message('error', error.message);
       reject(error);
     }
 
@@ -44,15 +44,15 @@ const push = async (req: Request, res: Response, sqlQuery: string, values: any[]
   try {
     const info = insert.run(values);
     if (info.changes === 0) {
-      log.message(`${meta.name} ${meta.id} not pushed`);
+      log.message('error', `${meta.name} ${meta.id} not pushed`);
       res.status(sc.INTERNAL_SERVER_ERROR).json({ message: 'Data not pushed' });
     } else {
-      log.message(`${meta.name} ${meta.id ?? 'all'} ${meta.verb ?? 'pushed'}}`);
+      log.message('info', `${meta.name} ${meta.id ?? 'all'} ${meta.verb ?? 'pushed'}}`);
       res.status(sc.OK).json({ id: meta.id, message: `${meta.name} ${meta.id} ${meta.verb ?? 'pushed'}` });
     }
   } catch (err) {
     if (err instanceof Error) 
-      log.message(err.message);
+      log.message('error', err.message);
     res.status(sc.BAD_REQUEST).json({ message: 'Bad Request' });
   }
   // db.query(sqlQuery, values, (err: any, data: any) => {
@@ -75,16 +75,16 @@ const pull = async (req: Request, res: Response, sqlQuery: string, values: any[]
     const select = db.prepare(sqlQuery);
     const rows = select.all(values);
     if (rows.length === 0) {
-      log.message(`${meta.name} ${meta.id} not found`);
+      log.message('error', `${meta.name} ${meta.id} not found`);
       res.status(sc.NOT_FOUND).json({ message: `${meta.name} not found` });
     } else {
-      log.message(`${meta.name} ${meta.id ?? 'all'} ${meta.verb ?? 'pulled'}`);
+      log.message('info', `${meta.name} ${meta.id ?? 'all'} ${meta.verb ?? 'pulled'}`);
       res.status(sc.OK).json(rows);
     }
   } catch (err) {
     if (err instanceof Error)
     {
-      log.message(err.message); 
+      log.message('error', err.message); 
     }
 
     res.status(sc.BAD_REQUEST).json({ message: 'Bad request' });

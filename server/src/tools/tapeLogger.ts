@@ -14,7 +14,7 @@ import {
   lazy
 } from "@logtape/logtape";
 import { prettyFormatter } from "@logtape/pretty";
-
+import path from 'path'
 
 export async function configureLogger() {
 
@@ -39,8 +39,8 @@ export async function configureLogger() {
     loggers: [
         { category: ["logtape", "meta"], sinks: ["console2"] },
         { category: "my-app", sinks: ["console2"], lowestLevel: "info",  },
-        { category: ["my-express"], sinks: ["console2"], lowestLevel: "error" },
-        { category: ["my-express", "middleware"], sinks: ["console2"], parentSinks: "override", lowestLevel: "info" },
+        { category: ["route"], sinks: ["console2"], lowestLevel: "info" },
+        { category: ["route", "midware"], sinks: ["console2"], parentSinks: "override", lowestLevel: "info" },
         //{ category: ["express"], sinks: ["my_console3"], lowestLevel: "info" },
     ],
     contextLocalStorage: new AsyncLocalStorage(),
@@ -52,7 +52,8 @@ export const logApp = getLogger(["my-app"]);
 
 const filename = function getCallerFile(position = 4) : string {
   if (position >= Error.stackTraceLimit) {
-    throw new TypeError('getCallerFile(position) requires position be less then Error.stackTraceLimit but position was: `' + position + '` and Error.stackTraceLimit was: `' + Error.stackTraceLimit + '`');
+    throw new TypeError('getCallerFile(position) requires position be less then Error.stackTraceLimit but position was: `' 
+      + position + '` and Error.stackTraceLimit was: `' + Error.stackTraceLimit + '`');
   }
 
   const oldPrepareStackTrace = Error.prepareStackTrace;
@@ -65,15 +66,21 @@ const filename = function getCallerFile(position = 4) : string {
     // stack[0] holds this file
     // stack[1] holds where this function was called
     // stack[2] holds the file we're interested in
-    return stack[position] ? (stack[position] as any).getFileName() + ':' + (stack[position] as any).getLineNumber() : 'unknown';
+    if (stack[position]) {
+      // TODO: fix that hard coded path :(
+      const file = path.relative('file:///config/workspace/my_helix/server', (stack[position] as any).getFileName())
+      return file + ':' + (stack[position] as any).getLineNumber();
+    }
+    //return stack[position] ? (stack[position] as any).getFileName() + ':' + (stack[position] as any).getLineNumber() : 'unknown';
   }
   return 'unknown'
 };
 
 
-type LocalStore = { message: string; filename: string }
+type LocalStore = { level: string, message: string; filename: string }
+type LocalInfos = { message: string; filename: string }
 class LoggerBuilder {
-  private storage: AsyncLocalStorage<{ message: string; filename: string }>;
+  private storage: AsyncLocalStorage<LocalStore>;
 
   constructor() {
     console.log(">>>>>>>>>>>>>>>>>  LogBuilder")
@@ -83,8 +90,8 @@ class LoggerBuilder {
     this.log = this.log.bind(this);
   }
 
-  expressLog = getLogger( ["my-express", "middleware"])
-  requestLog = getLogger( ["my-express"])
+  expressLog = getLogger( ["route", "midware"])
+  requestLog = getLogger( ["route"])
 
   appLog = getLogger("my-app")
 
@@ -93,17 +100,16 @@ class LoggerBuilder {
     this.log('debug', req.method, req.originalUrl, res.statusCode, 0, { message: 'Request received', filename: 'no file'});
     //this.tapeLog.error("{method} {url}", {method: req.method, url: req.originalUrl})
 
-    this.storage.run({ message: 'Request Completed', filename: 'je sais pas' }, () => {
+    this.storage.run({ level: 'info', message: 'Request Completed', filename: filename(0) }, () => {
       res.on('finish', () => {
         const responseTime = Date.now() - startTime;
         const store = this.storage.getStore();
-        const level = res.statusCode < 400 ? 'info' : 'error';
-        if (store?.message)
-        {
+        
+        if (store) {
+          const level = res.statusCode < 400 ? store.level : 'error';
           this.log(level, req.method, req.originalUrl, res.statusCode, responseTime, store);
-        }
-        else
-        {
+        } else {
+          const level = res.statusCode < 400 ? 'info' : 'error';
           this.log(level, req.method, req.originalUrl, res.statusCode, responseTime, { message: 'no msg', filename: 'no file'});
         }
       });
@@ -121,11 +127,16 @@ class LoggerBuilder {
     });
   };
 
-  private log = (level: string, method: string, url: string, statusCode: number, responseTime: number|undefined,  store: LocalStore) => {
+  private log = (level: string, 
+    method: string, 
+    url: string, 
+    statusCode: number, 
+    responseTime: number|undefined,  
+    infos: LocalInfos) => {
 
     //const msg = store.message.toString()
     this.expressLog[parseLogLevel(level)]("{method} {url} {statusCode} - {responseTime} ms \x1b[34m(\x1b[0m{message}\x1b[34m)\x1b[0m - {filename}", 
-        {method: method, url: url, statusCode: statusCode, responseTime, message: store.message, filename: store.filename})
+        {method: method, url: url, statusCode: statusCode, responseTime, message: infos.message, filename: infos.filename})
   };
 
   private reqLog = (level: string, method: string, url: string, statusCode: number, responseTime: number|undefined,  ...message: string[]) => {
@@ -158,8 +169,8 @@ class LoggerBuilder {
     this.reqLog('warning', req.method, req.originalUrl, res.statusCode, 0, ...message)
   }
 
-  message(msg: string) {
-    this.storage.enterWith({ message: msg, filename: filename(3) });
+  message(level: string, msg: string) {
+    this.storage.enterWith({ level: level, message: msg, filename: filename(2) });
   }
 }
 //export const log = new LoggerBuilder()

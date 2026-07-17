@@ -48,12 +48,20 @@ const getSum = async (req: Request, res: Response) => {
       WHERE date BETWEEN ? AND ?
   `;
   const values = [req.params.start, req.params.end];
-  const select = db.prepare(sqlQuery);
-  const rows = select.all(values) as { checks: string, cards: string, cashs: string}[];
-  log.message('rows: '+ rows );
-  const sum = rows[0].checks + rows[0].cards + rows[0].cashs;
-  log.message('Returned transaction sum');
-  res.status(sc.OK).json({ ...rows[0], sum });
+  try {
+    const select = db.prepare(sqlQuery);
+    const rows = select.all(values) as { checks: string, cards: string, cashs: string}[];
+    log.message('info', 'rows: '+ rows );
+    const sum = rows[0].checks + rows[0].cards + rows[0].cashs;
+    log.message('info','Returned transaction sum');
+    res.status(sc.OK).json({ ...rows[0], sum });
+  } catch (err) {
+    if (err instanceof Error)
+    {
+      log.message('error', err.message); 
+    }
+    res.status(sc.BAD_REQUEST).json({ message: 'Bad request' });
+  }
   
 };
 
