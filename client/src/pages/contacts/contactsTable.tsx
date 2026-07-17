@@ -23,13 +23,17 @@ export function ContactsTable({ data ,  fetching, onAction } : IProps)
 {
   const { t } = useTranslation();
   const [sortedData, setSortedData] = useState(data);
-  const [query, setQuery] = useState('');
+  const [queryLastname, setQueryLastname] = useState('');
+  const [queryFirstname, setQueryFirstname] = useState('');
+  const [queryEmail, setqueryEmail] = useState('');    
   const routes = useApplicationRoutes();
   const [sortStatus, setSortStatus] = useState<DataTableSortStatus<IContact>>({
     columnAccessor: 'lastName',
     direction: 'asc',
   });
-  const [debouncedQuery] = useDebouncedValue(query, 200);
+  const [debouncedQueryLastname] = useDebouncedValue(queryLastname, 200);
+  const [debouncedQueryFirsname] = useDebouncedValue(queryFirstname, 200);
+  const [debouncedQueryEmail] = useDebouncedValue(queryEmail, 200);
   /*
   const roles = useMemo(() => {
     const roles = new Set(data.map((e) => e.role));
@@ -40,8 +44,7 @@ export function ContactsTable({ data ,  fetching, onAction } : IProps)
     return [...states];
   }, [data]);
   */
-  const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
-  const [selectedStates, setSelectedStates] = useState<string[]>([]);
+
   const [show, setShow] = useState(false);
   const [contact, setContact] = useState<IContact|undefined>();
 
@@ -55,28 +58,35 @@ export function ContactsTable({ data ,  fetching, onAction } : IProps)
   };
 
   const initialRecords = data;
-  /*
+  
   useEffect(() => {
     setSortedData(
-      initialRecords.filter(({ login, role, state }: { login: string, role: string, state: string }) => {
+      initialRecords.filter(({ lastName, firstName, email }
+        : { lastName: string, firstName: string, email: string }) => {
         if (
-          debouncedQuery !== '' &&
-          !`${login}`.toLowerCase().includes(debouncedQuery.trim().toLowerCase()) 
+          debouncedQueryLastname !== '' &&
+          !`${lastName}`.toLowerCase().includes(debouncedQueryLastname.trim().toLowerCase()) 
         )
           return false;
 
-        if (selectedRoles.length && !selectedRoles.some((d) => d === role)) 
+        if (
+          debouncedQueryFirsname !== '' &&
+          !`${firstName}`.toLowerCase().includes(debouncedQueryFirsname.trim().toLowerCase()) 
+        )
           return false;
 
-        if (selectedStates.length && !selectedStates.some((d) => d === state)) 
-          return false;
+        if (
+          debouncedQueryEmail !== '' &&
+          !`${email}`.toLowerCase().includes(debouncedQueryEmail.trim().toLowerCase()) 
+        )        
+          return false;  
 
         return true;
       })
     );
     
-  }, [debouncedQuery, selectedRoles, selectedStates]);
-  */
+  }, [debouncedQueryLastname, debouncedQueryFirsname, debouncedQueryEmail]);
+  
   
   useEffect(() => {
     const data_ = sortBy(data, sortStatus.columnAccessor) as IContact[];
@@ -111,76 +121,72 @@ export function ContactsTable({ data ,  fetching, onAction } : IProps)
           render: (contact) => (<ID id={contact.id.toString()} />),
         },
         { 
-          accessor: 'firstName',
-          title: t('name'), 
-          render: ({firstName}) => `${firstName}`,
+          accessor: 'lastName',
+          title: t('lastName'), 
+          render: ({lastName}) => `${lastName}`,
           filter: (
             <TextInput
-              label={t('login')}
-              description={t('show-contacts-whose-login-include-the-specified-text')}
+              label={t('lastName')}
+              description={t('show-contacts-whose-lastname-include-the-specified-text')}
               placeholder={t('search-contacts')}
               leftSection={<IconSearch size={16} />}
               rightSection={
-                <ActionIcon size="sm" variant="transparent" c="dimmed" onClick={() => setQuery('')}>
+                <ActionIcon size="sm" variant="transparent" c="dimmed" onClick={() => setQueryLastname('')}>
                   <IconX size={14} />
                 </ActionIcon>
               }
-              value={query}
-              onChange={(e) => setQuery(e.currentTarget.value)}
+              value={queryLastname}
+              onChange={(e) => setQueryLastname(e.currentTarget.value)}
             />
           ),
-          filtering: query !== '',
+          filtering: queryLastname !== '',
           sortable: true 
-        },
-        /*
+        },        
         { 
-          accessor: 'role', 
-          title: t('role'),
-          render: (contact) => (<Role role={contact.role} />),
+          accessor: 'firstName',
+          title: t('firstName'), 
+          render: ({firstName}) => `${firstName}`,
           filter: (
-            <MultiSelect
-              label={t('role')}
-              description={t('show-all-contacts-with-role')}
-              data={roles}
-              value={selectedRoles}
+            <TextInput
+              label={t('firstName')}
+              description={t('show-contacts-whose-firstname-include-the-specified-text')}
               placeholder={t('search-contacts')}
-              onChange={setSelectedRoles}
               leftSection={<IconSearch size={16} />}
-              comboboxProps={{ withinPortal: false }}
-              clearable
-              searchable
+              rightSection={
+                <ActionIcon size="sm" variant="transparent" c="dimmed" onClick={() => setQueryFirstname('')}>
+                  <IconX size={14} />
+                </ActionIcon>
+              }
+              value={queryFirstname}
+              onChange={(e) => setQueryFirstname(e.currentTarget.value)}
             />
           ),
-          filtering: selectedRoles.length > 0,
+          filtering: queryFirstname !== '',
           sortable: true 
         },
         { 
-          accessor: 'state', 
-          title: t('state'),
-          render: (contact) => (<ContactStatus status={contact.state} />),
+          accessor: 'email',
+          title: t('email'), 
+          render: ({email}) => `${email}`,
           filter: (
-            <MultiSelect
-              label={t('state')}
-              description={t('show-all-contacts-with-state')}
-              data={states}
-              value={selectedStates}
+            <TextInput
+              label={t('email')}
+              description={t('show-contacts-whose-email-include-the-specified-text')}
               placeholder={t('search-contacts')}
-              onChange={setSelectedStates}
               leftSection={<IconSearch size={16} />}
-              comboboxProps={{ withinPortal: false }}
-              clearable
-              searchable
+              rightSection={
+                <ActionIcon size="sm" variant="transparent" c="dimmed" onClick={() => setqueryEmail('')}>
+                  <IconX size={14} />
+                </ActionIcon>
+              }
+              value={queryEmail}
+              onChange={(e) => setqueryEmail(e.currentTarget.value)}
             />
           ),
-          filtering: selectedRoles.length > 0,          
+          filtering: queryEmail !== '',
           sortable: true 
-        },
-        { 
-          accessor: 'lastActive', 
-          title: t('last-active'),
-          sortable: true 
-        },
-        */
+        },        
+
         {
           accessor: 'actions',
           width: '0%',
