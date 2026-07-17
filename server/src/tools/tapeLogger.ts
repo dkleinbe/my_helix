@@ -13,7 +13,7 @@ import {
   parseLogLevel,
   lazy
 } from "@logtape/logtape";
-import { prettyFormatter } from "@logtape/pretty";
+import { prettyFormatter, getPrettyFormatter } from "@logtape/pretty";
 import path from 'path'
 
 export async function configureLogger() {
@@ -33,7 +33,10 @@ export async function configureLogger() {
                 return str
             }
         }),    
-        console2: getConsoleSink({formatter: prettyFormatter}),
+        console2: getConsoleSink({formatter: getPrettyFormatter({
+          categoryWidth: 12,
+          properties: false,
+        }) }),
         console: getConsoleSink({formatter: ansiColorFormatter}),
     },
     loggers: [
