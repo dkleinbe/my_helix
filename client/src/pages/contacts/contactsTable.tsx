@@ -25,7 +25,8 @@ export function ContactsTable({ data ,  fetching, onAction } : IProps)
   const [sortedData, setSortedData] = useState(data);
   const [queryLastname, setQueryLastname] = useState('');
   const [queryFirstname, setQueryFirstname] = useState('');
-  const [queryEmail, setqueryEmail] = useState('');    
+  const [queryEmail, setQueryEmail] = useState('');   
+  const [queryPhone, setQueryPhone] = useState('');    
   const routes = useApplicationRoutes();
   const [sortStatus, setSortStatus] = useState<DataTableSortStatus<IContact>>({
     columnAccessor: 'lastName',
@@ -34,16 +35,7 @@ export function ContactsTable({ data ,  fetching, onAction } : IProps)
   const [debouncedQueryLastname] = useDebouncedValue(queryLastname, 200);
   const [debouncedQueryFirsname] = useDebouncedValue(queryFirstname, 200);
   const [debouncedQueryEmail] = useDebouncedValue(queryEmail, 200);
-  /*
-  const roles = useMemo(() => {
-    const roles = new Set(data.map((e) => e.role));
-    return [...roles];
-  }, [data]);
-  const states = useMemo(() => {
-    const states = new Set(data.map((e) => e.state));
-    return [...states];
-  }, [data]);
-  */
+  const [debouncedQueryPhone] = useDebouncedValue(queryPhone, 200);
 
   const [show, setShow] = useState(false);
   const [contact, setContact] = useState<IContact|undefined>();
@@ -61,8 +53,8 @@ export function ContactsTable({ data ,  fetching, onAction } : IProps)
   
   useEffect(() => {
     setSortedData(
-      initialRecords.filter(({ lastName, firstName, email }
-        : { lastName: string, firstName: string, email: string }) => {
+      initialRecords.filter(({ lastName, firstName, email, phone }
+        : { lastName: string, firstName: string, email: string, phone: string }) => {
         if (
           debouncedQueryLastname !== '' &&
           !`${lastName}`.toLowerCase().includes(debouncedQueryLastname.trim().toLowerCase()) 
@@ -81,11 +73,17 @@ export function ContactsTable({ data ,  fetching, onAction } : IProps)
         )        
           return false;  
 
+        if (
+          debouncedQueryPhone !== '' &&
+          !`${phone}`.toLowerCase().includes(debouncedQueryPhone.trim().toLowerCase()) 
+        )        
+          return false;          
+
         return true;
       })
     );
     
-  }, [debouncedQueryLastname, debouncedQueryFirsname, debouncedQueryEmail]);
+  }, [debouncedQueryLastname, debouncedQueryFirsname, debouncedQueryEmail, debouncedQueryPhone]);
   
   
   useEffect(() => {
@@ -127,7 +125,7 @@ export function ContactsTable({ data ,  fetching, onAction } : IProps)
           filter: (
             <TextInput
               label={t('lastName')}
-              description={t('show-contacts-whose-lastname-include-the-specified-text')}
+              description={t('filter-last-names')}
               placeholder={t('search-contacts')}
               leftSection={<IconSearch size={16} />}
               rightSection={
@@ -149,7 +147,7 @@ export function ContactsTable({ data ,  fetching, onAction } : IProps)
           filter: (
             <TextInput
               label={t('firstName')}
-              description={t('show-contacts-whose-firstname-include-the-specified-text')}
+              description={t('filter-first-names')}
               placeholder={t('search-contacts')}
               leftSection={<IconSearch size={16} />}
               rightSection={
@@ -171,22 +169,43 @@ export function ContactsTable({ data ,  fetching, onAction } : IProps)
           filter: (
             <TextInput
               label={t('email')}
-              description={t('show-contacts-whose-email-include-the-specified-text')}
+              description={t('filter-last-names')}
               placeholder={t('search-contacts')}
               leftSection={<IconSearch size={16} />}
               rightSection={
-                <ActionIcon size="sm" variant="transparent" c="dimmed" onClick={() => setqueryEmail('')}>
+                <ActionIcon size="sm" variant="transparent" c="dimmed" onClick={() => setQueryEmail('')}>
                   <IconX size={14} />
                 </ActionIcon>
               }
               value={queryEmail}
-              onChange={(e) => setqueryEmail(e.currentTarget.value)}
+              onChange={(e) => setQueryEmail(e.currentTarget.value)}
             />
           ),
           filtering: queryEmail !== '',
           sortable: true 
         },        
-
+        { 
+          accessor: 'phone',
+          title: t('phone'), 
+          render: ({phone}) => `${phone}`,
+          filter: (
+            <TextInput
+              label={t('phone')}
+              description={t('filter-phone')}
+              placeholder={t('search-phone')}
+              leftSection={<IconSearch size={16} />}
+              rightSection={
+                <ActionIcon size="sm" variant="transparent" c="dimmed" onClick={() => setQueryPhone('')}>
+                  <IconX size={14} />
+                </ActionIcon>
+              }
+              value={queryPhone}
+              onChange={(e) => setQueryPhone(e.currentTarget.value)}
+            />
+          ),
+          filtering: queryPhone !== '',
+          sortable: true 
+        }, 
         {
           accessor: 'actions',
           width: '0%',

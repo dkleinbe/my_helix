@@ -34,12 +34,13 @@ const port = 3001;
 
 api.use(cookieParser());
 api.set('trust proxy', 1);
+/*
 api.use((req, res, next) => {
-  //console.log('Cookie Header:', req.headers.cookie || '(empty)');
-  //console.log('res.cookies:', req.cookies || '(empty)');
+  console.log('Cookie Header:', req.headers.cookie || '(empty)');
+  console.log('res.cookies:', req.cookies || '(empty)');
   next();
 });
-
+*/
 api.use(express.json());
 api.use(express.urlencoded({ extended: true }));
 api.use(credentials);
@@ -54,16 +55,19 @@ api.use('/api', server);
 
 // Client
 api.use(express.static(path.join(__dirname, 'www')));
-api.get('*aze', (req: Request, res: Response) => {
-  res.sendFile(path.join(__dirname, 'www', 'index.html'));
+
+api.get(/.*/, (req: Request, res: Response) => {
+  res.sendFile('index.html', {root: path.join(__dirname, 'www')});
   logger.successReq(req, res, 'Return client');
 });
 
 // 404
+/*
 api.all('*aze', (req: Request, res: Response) => {
   res.status(sc.NOT_FOUND).json({ error: 'Route not found' });
   logger.failReq(req, res, 'Not found');
 });
+*/
 
 // Errors
 api.use(errorHandler);

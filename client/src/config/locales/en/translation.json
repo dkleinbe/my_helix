@@ -35,5 +35,10 @@
   "user": "User",
   "welcome-to-helix": "Welcome to Helix",
   "email": "email",
-  "search-contacts": "Search contacts"
+  "search-contacts": "Search contacts",
+  "filter-first-names": "Filter firstname",
+  "filter-last-names": "Filter last names",
+  "phone": "Phone number",
+  "filter-phone": "Filter phone numbers",
+  "search-phone": "Search phone number"
 }
