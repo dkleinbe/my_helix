@@ -6,6 +6,9 @@
 	"COMMENT": "Creation version 1"
 }
 **/
+-- non-transactional
+PRAGMA foreign_keys=OFF;
+
 CREATE TABLE IF NOT EXISTS "link-types" (
 	"id" INTEGER NOT NULL UNIQUE,
 	"label" TEXT NOT NULL,
@@ -108,6 +111,8 @@ CREATE TABLE IF NOT EXISTS "client_data" (
 	ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
+-- non-transactional
+PRAGMA foreign_keys=OFF;
 
 INSERT INTO user_roles(label) VALUES ('admin');
 
@@ -130,3 +135,4 @@ VALUES (
 		1,
         'first-time'
     );
+

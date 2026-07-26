@@ -55,11 +55,16 @@ function run(db: IDatabase, all: BundleItem[]) {
     .sort((m1, m2) => m1.desc.version - m2.desc.version)
     .forEach((m) => {
 
-      runNonTransactional(db, m.content.nonTransactional);
-      const applied = runTransactional(db, m.desc, m.content.transactional);
-      if (applied) {
-        count += 1;
-      }
+      m.content.forEach(batch => {
+        if (batch.type === 'non-transac') 
+          runNonTransactional(db, batch.stmts)
+        else {
+          const applied = runTransactional(db, m.desc, batch.stmts)
+          if (applied) {
+            count += 1;
+          }
+        }
+      });
     });
 
   if (count > 0) {
@@ -77,10 +82,16 @@ function createDatabase(all: BundleItem[]) {
   
   logger.info('DB: Init with latest init : ' + lastInit[0].desc.version)
 
-  runNonTransactional(db, lastInit[0].content.nonTransactional);
-  const applied = runTransactional(db, lastInit[0].desc, lastInit[0].content.transactional);
+  lastInit[0].content.forEach(batch => {
+    if (batch.type === 'non-transac') 
+      runNonTransactional(db, batch.stmts)
+    else {
+      const applied = runTransactional(db, lastInit[0].desc, batch.stmts)
+    }
+  });
 
 }
+
 function runNonTransactional(db: IDatabase, statements: string[]) {
   statements.forEach((statement) => {
     db.prepare(statement).run();

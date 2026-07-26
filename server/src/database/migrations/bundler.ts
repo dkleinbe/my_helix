@@ -16,16 +16,15 @@ type BundleHeader = {
     name: string;
     fileName: string;
 }
+type StmBatches = Array<{type: string, stmts: string[]}>
 
 type BundleItem = {
   desc: BundleHeader;
-  content: { 
-    transactional: string[];
-    nonTransactional: string[];
-  };
+  content: StmBatches
 }
 
-export { BundleHeader, BundleItem }
+
+export { BundleHeader, BundleItem, StmBatches }
 
 export function readBundle(migrationsDir: string) : BundleItem[] {
   const json = fs.readFileSync(migrationsDir + bundleFileName, { encoding: "utf8" });
@@ -139,15 +138,48 @@ function buildStatements(file: string) {
     .split(";")
     .map((s: string) => s.trim())
     .filter((s: string) => s.length !== 0);
-  
-    const nonTransactional = statements.filter((s: string) => s.includes("non-transactional"), );
 
-    //const transactional = statements.filter((s: string) => !s.includes("non-transactional"), );
-    const transactional = statements.filter((s: string) => !s.includes("non-transactional"), )
+  let stmBatches: StmBatches  = []
+  let currentBatch: string = ''
+  let lastBatch: number = 0  
+  statements.forEach((stm) => {
+
+    if (stm.includes("non-transactional")) {
+      if (currentBatch === 'non-transac') {
+
+        stmBatches[lastBatch].stmts.push(stm)
+
+      } else {
+
+        lastBatch = stmBatches.push({type: 'non-transac', stmts: [stm.replace(headerRegex, "")]}) - 1
+  
+        currentBatch = 'non-transac'
+      }
+    } else {
+      if (currentBatch === 'transac') {
+
+        stmBatches[lastBatch].stmts.push(stm)
+
+      } else {
+
+        lastBatch = stmBatches.push({type: 'transac', stmts: [stm.replace(headerRegex, "")]}) - 1
+
+        currentBatch = 'transac'
+      }      
+    }
+  }) 
+
+  logger.info(stmBatches.toString())
+  return stmBatches
+/*
+  const nonTransactional = statements.filter((s: string) => s.includes("non-transactional"), );
+
+   const transactional = statements.filter((s: string) => !s.includes("non-transactional"), )
       .map((stm) => stm.replace(headerRegex, ""));
 
 
-    return { transactional: transactional, nonTransactional: nonTransactional}
+   return { transactional: transactional, nonTransactional: nonTransactional}
+   */
 }
 
 function getFileStats(file: string) {

@@ -11,7 +11,7 @@
     "start": "node build/server.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q build/server.js\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "copy_data": "mkdir -p build/data/database/migrations && cp database/scripts/*.sql build/data/database/migrations",
+    "copy_data": "mkdir -p build/data/database/migrations && cp src/database/scripts/*.sql build/data/database/migrations",
     "clean": "rm -rf build"
   },
   "author": {

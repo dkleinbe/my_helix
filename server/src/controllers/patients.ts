@@ -3,9 +3,9 @@ import queries from '../database/queries.js';
 
 const readAll = async (req: Request, res: Response) => {
   const sqlQuery = `
-      SELECT id, name, lastName, email, sex, birthDate
-      FROM patients
-      ORDER BY name ASC
+      SELECT id, firstName, lastName, email, sex, birthDate
+      FROM contacts
+      ORDER BY lastName ASC
   `;
   await queries.pull(req, res, sqlQuery, [], { id: '', name: 'Patients', verb: 'returned' });
 };
