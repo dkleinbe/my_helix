@@ -7,7 +7,11 @@ const bundleFileName = "bundle.json";
 const versionAndNameRegex = /V(\d+)_(.+).sql/i;
 const underscoreRegex = /_/g;
 const headerRegex= /\/\*[^*]*\*+.*\n([^\/][^*]*)\*+\//
-
+/**
+ * BundleHeader
+ * 
+ * Contains informations about migration **file**
+ */
 type BundleHeader = {
 
     isInit: boolean;
@@ -17,25 +21,46 @@ type BundleHeader = {
     fileName: string;
 }
 type StmBatches = Array<{type: string, stmts: string[]}>
-
+/**
+ * @link BundleHeader 
+ * @link readBundle
+ */
 type BundleItem = {
   desc: BundleHeader;
-  content: StmBatches
+  batches: StmBatches
 }
 
 
 export { BundleHeader, BundleItem, StmBatches }
-
+/**
+ * Reads the json migration file in `migrationsDir` and returns a array of `BundleItem`
+ * 
+ * @param migrationsDir - path to the migration files directory
+ * @returns BundleItem[] - array of BundleItem
+ */
 export function readBundle(migrationsDir: string) : BundleItem[] {
   const json = fs.readFileSync(migrationsDir + bundleFileName, { encoding: "utf8" });
 
   const bundle = JSON.parse(json);
   return bundle;
 }
-
+/**
+ * Creates the json migration `bundle.json` file
+ * 
+ * @param dir - the dir where the migration files (*.sql) are located
+ * @returns 
+ */
 export function createBundle(dir: string) {
 
-  function parseVersionAndName(fileName: string) {
+  /**
+   * Parses the file to get the header attributes
+   * 
+   * If no header is found in the file, the filename is parsed to get the attributes values
+   * 
+   * @param fileName 
+   * @returns BundleHeader | undefined (if no information found: not a migration file)
+   */
+  function parseVersionAndName(fileName: string) : BundleHeader | undefined{
     // Search for header in file
     const headerGroup = fs.readFileSync(migrationsDir + fileName).toString().match(headerRegex);
     if (headerGroup && headerGroup.length === 2) { 
@@ -57,7 +82,7 @@ export function createBundle(dir: string) {
         const version = parseInt(groups[1]);
         const name = groups[2];
         return { 
-          inInit: false,
+          isInit: false,
           version: version, 
           comment: "no comment", 
           name: name.replace(underscoreRegex, " "), 
@@ -171,15 +196,6 @@ function buildStatements(file: string) {
 
   logger.info(stmBatches.toString())
   return stmBatches
-/*
-  const nonTransactional = statements.filter((s: string) => s.includes("non-transactional"), );
-
-   const transactional = statements.filter((s: string) => !s.includes("non-transactional"), )
-      .map((stm) => stm.replace(headerRegex, ""));
-
-
-   return { transactional: transactional, nonTransactional: nonTransactional}
-   */
 }
 
 function getFileStats(file: string) {

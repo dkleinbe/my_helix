@@ -7,6 +7,8 @@
 	"COMMENT": "add contact_types table"
 }
 **/
+
+-- non-transactional
 PRAGMA foreign_keys=OFF;
 
 CREATE TABLE IF NOT EXISTS "contact_types" (
@@ -54,5 +56,5 @@ DROP TABLE contacts;
 
 ALTER TABLE "new_contacts" RENAME TO "contacts";
 
-
+-- non-transactional
 PRAGMA foreign_keys=ON;

@@ -55,7 +55,7 @@ function run(db: IDatabase, all: BundleItem[]) {
     .sort((m1, m2) => m1.desc.version - m2.desc.version)
     .forEach((m) => {
 
-      m.content.forEach(batch => {
+      m.batches.forEach(batch => {
         if (batch.type === 'non-transac') 
           runNonTransactional(db, batch.stmts)
         else {
@@ -82,7 +82,7 @@ function createDatabase(all: BundleItem[]) {
   
   logger.info('DB: Init with latest init : ' + lastInit[0].desc.version)
 
-  lastInit[0].content.forEach(batch => {
+  lastInit[0].batches.forEach(batch => {
     if (batch.type === 'non-transac') 
       runNonTransactional(db, batch.stmts)
     else {
