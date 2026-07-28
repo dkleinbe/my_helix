@@ -42,6 +42,11 @@ const useContactsRoute = () => {
     const getAllRoles = async () => {
         return await api.get(`${baseUrl}/roles`);
     };
+
+    const getAllTypes = async () => {
+        return await api.get(`${baseUrl}/types`);
+    };
+
     
     const getAllStates = async () => {
         return await api.get(`${baseUrl}/states`);
@@ -62,6 +67,7 @@ const useContactsRoute = () => {
         enable,
         getAll,
         getAllRoles,
+        getAllTypes,
         getAllStates,
         getOne,
         getPractitioners,

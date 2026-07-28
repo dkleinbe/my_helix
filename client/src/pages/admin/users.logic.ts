@@ -1,4 +1,4 @@
-import { IUsers } from '../../types/interfaces';
+import { IUser } from '../../types/interfaces';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import setNotification from '../../components/errors/feedback-notification';
 import useApplicationRoutes from '../../api/routes';
@@ -16,7 +16,7 @@ const useUsers = () => {
         setRefresh(!refresh);
     };
 
-    const [users, setUsers] = useState<IUsers[]>([]);
+    const [users, setUsers] = useState<IUser[]>([]);
     const [refresh, setRefresh] = useState(false);
     const [fetching, setFetching] = useState(false);
 

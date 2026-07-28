@@ -2,7 +2,7 @@ import { Button, Grid, Group, Modal, PasswordInput, Select, Text, TextInput } fr
 import { useModalUserDetails } from './modalUserDetails.logic';
 import ModalOverlay from '../../components/modal-overlay';
 import { JSX, useEffect, useState } from 'react';
-import { IUsers, IRoles, IStates } from '../../types/interfaces';
+import { IUser, IRole, IState } from '../../types/interfaces';
 import useApplicationRoutes from '../../api/routes';
 import setNotification from '../../components/errors/feedback-notification';
 import { CreateRows } from '../../components/list-view/rows';
@@ -13,14 +13,14 @@ interface IProps {
   mode: Mode;
   show: boolean;
   toggleModal: () => void;
-  user: IUsers | undefined
+  user: IUser | undefined
 }
 
 const ModalUserDetails = ({ mode, show, toggleModal, user }: IProps): JSX.Element => {
   const { t } = useTranslation();
   const { form, handleSave } = useModalUserDetails(mode, toggleModal);
-  const [roles, setRoles] = useState<IRoles[]>([]);
-  const [states, setStates] = useState<IStates[]>([]);
+  const [roles, setRoles] = useState<IRole[]>([]);
+  const [states, setStates] = useState<IState[]>([]);
   const routes = useApplicationRoutes();
 
   useEffect(() => {

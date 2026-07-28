@@ -7,7 +7,7 @@ import { showNotification } from '@mantine/notifications';
 import { DataTable, DataTableSortStatus  } from 'mantine-datatable';
 import setNotification from '../../components/errors/feedback-notification';
 import useApplicationRoutes from '../../api/routes';
-import { IUsers } from '../../types/interfaces';
+import { IUser } from '../../types/interfaces';
 
 interface IProps {
   data: any;
@@ -19,13 +19,13 @@ export function GettingStartedExample({ data ,  fetching }
 {
   const [sortedData, setSortedData] = useState(data);
   const routes = useApplicationRoutes();
-  const [sortStatus, setSortStatus] = useState<DataTableSortStatus<IUsers>>({
+  const [sortStatus, setSortStatus] = useState<DataTableSortStatus<IUser>>({
     columnAccessor: 'login',
     direction: 'asc',
   });
   
   useEffect(() => {
-    const data_ = sortBy(data, sortStatus.columnAccessor) as IUsers[];
+    const data_ = sortBy(data, sortStatus.columnAccessor) as IUser[];
     setSortedData(sortStatus.direction === 'desc' ? data_.reverse() : data_);
   }, [sortStatus, data]);
 

@@ -40,5 +40,6 @@
   "filter-last-names": "Filter last names",
   "phone": "Phone number",
   "filter-phone": "Filter phone numbers",
-  "search-phone": "Search phone number"
+  "search-phone": "Search phone number",
+  "user_type": "Type"
 }

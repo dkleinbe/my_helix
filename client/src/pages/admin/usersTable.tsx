@@ -6,15 +6,15 @@ import { Box, Group, TextInput, ActionIcon, MultiSelect, Modal, Text } from '@ma
 import { showNotification } from '@mantine/notifications';
 import { useDebouncedValue, useDisclosure } from '@mantine/hooks';
 import { DataTable, DataTableSortStatus  } from 'mantine-datatable';
-import { ID, KindAppointment, Role, UserStatus } from '../../components/custom-badges';
+import { ID, Role, UserStatus } from '../../components/custom-badges';
 import setNotification from '../../components/errors/feedback-notification';
 import useApplicationRoutes from '../../api/routes';
-import { IUsers } from '../../types/interfaces';
+import { IUser } from '../../types/interfaces';
 import { ModalUserDetails, Mode } from './modalUserDetails';
 import { useTranslation } from 'react-i18next';
 
 interface IProps {
-  data: IUsers[];
+  data: IUser[];
   fetching: boolean;
   onAction: () => void;
 }
@@ -25,23 +25,26 @@ export function UsersTable({ data ,  fetching, onAction } : IProps)
   const [sortedData, setSortedData] = useState(data);
   const [query, setQuery] = useState('');
   const routes = useApplicationRoutes();
-  const [sortStatus, setSortStatus] = useState<DataTableSortStatus<IUsers>>({
+  const [sortStatus, setSortStatus] = useState<DataTableSortStatus<IUser>>({
     columnAccessor: 'login',
     direction: 'asc',
   });
   const [debouncedQuery] = useDebouncedValue(query, 200);
+
   const roles = useMemo(() => {
     const roles = new Set(data.map((e) => e.role));
     return [...roles];
   }, [data]);
+
   const states = useMemo(() => {
     const states = new Set(data.map((e) => e.state));
     return [...states];
   }, [data]);
+
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
   const [selectedStates, setSelectedStates] = useState<string[]>([]);
   const [show, setShow] = useState(false);
-  const [user, setUser] = useState<IUsers|undefined>();
+  const [user, setUser] = useState<IUser|undefined>();
 
   const toggleModal = () => {
     if (show)
@@ -77,7 +80,7 @@ export function UsersTable({ data ,  fetching, onAction } : IProps)
   
   
   useEffect(() => {
-    const data_ = sortBy(data, sortStatus.columnAccessor) as IUsers[];
+    const data_ = sortBy(data, sortStatus.columnAccessor) as IUser[];
     setSortedData(sortStatus.direction === 'desc' ? data_.reverse() : data_);
   }, [sortStatus, data]);
 
@@ -128,7 +131,7 @@ export function UsersTable({ data ,  fetching, onAction } : IProps)
           ),
           filtering: query !== '',
           sortable: true 
-        },
+        },      
         { 
           accessor: 'role', 
           title: t('role'),

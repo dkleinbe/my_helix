@@ -1,7 +1,7 @@
 import { JSX, useEffect, useState } from 'react';
 import { Button, Title, TextInput, Card, Center, Grid } from '@mantine/core';
 import ChangePassword from './change-password';
-import { IUsers } from '../../types/interfaces';
+import { IUser } from '../../types/interfaces';
 import cnf from '../../config/config';
 import moment from 'moment';
 import useApplicationRoutes from '../../api/routes';
@@ -10,7 +10,7 @@ const Account = ({ id }: { id: string }): JSX.Element => {
     const routes = useApplicationRoutes();
     const [show, setShow] = useState(false);
     const toggleModal = () => setShow(!show);
-    const [user, setUser] = useState<IUsers>();
+    const [user, setUser] = useState<IUser>();
 
     useEffect(() => {
         const fetchData = async () => {

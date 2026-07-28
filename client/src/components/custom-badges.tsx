@@ -93,6 +93,31 @@ const UserStatus = ({ status }: { status: string }): JSX.Element => {
     );
 };
 
+const ContactType = ({ type_id }: { type_id: number }): JSX.Element => {
+    let color: string;
+
+    const types: string[] = []
+    let bits = 0x0001
+    console.log('Type: ', type_id)
+    for (let n = 0 ; n < 8 ; n++) {
+        
+        if (type_id & bits)
+            types.push("type:" + type_id)
+        color = 'gray'; // TODO: deal with colors
+        bits = bits << 1
+    }
+
+    const listBadges = types.map(tt =>         
+        <Badge radius="md" variant="outline" color={color}>
+            {tt}
+        </Badge>)
+    return (
+       <>{listBadges}</>
+    );
+};
+
+
+
 const ContactStatus = UserStatus;
 
 export { 
@@ -103,5 +128,6 @@ export {
     StateAppointment, 
     Role, 
     UserStatus, 
+    ContactType,
     ContactStatus 
 };

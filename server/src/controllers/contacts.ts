@@ -2,9 +2,20 @@ import { Request, Response } from 'express';
 import queries from '../database/queries.js';
 import bcrypt from 'bcrypt';
 
+const readAllTypes = async (req: Request, res: Response) => {
+  const sqlQuery = `
+    SELECT contact_types.id value,
+           contact_types.label label
+    FROM contact_types
+    ORDER BY label ASC
+  `;
+  await queries.pull(req, res, sqlQuery, [], { id: '', name: 'contact_types', verb: 'returned' });
+};
+
 const readAll = async (req: Request, res: Response) => {
   const sqlQuery = `
     SELECT contacts.id,
+            type_id,
             firstName,
             lastName,
             birthDate,
@@ -93,7 +104,7 @@ const update = async (req: Request, res: Response) => {
             job = ?
       WHERE id = ?
   `;
-  const hashedPassword = await bcrypt.hash(req.body.password, 10);
+  // TODO: (remove this comment) const hashedPassword = await bcrypt.hash(req.body.password, 10);
   const values = [
             req.body.firstName,
             req.body.lastName,
@@ -112,6 +123,7 @@ const update = async (req: Request, res: Response) => {
 
 
 export default {
+  readAllTypes,
   readAll,
   create,
   update,

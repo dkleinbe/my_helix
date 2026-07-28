@@ -15,6 +15,8 @@ export interface IPatient {
 
 export interface IContact {
     id: string;
+    type_id: number,
+    type: string;
     firstName: string;
     lastName: string;
     birthDate: string;
@@ -28,6 +30,10 @@ export interface IContact {
     passif: string;
 }
 
+export interface IContactType {
+    value: number
+    label: string
+}
 export interface IAppointment {
     id?: string;
     patientId: string;
@@ -109,8 +115,8 @@ export interface IAppointmentDataEdit {
     phone: string;
     address: string;
 }
-// TODO: mettre au singulier
-export interface IUsers {
+
+export interface IUser {
     id: number;
     login: string;
     role_id: number;
@@ -121,13 +127,13 @@ export interface IUsers {
     clearPassword: string;
     lastActive: string;
 }
-// TODO: mettre au singulier
-export interface IRoles {
+
+export interface IRole {
     value: number;
     label: string;
 }
-// TODO: mettre au singulier
-export interface IStates {
+
+export interface IState {
     value: number;
     label: string;
 }

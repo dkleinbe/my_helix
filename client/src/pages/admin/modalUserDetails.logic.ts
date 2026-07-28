@@ -1,7 +1,7 @@
 import { useForm, isNotEmpty } from '@mantine/form';
 import useApplicationRoutes from '../../api/routes';
 import setNotification from '../../components/errors/feedback-notification';
-import { IUsers } from '../../types/interfaces';
+import { IUser } from '../../types/interfaces';
 import { Mode } from './modalUserDetails'
 import { create, fromPairs } from 'lodash';
 import { useTranslation } from 'react-i18next';
