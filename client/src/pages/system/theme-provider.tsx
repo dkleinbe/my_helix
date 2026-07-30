@@ -56,7 +56,7 @@ const ThemeProvider = ({ children }: { children: JSX.Element[] }) => {
   //   setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
 
   return (
-    <MantineProvider defaultColorScheme="auto" theme={helixTheme}>
+    <MantineProvider defaultColorScheme="auto" >
       {children}
     </MantineProvider>
   );

@@ -102,7 +102,7 @@ const ContactType = ({ type_id }: { type_id: number }): JSX.Element => {
     for (let n = 0 ; n < 8 ; n++) {
         
         if (type_id & bits)
-            types.push("type:" + type_id)
+            types.push("type: " + bits)
         color = 'gray'; // TODO: deal with colors
         bits = bits << 1
     }

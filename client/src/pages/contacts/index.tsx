@@ -1,24 +1,31 @@
 import { JSX, useEffect, useState } from 'react';
 import { Badge, Button, Chip, Flex, Grid, Group, Paper, Title, useMantineColorScheme } from '@mantine/core';
+import { showNotification } from '@mantine/notifications';
 import useApplicationRoutes from '../../api/routes';
 import { useContacts } from './contacts.logic';
 import ContactsTable from './contactsTable';
 import { useNavigate } from 'react-router-dom';
 import setNotification from '../../components/errors/feedback-notification';
 import { IContactType } from '../../types/interfaces';
+import { forEach } from 'lodash';
 
 const Contacts = (): JSX.Element => {
   const [mainColor, setMainColor] = useState('fr-yellow.4');
   const { colorScheme } = useMantineColorScheme();
   // const { classes } = ContactsStyles();
-  const { contacts, fetching, reload, toggleModal } = useContacts();
+  const { contacts, fetching, reload, toggleModal, fetchAllContacts } = useContacts();
   const navigate = useNavigate();
   const routes = useApplicationRoutes();
   const handleRowClick = (id: string) => {
     navigate(`/contacts/${id}`);
   };
   const [types, setTypes] = useState<IContactType[]>([]);
-
+  const [typeValue, setTypeValue] = useState<string | null>('-1');
+  const handleChipClick = (event: React.MouseEvent<HTMLInputElement>) => {
+    if (event.currentTarget.value === typeValue?.toString()) {
+      setTypeValue(null);
+    }
+  };
   useEffect(() => {
     setMainColor(colorScheme === 'dark' ? 'fr-yellow.6' : 'fr-yellow.4');
   }, [colorScheme]);
@@ -68,10 +75,37 @@ const Contacts = (): JSX.Element => {
         gap={{ base: 'sm', sm: 'lg' }}
         justify={{ sm: 'left' }}
       >
-      {types.map(tt =>         
-          <Chip checked={false} >
-              {tt.label}
-          </Chip>)}
+      <Chip.Group 
+        multiple={false}
+        value={typeValue}
+        onChange={(tv) => { 
+            setTypeValue(tv)
+            fetchAllContacts(tv)
+            // let types: number = 0
+            // value.forEach((v) => {
+            //   types += parseInt(v)
+            // })
+            // fetchAllContacts(types.toString())
+            showNotification({
+              title: `Clicked on ${tv}`,
+              message: `You clicked on type ${tv}`,
+              withBorder: true,
+            })
+          }
+        }
+      >
+        <Group justify="center" mt="md">
+          <Chip value="-1" onClick={handleChipClick}>All</Chip>
+          {types.map(tt =>         
+              <Chip 
+                value={tt.value.toString()}
+                onClick={handleChipClick}
+              >
+                {tt.label}
+              </Chip>)
+          } 
+        </Group>       
+      </Chip.Group>
       </Flex>      
       <Paper shadow="sm" radius="md" p="lg" withBorder my="lg">
         <ContactsTable data={contacts} fetching={fetching} onAction={reload} />

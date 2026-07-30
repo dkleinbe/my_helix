@@ -1,18 +1,20 @@
 import { Request, Response } from 'express';
 import queries from '../database/queries.js';
 import bcrypt from 'bcrypt';
+import loggerBuilder from '../tools/tapeLogger.js';
 
 const readAllTypes = async (req: Request, res: Response) => {
   const sqlQuery = `
     SELECT contact_types.id value,
            contact_types.label label
     FROM contact_types
-    ORDER BY label ASC
+    ORDER BY value ASC
   `;
   await queries.pull(req, res, sqlQuery, [], { id: '', name: 'contact_types', verb: 'returned' });
 };
 
 const readAll = async (req: Request, res: Response) => {
+  loggerBuilder.info('Types = ' +  req.query.types)
   const sqlQuery = `
     SELECT contacts.id,
             type_id,
@@ -26,9 +28,10 @@ const readAll = async (req: Request, res: Response) => {
             city,
             job
     FROM contacts
+    WHERE type_id & ?
     ORDER BY lastName ASC
   `;
-  await queries.pull(req, res, sqlQuery, [], { id: '', name: 'Contacts', verb: 'returned' });
+  await queries.pull(req, res, sqlQuery, [req.query.types], { id: '', name: 'Contacts', verb: 'returned' });
 };
 
 

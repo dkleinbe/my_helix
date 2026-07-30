@@ -34,24 +34,27 @@ const useContacts = () => {
         return useCallback(() => isMounted.current, []);
     }
     const isMounted = useIsMounted();
+
     useEffect(() => {
-        const fetchAllContacts = async () => {
-            setFetching(true);
-            try {
-                const res = await routes.contacts.getAll();
-                if (isMounted()) {
-                    setContacts(res.data);
-                    setFetching(false);
-                }
-            } catch (error: any) {
-                if (!error?.response) setNotification(true, 'Network error');
-                else if (error.response.status !== 404)
-                    setNotification(true, `${error.message}: ${error.response.data.message}`);
-            }
-        };
-        fetchAllContacts();
+
+        fetchAllContacts("-1");
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [refresh]);
+
+    const fetchAllContacts = async (types: string) => {
+        setFetching(true);
+        try {
+            const res = await routes.contacts.getAll(types);
+            if (isMounted()) {
+                setContacts(res.data);
+                setFetching(false);
+            }
+        } catch (error: any) {
+            if (!error?.response) setNotification(true, 'Network error');
+            else if (error.response.status !== 404)
+                setNotification(true, `${error.message}: ${error.response.data.message}`);
+        }
+    };    
 
     const disableContact = async (uid: string) => {
         try {
@@ -75,7 +78,7 @@ const useContacts = () => {
         }
     };
 
-    return { contacts, fetching, show, toggleModal, reload, disableContact, enableContact };
+    return { contacts, fetching, show, toggleModal, reload, fetchAllContacts, disableContact, enableContact };
 };
 
 export { useContacts };

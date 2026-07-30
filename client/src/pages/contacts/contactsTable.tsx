@@ -26,9 +26,7 @@ export function ContactsTable({ data ,  fetching, onAction } : IProps)
   const [queryLastname, setQueryLastname] = useState('');
   const [queryFirstname, setQueryFirstname] = useState('');
   const [queryEmail, setQueryEmail] = useState('');   
-  const [queryPhone, setQueryPhone] = useState('');    
-  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);  
-  const routes = useApplicationRoutes();
+  const [queryPhone, setQueryPhone] = useState('');     
   const [sortStatus, setSortStatus] = useState<DataTableSortStatus<IContact>>({
     columnAccessor: 'lastName',
     direction: 'asc',
@@ -60,13 +58,10 @@ export function ContactsTable({ data ,  fetching, onAction } : IProps)
   
   useEffect(() => {
     setSortedData(
-      initialRecords.filter(({ type, lastName, firstName, email, phone }
-        : { type: string, lastName: string, firstName: string, email: string, phone: string }) => {
+      initialRecords.filter(({ lastName, firstName, email, phone }
+        : { lastName: string, firstName: string, email: string, phone: string }) => {
 
-        if (selectedTypes.length && !selectedTypes.some((d) => d === type))
-          return false;
-
-          if (
+        if (
           debouncedQueryLastname !== '' &&
           !`${lastName}`.toLowerCase().includes(debouncedQueryLastname.trim().toLowerCase()) 
         )
@@ -94,11 +89,12 @@ export function ContactsTable({ data ,  fetching, onAction } : IProps)
       })
     );
     
-  }, [selectedTypes,
+  }, [
       debouncedQueryLastname, 
       debouncedQueryFirsname, 
       debouncedQueryEmail, 
-      debouncedQueryPhone]);
+      debouncedQueryPhone
+    ]);
   
   
   useEffect(() => {
@@ -137,21 +133,6 @@ export function ContactsTable({ data ,  fetching, onAction } : IProps)
           accessor: 'type', 
           title: t('user_type'),
           render: (user) => (<ContactType type_id={user.type_id} />),
-          filter: (
-            <MultiSelect
-              label={t('user_type')}
-              description={t('show-all-users-with-role')}
-              data={types}
-              value={selectedTypes}
-              placeholder={t('search-users')}
-              onChange={setSelectedTypes}
-              leftSection={<IconSearch size={16} />}
-              comboboxProps={{ withinPortal: false }}
-              clearable
-              searchable
-            />
-          ),
-          filtering: selectedTypes.length > 0,
           sortable: true 
         },          
         { 

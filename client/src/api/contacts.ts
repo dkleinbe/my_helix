@@ -35,8 +35,8 @@ const useContactsRoute = () => {
         return api.put(`${baseUrl}/${id}/enable`);
     };
 
-    const getAll = async () => {
-        return await api.get(baseUrl);
+    const getAll = async (types: string) => {
+        return await api.get(`${baseUrl}?types=${types}`);
     };
 
     const getAllRoles = async () => {
