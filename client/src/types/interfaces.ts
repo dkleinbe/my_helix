@@ -27,7 +27,6 @@ export interface IContact {
     address: string;
     job: string;
     doctor: string;
-    passif: string;
 }
 
 export interface IContactType {
@@ -35,10 +34,16 @@ export interface IContactType {
     label: string
 }
 export interface IAppointment {
-    id?: string;
-    patientId: string;
-    date: string;
+    appID: string;
     kind: string;
+    status: string;
+    start: string;
+    end: string;
+    practitionerName: string;
+    practitionerLastName: string;
+    payment?: string;
+    amount?: string;
+    method?: string;
     content: string;
 }
 

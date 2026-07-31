@@ -11,13 +11,14 @@ import Appointment from '../appointment';
 import Appointments from '../appointments';
 import Home from '../home';
 import Contacts from '../contacts'
-import Patient from '../patient';
+import Contact from '../contact'
 import Patients from '../patients';
 // Errors
 import NotFound from '../../components/errors/404';
 import Unauthorized from '../../components/errors/unauthorized';
 import AdminPanel from '../admin';
 import Callback from '../callback';
+import { params } from '../appointment/utils';
 //import Callback from '../logto'; COCO
 
 const AppRouter = () => {
@@ -37,11 +38,12 @@ const AppRouter = () => {
             <Route path="/" element={<Home />} />
             <Route path='contacts'>
               <Route index element={<Contacts />} />
+              <Route path=":contactID" element={<Contact />} />
             </Route>
             <Route path="patients">
               <Route index element={<Patients add={false} />} />
               <Route path="add" element={<Patients add={true} />} />
-              <Route path=":patientID" element={<Patient />} />
+              <Route path=":patientID" element={<Contact />} />
             </Route>
             <Route path="accounting" element={<Accounting />} />
             {/*<Route path="calendar" element={<Calendar />} />*/}

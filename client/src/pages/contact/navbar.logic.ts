@@ -3,9 +3,9 @@ import setNotification from '../../components/errors/feedback-notification';
 import useApplicationRoutes from '../../api/routes';
 import { useState } from 'react';
 import { UseFormReturnType } from '@mantine/form';
-import { IPatient } from './types';
+import { IContact } from '../../types/interfaces';
 
-const usePatientNavBar = (form: UseFormReturnType<IPatient>) => {
+const useContactNavBar = (form: UseFormReturnType<IContact>) => {
     const navigate = useNavigate();
     const routes = useApplicationRoutes();
     const [update, setUpdate] = useState(false);
@@ -28,8 +28,8 @@ const usePatientNavBar = (form: UseFormReturnType<IPatient>) => {
         if (update) {
             if (form.validate().hasErrors) return;
 
-            const finalPatient = {
-                name: form.values.name,
+            const finalContact = {
+                name: form.values.firstName,
                 lastName: form.values.lastName,
                 birthDate: form.values.birthDate,
                 sex: form.values.sex,
@@ -39,15 +39,11 @@ const usePatientNavBar = (form: UseFormReturnType<IPatient>) => {
                 phone: form.values.phone,
                 doctor: form.values.doctor,
                 job: form.values.job,
-                passif: JSON.stringify({
-                    medicalIssues: form.values.medicalIssues,
-                    lastAppointments: form.values.lastAppointments,
-                }),
             };
 
             try {
-                const res = await routes.patients.update(form.values.id, finalPatient);
-                setNotification(false, res.data.message);
+                //const res = await routes.contacts.update(form.values.id, finalContact);
+                //setNotification(false, res.data.message);
             } catch (err: any) {
                 if (!err?.response) setNotification(true, 'Network error');
                 else setNotification(true, `${err.message}: ${err.response.data.message}`);
@@ -63,4 +59,4 @@ const usePatientNavBar = (form: UseFormReturnType<IPatient>) => {
     return { handleDelete, handleUpdate, update, handleExport, showExport };
 };
 
-export { usePatientNavBar };
+export { useContactNavBar };

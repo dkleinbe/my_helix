@@ -98,7 +98,7 @@ const ContactType = ({ type_id }: { type_id: number }): JSX.Element => {
 
     const types: string[] = []
     let bits = 0x0001
-    console.log('Type: ', type_id)
+    
     for (let n = 0 ; n < 8 ; n++) {
         
         if (type_id & bits)

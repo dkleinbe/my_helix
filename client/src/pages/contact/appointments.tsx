@@ -1,4 +1,5 @@
-import { IAppointment, IContent } from './types';
+import { IAppointment } from '../../types/interfaces';
+import {IContent } from './types';
 import { Accordion, Badge, Group, Paper, Text, Textarea, ThemeIcon, Title, Tooltip } from '@mantine/core';
 import moment from 'moment';
 import nbLines from '../../helpers/get-lines';

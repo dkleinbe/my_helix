@@ -1,4 +1,6 @@
-export interface IPatient {
+// TODO: remove that stuff
+/*
+export interface IContact {
     id: string;
     name: string;
     lastName: string;
@@ -13,12 +15,14 @@ export interface IPatient {
     medicalIssues: string;
     lastAppointments: string[];
 }
+*/
 
 export interface IPassif {
     lastAppointments: string[];
     medicalIssues: string;
 }
-
+// TODO: remove that stuff
+/*
 export interface IAppointment {
     appID: string;
     kind: string;
@@ -32,7 +36,7 @@ export interface IAppointment {
     method?: string;
     content: string;
 }
-
+*/
 export interface ITransaction {
     id: string;
     amount: string;

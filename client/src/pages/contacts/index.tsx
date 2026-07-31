@@ -16,9 +16,7 @@ const Contacts = (): JSX.Element => {
   const { contacts, fetching, reload, toggleModal, fetchAllContacts } = useContacts();
   const navigate = useNavigate();
   const routes = useApplicationRoutes();
-  const handleRowClick = (id: string) => {
-    navigate(`/contacts/${id}`);
-  };
+
   const [types, setTypes] = useState<IContactType[]>([]);
   const [typeValue, setTypeValue] = useState<string | null>('-1');
   const handleChipClick = (event: React.MouseEvent<HTMLInputElement>) => {

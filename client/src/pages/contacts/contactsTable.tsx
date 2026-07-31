@@ -1,6 +1,7 @@
 'use client';
 import sortBy from 'lodash/sortBy';
-import { useEffect, useState, useMemo, useRef, useCallback } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { IconSearch, IconX, IconEye, IconEdit, IconTrash, IconUserCircle  } from '@tabler/icons-react';
 import { Box, Group, TextInput, ActionIcon, MultiSelect, Modal, Text } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
@@ -37,13 +38,10 @@ export function ContactsTable({ data ,  fetching, onAction } : IProps)
   const [debouncedQueryEmail] = useDebouncedValue(queryEmail, 200);
   const [debouncedQueryPhone] = useDebouncedValue(queryPhone, 200);
 
-  const types = useMemo(() => {
-    const types = new Set(data.map((e) => e.type));
-    return [...types];
-  }, [data]);
-
   const [show, setShow] = useState(false);
   const [contact, setContact] = useState<IContact|undefined>();
+
+  const navigate = useNavigate();
 
   const toggleModal = () => {
     if (show)
@@ -52,6 +50,10 @@ export function ContactsTable({ data ,  fetching, onAction } : IProps)
     }
     setShow(!show);
       
+  };
+
+  const handleRowClick = (id: string) => {
+    navigate(`/contacts/${id}`);
   };
 
   const initialRecords = data;
@@ -235,8 +237,9 @@ export function ContactsTable({ data ,  fetching, onAction } : IProps)
                 variant="subtle"
                 color="red"
                 onClick={() => {
-                    setContact(contact);
-                    toggleModal();
+                    handleRowClick(contact.id)
+                    //setContact(contact);
+                    //toggleModal();
                   }
                 }
               >

@@ -1,9 +1,9 @@
 import { Button, Divider, Paper, ScrollArea, Table, Text, Title } from '@mantine/core';
-import { ITransaction } from './types';
-import { usePatientAccounting } from './accounting.logic';
+import { ITransaction } from './types.ts';
+import { useContactAccounting } from './accounting.logic.ts';
 import moment from 'moment';
-import { PaymentMethod } from '../../components/custom-badges';
-import ViewPDF from '../../components/pdf/viewer';
+import { PaymentMethod } from '../../components/custom-badges.tsx';
+import ViewPDF from '../../components/pdf/viewer.tsx';
 import NoData from '../../components/table-no-data.tsx';
 
 const rows = (data: ITransaction[], handler: (id: string) => any) =>
@@ -25,7 +25,7 @@ const rows = (data: ITransaction[], handler: (id: string) => any) =>
   ));
 
 const PatientAccounting = ({ data }: { data: ITransaction[] }) => {
-  const { selected, handleShowFacture, showFacture, handleHideFacture } = usePatientAccounting();
+  const { selected, handleShowFacture, showFacture, handleHideFacture } = useContactAccounting();
   return (
     <Paper shadow="md" p="md" radius="md" withBorder>
       <Title order={3}>Transactions</Title>

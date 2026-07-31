@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const usePatientAccounting = () => {
+const useContactAccounting = () => {
     const [selected, setSelected] = useState<string>('0');
     const [showFacture, setShowFacture] = useState<boolean>(false);
 
@@ -16,4 +16,4 @@ const usePatientAccounting = () => {
     return { selected, showFacture, handleShowFacture, handleHideFacture };
 };
 
-export { usePatientAccounting };
+export { useContactAccounting };

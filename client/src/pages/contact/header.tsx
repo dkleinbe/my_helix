@@ -1,17 +1,17 @@
 import { ActionIcon, Avatar, Grid, Group, Title, Tooltip } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import GrantAccess from '../../components/auth/grant-access';
-import { usePatientNavBar } from './navbar.logic';
-import { IPatient } from './types';
-import { usePatientContext } from './context';
+import { useContactNavBar } from './navbar.logic';
+import { IContact } from '../../types/interfaces';
+import { useContactContext } from './context';
 import { useEffect } from 'react';
 import ViewPDF from '../../components/pdf/viewer';
 import { Sex } from '../../components/custom-badges';
 import { IconCheck, IconDownload, IconEdit, IconPhone, IconSend, IconTrash } from '@tabler/icons-react';
 
-const PatientNavBar = ({ form }: { form: UseFormReturnType<IPatient> }) => {
-  const { handleDelete, handleUpdate, update, showExport, handleExport } = usePatientNavBar(form);
-  const { setUpdate } = usePatientContext();
+const ContactNavBar = ({ form }: { form: UseFormReturnType<IContact> }) => {
+  const { handleDelete, handleUpdate, update, showExport, handleExport } = useContactNavBar(form);
+  const { setUpdate } = useContactContext();
   useEffect(() => {
     setUpdate(update);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -24,9 +24,9 @@ const PatientNavBar = ({ form }: { form: UseFormReturnType<IPatient> }) => {
             size="lg"
             radius="lg"
             color="fr-yellow.3"
-          >{`${form.values.name[0]}${form.values.lastName[0]}`}</Avatar>
+          >{`${form.values.firstName[0]}${form.values.lastName[0]}`}</Avatar>
           <Title order={1}>
-            {form.values.name} {form.values.lastName}
+            {form.values.firstName} {form.values.lastName}
           </Title>
           <Sex sex={form.values.sex} />
         </Group>
@@ -69,4 +69,4 @@ const PatientNavBar = ({ form }: { form: UseFormReturnType<IPatient> }) => {
   );
 };
 
-export { PatientNavBar };
+export { ContactNavBar };
