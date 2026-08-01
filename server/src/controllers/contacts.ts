@@ -12,12 +12,17 @@ const readAllTypes = async (req: Request, res: Response) => {
   `;
   await queries.pull(req, res, sqlQuery, [], { id: '', name: 'contact_types', verb: 'returned' });
 };
-
+/**
+ * Reads all contact with `type_id` containing `req.query.types`
+ * @param req 
+ * @param res 
+ */
 const readAll = async (req: Request, res: Response) => {
   loggerBuilder.info('Types = ' +  req.query.types)
+  // TODO: do the field rename in the tatabase schema type_id AS type_bitfield
   const sqlQuery = `
     SELECT contacts.id,
-            type_id,
+            type_id AS type_bitfield,
             firstName,
             lastName,
             birthDate,
@@ -38,6 +43,7 @@ const readAll = async (req: Request, res: Response) => {
 const readOne = async (req: Request, res: Response) => {
   const sqlQuery = `
       SELECT id,
+            type_id AS type_bitfield,
             firstName,
             lastName,
             birthDate,
@@ -104,10 +110,11 @@ const update = async (req: Request, res: Response) => {
             phone = ?,
             address = ?,
             city = ?,
-            job = ?
+            job = ?,
+            type_id = ?
       WHERE id = ?
   `;
-  // TODO: (remove this comment) const hashedPassword = await bcrypt.hash(req.body.password, 10);
+  
   const values = [
             req.body.firstName,
             req.body.lastName,
@@ -117,7 +124,9 @@ const update = async (req: Request, res: Response) => {
             req.body.phone,
             req.body.address,
             req.body.city,
-            req.body.job
+            req.body.job,
+            req.body.type_bitfield,
+            req.body.id
   ];
 
   await queries.push(req, res, sqlQuery, values, { id: req.body.login, name: 'Contact', verb: 'updated' });

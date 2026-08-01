@@ -26,7 +26,7 @@ const ContactNavBar = ({ form }: { form: UseFormReturnType<IContact> }) => {
             color="fr-yellow.3"
           >{`${form.values.firstName[0]}${form.values.lastName[0]}`}</Avatar>
           <Title order={1}>
-            {form.values.firstName} {form.values.lastName}
+            #{form.values.id} {form.values.firstName} {form.values.lastName}
           </Title>
           <Sex sex={form.values.sex} />
         </Group>

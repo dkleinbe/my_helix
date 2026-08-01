@@ -15,8 +15,8 @@ export interface IPatient {
 
 export interface IContact {
     id: string;
-    type_id: number,
-    type: string;
+    type_bitfield: number,
+    //type: string;
     firstName: string;
     lastName: string;
     birthDate: string;

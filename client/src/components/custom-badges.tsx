@@ -1,5 +1,6 @@
 import { Badge } from '@mantine/core';
 import { JSX } from 'react';
+import { contactTypesToStrs } from '../helpers/decode-contact-types'
 
 const ID = ({ id, color }: { id: string; color?: string }): JSX.Element => (
     <Badge color={color ?? 'gray'} variant="dot" size="md">
@@ -96,17 +97,9 @@ const UserStatus = ({ status }: { status: string }): JSX.Element => {
 const ContactType = ({ type_id }: { type_id: number }): JSX.Element => {
     let color: string;
 
-    const types: string[] = []
-    let bits = 0x0001
-    
-    for (let n = 0 ; n < 8 ; n++) {
-        
-        if (type_id & bits)
-            types.push("type: " + bits)
-        color = 'gray'; // TODO: deal with colors
-        bits = bits << 1
-    }
+    const types: string[] = contactTypesToStrs(type_id)
 
+    color = 'gray'; // TODO: deal with colors
     const listBadges = types.map(tt =>         
         <Badge radius="md" variant="outline" color={color}>
             {tt}

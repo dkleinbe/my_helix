@@ -1,5 +1,5 @@
 import useSecureAPI from '../hooks/use-secure-api';
-
+import { IContact } from '../types/interfaces';
 interface ICreateContact {
     login: string;
     role: number;
@@ -7,13 +7,6 @@ interface ICreateContact {
     password: string;
 }
 
-interface IUpdateContact {
-    id: number;
-    login: string;
-    role: number;
-    state: number;
-    password: string;
-}
 
 const useContactsRoute = () => {
     const api = useSecureAPI();
@@ -23,7 +16,7 @@ const useContactsRoute = () => {
         return await api.post(`${baseUrl}/add`, data);
     };
 
-    const update = async (data: IUpdateContact) => {
+    const update = async (data: IContact) => {
         return await api.post(`${baseUrl}/update`, data);
     };
 

@@ -28,8 +28,9 @@ const useContactNavBar = (form: UseFormReturnType<IContact>) => {
         if (update) {
             if (form.validate().hasErrors) return;
 
-            const finalContact = {
-                name: form.values.firstName,
+            const finalContact: IContact = {
+                id: form.values.id,
+                firstName: form.values.firstName,
                 lastName: form.values.lastName,
                 birthDate: form.values.birthDate,
                 sex: form.values.sex,
@@ -39,11 +40,12 @@ const useContactNavBar = (form: UseFormReturnType<IContact>) => {
                 phone: form.values.phone,
                 doctor: form.values.doctor,
                 job: form.values.job,
+                type_bitfield: form.values.type_bitfield
             };
 
             try {
-                //const res = await routes.contacts.update(form.values.id, finalContact);
-                //setNotification(false, res.data.message);
+                const res = await routes.contacts.update(finalContact);
+                setNotification(false, res.data.message);
             } catch (err: any) {
                 if (!err?.response) setNotification(true, 'Network error');
                 else setNotification(true, `${err.message}: ${err.response.data.message}`);

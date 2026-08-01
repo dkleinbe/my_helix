@@ -79,11 +79,7 @@ const Contacts = (): JSX.Element => {
         onChange={(tv) => { 
             setTypeValue(tv)
             fetchAllContacts(tv)
-            // let types: number = 0
-            // value.forEach((v) => {
-            //   types += parseInt(v)
-            // })
-            // fetchAllContacts(types.toString())
+
             showNotification({
               title: `Clicked on ${tv}`,
               message: `You clicked on type ${tv}`,

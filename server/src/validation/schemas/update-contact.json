@@ -1,6 +1,9 @@
 {
     "type": "object",
     "properties": {
+        "id": {
+            "type": "string"
+        },        
         "firstName": {
             "type": "string"
         },
@@ -27,9 +30,13 @@
         },
         "job": {
             "type": "string"
-        }                  
+        },
+        "type_bitfield": {
+            "type": "number"
+        }                         
     },
     "required": [
+        "id",
         "firstName",
         "lastName",
         "birthDate",
@@ -37,7 +44,8 @@
         "phone",
         "email",
         "address",
-        "city"
+        "city",
+        "type_bitfield"
     ],
     "additionalProperties": false
 }

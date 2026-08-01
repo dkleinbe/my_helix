@@ -8,8 +8,6 @@ import { showNotification } from '@mantine/notifications';
 import { useDebouncedValue, useDisclosure } from '@mantine/hooks';
 import { DataTable, DataTableSortStatus  } from 'mantine-datatable';
 import { ID, ContactType } from '../../components/custom-badges';
-import setNotification from '../../components/errors/feedback-notification';
-import useApplicationRoutes from '../../api/routes';
 import { IContact } from '../../types/interfaces';
 //import { ModalContactDetails, Mode } from './modalContactDetails';
 import { useTranslation } from 'react-i18next';
@@ -134,7 +132,7 @@ export function ContactsTable({ data ,  fetching, onAction } : IProps)
         { 
           accessor: 'type', 
           title: t('user_type'),
-          render: (user) => (<ContactType type_id={user.type_id} />),
+          render: (contact) => (<ContactType type_id={contact.type_bitfield} />),
           sortable: true 
         },          
         { 

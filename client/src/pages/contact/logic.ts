@@ -12,8 +12,8 @@ const useContact = (id: string) => {
     const form = useForm<IContact>({
         initialValues: {
             id: id,
-            type_id: 0,
-            type: '',
+            type_bitfield: 0,
+            //type: '',
             firstName: '',
             lastName: '',
             birthDate: '',
@@ -36,6 +36,7 @@ const useContact = (id: string) => {
             address: isNotEmpty('Address is required'),
             phone: (value) => (value.length < 10 ? 'Phone must be at least 10 chars' : null),
             job: isNotEmpty('Job is required'),
+            type_bitfield: (value) => (value < 1 ? 'Type can not be null' : null),
         },
     });
 
@@ -45,6 +46,7 @@ const useContact = (id: string) => {
                 const response = await routes.contacts.getOne(id);
                 form.setValues({
                     id: id,
+                    type_bitfield: response.data[0].type_bitfield,
                     firstName: response.data[0].firstName,
                     lastName: response.data[0].lastName,
                     birthDate: response.data[0].birthDate,

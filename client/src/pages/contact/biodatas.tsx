@@ -9,12 +9,20 @@ import { useContactContext } from './context';
 import useApplicationRoutes from '../../api/routes';
 import { IContactType } from '../../types/interfaces';
 import setNotification from '../../components/errors/feedback-notification';
+import { contactTypesToNumbers, contactTypesToStrs, numbersTocontactTypes, strsTocontactTypes } from '../../helpers/decode-contact-types'
 
 
 const Biodatas = ({ form }: { form: UseFormReturnType<IContact> }) => {
     const { update } = useContactContext();
     const [types, setTypes] = useState<IContactType[]>([]);
+    const [typeValues, setTypeValues] = useState<string[]>();
     const routes = useApplicationRoutes();
+
+    // const handleChipClick = (event: React.MouseEvent<HTMLInputElement>) => {
+    //     if (event.currentTarget.value === typeValue?.toString()) {
+    //     setTypeValue(null);
+    //     }
+    // };
 
     useEffect(() => {
     const fetchAllTypes = async () => {
@@ -35,9 +43,14 @@ const Biodatas = ({ form }: { form: UseFormReturnType<IContact> }) => {
             else if (error.response.status !== 404)
                 setNotification(true, `${error.message}: ${error.response.data.message}`);
         }
+        
     };  
     fetchAllTypes();
     }, []);
+
+    useEffect(() => {
+        setTypeValues(contactTypesToStrs(form.values.type_bitfield))
+    }, [form.values.type_bitfield])
 
 
     return (
@@ -51,15 +64,11 @@ const Biodatas = ({ form }: { form: UseFormReturnType<IContact> }) => {
       >
       <Chip.Group 
         multiple={true}
-        //value={typeValue}
+        
+        value={typeValues}
         onChange={(tv) => { 
-            //setTypeValue(tv)
-            //fetchAllContacts(tv)
-            // let types: number = 0
-            // value.forEach((v) => {
-            //   types += parseInt(v)
-            // })
-            // fetchAllContacts(types.toString())
+            setTypeValues(tv)
+            form.values.type_bitfield = strsTocontactTypes(tv)
             showNotification({
               title: `Clicked on ${tv}`,
               message: `You clicked on type ${tv}`,
@@ -68,12 +77,12 @@ const Biodatas = ({ form }: { form: UseFormReturnType<IContact> }) => {
           }
         }
       >
-        <Group justify="center" mt="md">
+        <Group justify="center" mt="md" >
           
           {types.map(tt =>         
               <Chip 
+                disabled={!update}
                 value={tt.value.toString()}
-                //onClick={handleChipClick}
               >
                 {tt.label}
               </Chip>)
