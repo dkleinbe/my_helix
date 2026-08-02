@@ -9,10 +9,11 @@ import { useContactContext } from './context';
 import useApplicationRoutes from '../../api/routes';
 import { IContactType } from '../../types/interfaces';
 import setNotification from '../../components/errors/feedback-notification';
-import { contactTypesToNumbers, contactTypesToStrs, numbersTocontactTypes, strsTocontactTypes } from '../../helpers/decode-contact-types'
-
+import { contactTypesToStrs, strsTocontactTypes } from '../../helpers/decode-contact-types'
+import { useTranslation } from 'react-i18next';
 
 const Biodatas = ({ form }: { form: UseFormReturnType<IContact> }) => {
+    const { t } = useTranslation();
     const { update } = useContactContext();
     const [types, setTypes] = useState<IContactType[]>([]);
     const [typeValues, setTypeValues] = useState<string[]>();
@@ -93,8 +94,8 @@ const Biodatas = ({ form }: { form: UseFormReturnType<IContact> }) => {
             <Grid columns={12}>
                 <Grid.Col span={6}>
                     <TextInput
-                        label="Name"
-                        placeholder="Name"
+                        label={t('firstName')}
+                        placeholder={t('firstName')}
                         {...form.getInputProps('firstName')}
                         readOnly={!update}
                         withAsterisk={update}
@@ -102,8 +103,8 @@ const Biodatas = ({ form }: { form: UseFormReturnType<IContact> }) => {
                 </Grid.Col>
                 <Grid.Col span={6}>
                     <TextInput
-                        label="Last Name"
-                        placeholder="Last Name"
+                        label={t('lastName')}
+                        placeholder={t('lastName')}
                         {...form.getInputProps('lastName')}
                         readOnly={!update}
                         withAsterisk={update}
@@ -111,8 +112,8 @@ const Biodatas = ({ form }: { form: UseFormReturnType<IContact> }) => {
                 </Grid.Col>
                 <Grid.Col span={6}>
                     <TextInput
-                        label="Birth Date"
-                        placeholder="Birth Date"
+                        label={t('birth-date')}
+                        placeholder={t('birth-date')}
                         {...form.getInputProps('birthDate')}
                         readOnly={!update}
                         withAsterisk={update}
@@ -120,8 +121,8 @@ const Biodatas = ({ form }: { form: UseFormReturnType<IContact> }) => {
                 </Grid.Col>
                 <Grid.Col span={6}>
                     <TextInput
-                        label="Sex"
-                        placeholder="Sex"
+                        label={t('gender')}
+                        placeholder={t('gender')}
                         {...form.getInputProps('sex')}
                         readOnly={!update}
                         withAsterisk={update}
@@ -129,8 +130,8 @@ const Biodatas = ({ form }: { form: UseFormReturnType<IContact> }) => {
                 </Grid.Col>
                 <Grid.Col span={12}>
                     <TextInput
-                        label="Address"
-                        placeholder="Address"
+                        label={t('address')}
+                        placeholder={t('address')}
                         {...form.getInputProps('address')}
                         readOnly={!update}
                         withAsterisk={update}
@@ -138,8 +139,8 @@ const Biodatas = ({ form }: { form: UseFormReturnType<IContact> }) => {
                 </Grid.Col>
                 <Grid.Col span={6}>
                     <TextInput
-                        label="City"
-                        placeholder="City"
+                        label={t('ville')}
+                        placeholder={t('ville')}
                         {...form.getInputProps('city')}
                         readOnly={!update}
                         withAsterisk={update}
@@ -147,8 +148,8 @@ const Biodatas = ({ form }: { form: UseFormReturnType<IContact> }) => {
                 </Grid.Col>
                 <Grid.Col span={6}>
                     <TextInput
-                        label="Phone"
-                        placeholder="Phone"
+                        label={t('phone')}
+                        placeholder={t('phone')}
                         {...form.getInputProps('phone')}
                         readOnly={!update}
                         withAsterisk={update}
@@ -168,16 +169,24 @@ const Biodatas = ({ form }: { form: UseFormReturnType<IContact> }) => {
                 </Grid.Col>
                 <Grid.Col span={6}>
                     <TextInput
+                        label={t('job')}
+                        placeholder={t('job')}
+                        {...form.getInputProps('job')}
+                        readOnly={!update}
+                    />
+                </Grid.Col>                
+                <Grid.Col span={6}>
+                    <TextInput
                         label="Médecin traitant"
                         placeholder="Médecin traitant"
-                        defaultValue={form.values.doctor}
+                        {...form.getInputProps('doctor')}
                         readOnly={!update}
                     />
                 </Grid.Col>
                 <Grid.Col span={6}>
                     <TextInput
-                        label="Email"
-                        placeholder="Email"
+                        label={t('email')}
+                        placeholder={t('email')}
                         {...form.getInputProps('email')}
                         readOnly={!update}
                         withAsterisk={update}
@@ -195,6 +204,7 @@ const Biodatas = ({ form }: { form: UseFormReturnType<IContact> }) => {
                         }
                     />
                 </Grid.Col>
+                {/*
                 <GrantAccess levels={['ADMIN', 'PRACTITIONER']}>
                     <Grid.Col span={12}>
                         <Textarea
@@ -206,6 +216,7 @@ const Biodatas = ({ form }: { form: UseFormReturnType<IContact> }) => {
                         />
                     </Grid.Col>
                 </GrantAccess>
+                */}
             </Grid>
         </Paper>
     );

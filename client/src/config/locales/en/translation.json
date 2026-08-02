@@ -41,5 +41,9 @@
   "phone": "Phone number",
   "filter-phone": "Filter phone numbers",
   "search-phone": "Search phone number",
-  "user_type": "Type"
+  "user_type": "Type",
+  "birth-date": "Birth date",
+  "address": "Address",
+  "ville": "City",
+  "job": "Job"
 }

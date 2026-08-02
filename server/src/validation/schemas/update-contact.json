@@ -31,6 +31,9 @@
         "job": {
             "type": "string"
         },
+        "doctor": {
+            "type": "string"
+        },        
         "type_bitfield": {
             "type": "number"
         }                         

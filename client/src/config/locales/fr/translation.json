@@ -41,5 +41,10 @@
   "phone": "Téléphone",
   "filter-phone": "Filtrer les numéros de téléphone",
   "search-phone": "Recherche de numéro de téléphone",
-  "user_type": "Type"
+  "user_type": "Type",
+  "birth-date": "Date de naissance",
+  "gender": "Genre",
+  "address": "Adresse",
+  "ville": "Ville",
+  "job": "Profession"
 }
