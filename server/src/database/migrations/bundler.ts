@@ -50,7 +50,7 @@ export function readBundle(migrationsDir: string) : BundleItem[] {
  * @param dir - the dir where the migration files (*.sql) are located
  * @returns 
  */
-export function createBundle(dir: string) {
+export function createBundle(dir: string) : BundleItem | undefined{
 
   /**
    * Parses the file to get the header attributes
@@ -95,7 +95,7 @@ export function createBundle(dir: string) {
 
   if (dir.length === 0) {
     logger.error("Error: Migrations folder path expected as first argument");
-    return;
+    return ;
   }
 
   const migrationsDir = dir;
@@ -111,7 +111,7 @@ export function createBundle(dir: string) {
 
   const allFiles = fs.readdirSync(migrationsDir);
   let lastModifiedMs = 0;
-  let sqlFiles: {desc: {}, name: string}[] = ([]);
+  let sqlFiles: { desc: BundleHeader, name: string}[] = ([]);
   allFiles
     .sort((a, b) => a.localeCompare(b))
     .forEach((f) => {
@@ -135,10 +135,10 @@ export function createBundle(dir: string) {
     Math.trunc(bundleStats.mtimeMs / 1000) !== Math.trunc(lastModifiedSeconds)
   ) {
     
-    const bundleObj = sqlFiles.map((file) => {
+    const bundleObj: BundleItem[] = sqlFiles.map((file) => {
       return {
         desc: file.desc,
-        content: buildStatements(path.join(migrationsDir, file.name)),
+        batches: buildStatements(path.join(migrationsDir, file.name)),
       };
     });
 
@@ -155,7 +155,7 @@ export function createBundle(dir: string) {
   logger.info("Nothing to generate, SQL bundle is up to date!");
 }
 
-function buildStatements(file: string) {
+function buildStatements(file: string) : StmBatches {
 
   const content =  fs.readFileSync(file).toString();
 

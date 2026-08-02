@@ -13,16 +13,16 @@ const readAllTypes = async (req: Request, res: Response) => {
   await queries.pull(req, res, sqlQuery, [], { id: '', name: 'contact_types', verb: 'returned' });
 };
 /**
- * Reads all contact with `type_id` containing `req.query.types`
+ * Reads all contact with `type_bitfield` containing `req.query.types`
  * @param req 
  * @param res 
  */
 const readAll = async (req: Request, res: Response) => {
   loggerBuilder.info('Types = ' +  req.query.types)
-  // TODO: do the field rename in the tatabase schema type_id AS type_bitfield
+  
   const sqlQuery = `
     SELECT contacts.id,
-            type_id AS type_bitfield,
+            type_bitfield,
             firstName,
             lastName,
             birthDate,
@@ -33,7 +33,7 @@ const readAll = async (req: Request, res: Response) => {
             city,
             job
     FROM contacts
-    WHERE type_id & ?
+    WHERE type_bitfield & ?
     ORDER BY lastName ASC
   `;
   await queries.pull(req, res, sqlQuery, [req.query.types], { id: '', name: 'Contacts', verb: 'returned' });
@@ -43,7 +43,7 @@ const readAll = async (req: Request, res: Response) => {
 const readOne = async (req: Request, res: Response) => {
   const sqlQuery = `
       SELECT id,
-            type_id AS type_bitfield,
+            type_bitfield,
             firstName,
             lastName,
             birthDate,
@@ -111,7 +111,7 @@ const update = async (req: Request, res: Response) => {
             address = ?,
             city = ?,
             job = ?,
-            type_id = ?
+            type_bitfield = ?
       WHERE id = ?
   `;
   
