@@ -18,7 +18,7 @@ const ContactNavBar = ({ form }: { form: UseFormReturnType<IContact> }) => {
   }, [update]);
   return (
     <>
-      <Grid.Col span={8}>
+      <Grid.Col span={4}>
         <Group align="left">
           <Avatar
             size="lg"
@@ -32,7 +32,7 @@ const ContactNavBar = ({ form }: { form: UseFormReturnType<IContact> }) => {
         </Group>
       </Grid.Col>
       <Grid.Col span={4}>
-        <Group align="apart">
+        <Group align="right">
           <>
             <Tooltip label="Appeler" withArrow color="yellow">
               <ActionIcon variant="light" color="fr-yellow.3" size="xl">
