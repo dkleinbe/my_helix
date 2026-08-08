@@ -40,8 +40,10 @@ const usePeekAppointment = (input: IEvent) => {
             if (input.kind !== 'app') return;
             if (input.id === '' || input.id === '00000000') return;
             try {
+                /*
                 const response = await routes.appointments.getFromEvent(input.id);
                 setEvent(response.data[0]);
+                */
             } catch (error: any) {
                 setNotification(true, error.response.data.message);
             }

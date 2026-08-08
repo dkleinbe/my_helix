@@ -75,8 +75,8 @@ const pull = async (req: Request, res: Response, sqlQuery: string, values: any[]
     const select = db.prepare(sqlQuery);
     const rows = select.all(values);
     if (rows.length === 0) {
-      log.message('error', `${meta.name} ${meta.id} not found`);
-      res.status(sc.NOT_FOUND).json({ message: `${meta.name} not found` });
+      log.message('error', `${meta.name} ${meta.id} no content`);
+      res.status(sc.NO_CONTENT).json({ message: `${meta.name} no content` });
     } else {
       log.message('info', `${meta.name} ${meta.id ?? 'all'} ${meta.verb ?? 'pulled'}`);
       res.status(sc.OK).json(rows);

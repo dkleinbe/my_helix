@@ -40,9 +40,9 @@ const useViewPDF = (id: string, type: string) => {
         };
         const fetchPatientData = async () => {
             try {
-                const resPat = await routes.patients.getOne(id);
+                const resPat = await routes.contacts.getOne(id);
                 setData(resPat.data[0]);
-                const resApp = await routes.appointments.getByPatient(id);
+                const resApp = await routes.sessions.getByContact(id);
                 setData((prev: any) => ({ ...prev, appointments: resApp.data }));
                 const resTra = await routes.accounting.getByPatient(id);
                 setData((prev: any) => ({ ...prev, transactions: resTra.data }));

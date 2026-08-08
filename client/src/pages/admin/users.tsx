@@ -4,7 +4,7 @@ import { useUsers } from './users.logic';
 import HelixTableSort from '../../components/list-view';
 import GettingStartedExample from '../../components/table-view'
 import UsersTable from './usersTable'
-import ModalCreateApp from '../appointments/create';
+
 import { useTranslation } from 'react-i18next';
 
 export function ListUsers() {

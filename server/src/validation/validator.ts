@@ -6,6 +6,8 @@ import schemaPatientUpdate from './schemas/update-patient.json' with { type: "js
 import schemaAppointmentCreate from './schemas/create-appointment.json' with { type: "json" };
 import schemaAppointmentUpdate from './schemas/update-appointment.json' with { type: "json" };
 import schemaAddAppointment from './schemas/add-appointment.json' with { type: "json" };
+import schemaSessionCreate from './schemas/create-appointment.json' with { type: "json" };
+import schemaSessionUpdate from './schemas/update-appointment.json' with { type: "json" };
 import schemaUserCreate from './schemas/create-user.json' with { type: "json" };
 import schemaUserUpdate from './schemas/update-user.json' with { type: "json" };
 import schemaContactCreate from './schemas/create-contact.json' with { type: "json" };
@@ -22,8 +24,10 @@ export default {
   patientCreate: ajv.compile(schemaPatientCreate),
   patientUpdate: ajv.compile(schemaPatientUpdate),
   appointmentCreate: ajv.compile(schemaAppointmentCreate),
+  sessionCreate: ajv.compile(schemaSessionCreate),
   eventCreate: ajv.compile(schemaEventCreate),
-  appointmentUpdate: ajv.compile(schemaAppointmentUpdate),
+  appointmentUpdate: ajv.compile(schemaSessionUpdate),
+  sessionUpdate: ajv.compile(schemaAppointmentUpdate),
   addAppointment: ajv.compile(schemaAddAppointment),
   userCreate: ajv.compile(schemaUserCreate),
   userUpdate: ajv.compile(schemaUserUpdate),

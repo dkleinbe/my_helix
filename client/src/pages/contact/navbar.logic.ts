@@ -14,9 +14,11 @@ const useContactNavBar = (form: UseFormReturnType<IContact>) => {
     const handleDelete = async (id: string) => {
         if (!id) return console.error('No id');
         try {
+            /*
             const res = await routes.patients.delete(id);
             setNotification(false, res.data.message);
             navigate('/patients');
+            */
         } catch (error: any) {
             if (!error?.response) setNotification(true, 'Network error');
             else setNotification(true, `${error.message}: ${error.response.data.message}`);

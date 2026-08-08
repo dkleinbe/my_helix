@@ -8,6 +8,7 @@ import patients from './patients.js';
 import unsecured from './unsecured.js';
 import users from './users.js';
 import contacts from './contacts.js';
+import sessions from './sessions.js';
 import logger from '../tools/tapeLogger.js';
 import sc from '../tools/status-codes.js';
 
@@ -28,6 +29,7 @@ router.use('/patients', patients);
 router.use('/appointments', appointments);
 router.use('/users', users);
 router.use('/contacts', contacts);
+router.use('/sessions', sessions);
 router.use('/accounting', accounting);
 router.use('/events', events);
 

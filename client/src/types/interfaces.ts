@@ -33,6 +33,7 @@ export interface IContactType {
     value: number
     label: string
 }
+/*
 export interface IAppointment {
     appID: string;
     kind: string;
@@ -46,7 +47,14 @@ export interface IAppointment {
     method?: string;
     content: string;
 }
+*/
+export interface ISession {
+    id: number;
+    type: string;
+    mode: string;
+    notes: string;
 
+}
 export interface IPassif {
     lastAppointments: number[];
     medicalIssues: string;

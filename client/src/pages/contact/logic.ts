@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { isEmail, isNotEmpty, useForm } from '@mantine/form';
 import useApplicationRoutes from '../../api/routes';
 import { ITransaction } from './types';
-import { IAppointment, IContact } from '../../types/interfaces';
+import { ISession, IContact } from '../../types/interfaces';
 
 const useContact = (id: string) => {
     const routes = useApplicationRoutes();
-    const [appointments, setAppointments] = useState<IAppointment[]>([]);
+    const [sessions, setSessions] = useState<ISession[]>([]);
     const [transactions, setTransactions] = useState<ITransaction[]>([]);
 
     const form = useForm<IContact>({
@@ -65,10 +65,11 @@ const useContact = (id: string) => {
             }
         };
 
-        const fetchPatientAppointments = async () => {
+        const fetchPatientSessions = async () => {
             try {
-                const response = await routes.appointments.getByPatient(id);
-                setAppointments(response.data);
+                const response = await routes.sessions.getByContact(id);
+                console.log(response)
+                setSessions(response.data);
             } catch (error) {
                 console.error(error);
             }
@@ -84,12 +85,13 @@ const useContact = (id: string) => {
         };
 
         fetchContact();
+        fetchPatientSessions();
         //fetchPatientAppointments();
         //fetchPatientTransactions();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
-    return { form, appointments, transactions };
+    return { form, sessions, transactions };
 };
 
 export { useContact  };
