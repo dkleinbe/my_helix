@@ -1,6 +1,8 @@
 import { useParams } from "react-router";
+import { useState, useCallback} from 'react';
+import { BlockerFunction, useBlocker } from 'react-router-dom';
 import { Biodatas } from './biodatas.tsx';
-import { Grid, Tabs, Timeline, Text, UnstyledButton  } from '@mantine/core';
+import { Button, Grid, Tabs, Timeline, Text, UnstyledButton  } from '@mantine/core';
 import { PatientAccounting } from './accounting.tsx';
 //import { PatientAppointments } from './appointments.tsx';
 import { ContactNavBar } from './header.tsx';
@@ -8,7 +10,7 @@ import { ContactProvider } from './context.tsx';
 import { useContact } from './logic.ts';
 import HelixRichEditor from '../../components/rich-editor';
 import { ISession } from "../../types/interfaces.ts";
-import { JSONContent } from "@tiptap/react";
+import { Editor } from "@tiptap/react";
 
 function TimeLine({data} : {data: ISession[]} ) {
 
@@ -37,13 +39,59 @@ function TimeLine({data} : {data: ISession[]} ) {
 const Contact = () => {
   //const id = window.location.href.split('/').slice(-1)[0];
   let params = useParams();
-
   const id = params.contactID ? params.contactID : "0"
-  const saveNotes = (notes: JSONContent) => { console.log('Saving...'); console.log(notes)}
 
+  const [isDirty, setIsDirty] = useState(false)
+  const saveNotes = (editor: Editor) => { 
+    setIsDirty(true); 
+    console.log('Saving...'); 
+    console.log(editor.getJSON())
+  }
   const { form, sessions, transactions } = useContact(id);
+
+  const shouldBlock = useCallback<BlockerFunction>(
+    () => isDirty === true,
+    [isDirty]
+  );
+  const blocker = useBlocker(shouldBlock);
+
   return (
     <ContactProvider>
+      <>
+        <Button 
+          variant="filled" 
+          disabled={!isDirty}
+          onClick={() => { setIsDirty(false)}}
+        >
+          save
+        </Button>
+        {blocker.state === "blocked" ? (
+            <>
+              <p style={{ color: "red" }}>
+                Blocked the last navigation to
+              </p>
+              <button
+                type="button"
+                onClick={() => blocker.proceed()}
+              >
+                Let me through
+              </button>
+              <button
+                type="button"
+                onClick={() => blocker.reset()}
+              >
+                Keep me here
+              </button>
+            </>
+          ) : blocker.state === "proceeding" ? (
+            <p style={{ color: "orange" }}>
+              Proceeding through blocked navigation
+            </p>
+          ) : (
+            <p style={{ color: "green" }}>
+              Blocker is currently unblocked {blocker.state}
+            </p>
+          )}
       <Grid columns={12}>
         <ContactNavBar form={form} />
         <Grid.Col span={8}>
@@ -68,7 +116,7 @@ const Contact = () => {
                   <TimeLine data={sessions}/>    
                 </Grid.Col>
                 <Grid.Col span={10}>
-                  <HelixRichEditor value='coucou' onSave={saveNotes}/>    
+                  <HelixRichEditor content='coucou' onChange={saveNotes}/>    
                 </Grid.Col>                
               </Grid>
 
@@ -85,6 +133,7 @@ const Contact = () => {
           
         </Grid.Col>
       </Grid>
+      </>
     </ContactProvider>
   );
 };

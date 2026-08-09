@@ -9,19 +9,14 @@ import { ModalsProvider } from '@mantine/modals';
 
 const Helix = () => (
   <MantineProvider>
-  <ModalsProvider>
-  <ThemeProvider>
-    <Notifications />
-
-      <AuthProvider>
-        <>
-
-          <RouterProvider router={router} />
-        </>
-      </AuthProvider>
-
-  </ThemeProvider>
-  </ModalsProvider>
+    <ModalsProvider>
+      <ThemeProvider>
+        <Notifications />
+          <AuthProvider>
+              <RouterProvider router={router} />
+          </AuthProvider>
+      </ThemeProvider>
+    </ModalsProvider>
   </MantineProvider>
 );
 

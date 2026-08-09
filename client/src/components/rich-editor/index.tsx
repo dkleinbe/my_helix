@@ -1,7 +1,7 @@
 import Highlight from '@tiptap/extension-highlight';
 //import Underline from '@tiptap/extension-underline';
 import { useState, useCallback} from 'react';
-import { JSONContent, useEditor } from '@tiptap/react';
+import { Editor, JSONContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Button, Modal, Text } from '@mantine/core';
@@ -12,40 +12,30 @@ import { BlockerFunction, useBlocker } from 'react-router-dom';
 const content = '<p>Subtle rich text editor variant</p>';
 
 interface RichTextEditorProps {
-  value: string;
-  onSave: (notes: JSONContent) => void;
+  content: string;
+  onChange: (editor: Editor) => void;
 }
 
-const HelixRichEditor = ({value, onSave} : RichTextEditorProps) => {
+const HelixRichEditor = ({content, onChange} : RichTextEditorProps) => {
  
-  const [isDirty, setIsDirty] = useState(true)
+  
   const [opened, handlers] = useDisclosure(false, {
     onOpen: () => console.log('Opened'),
     onClose: () => console.log('Closed'),
   });
 
-  const [truc, setTruc] = useState("");
-  const shouldBlock = useCallback<BlockerFunction>(
-    () => isDirty === true,
-    [isDirty]
-  );
 
-  const blocker = useBlocker(shouldBlock);
 
   const editor = useEditor({
     extensions: [StarterKit, Highlight],
-    content: value,
+    content: content,
     onUpdate: (() => {
-      setIsDirty(true)
-      //handlers.open();
+      onChange(editor)
     }),
     onDestroy: (() => { 
       // TODO: Add save/cancel dialog
       console.log("Editor destroyed") 
       
-      if (isDirty) {
-          console.log('Notes needs saving')
-          console.log(editor.getJSON())
           /*
           handlers.open();
           modals.openConfirmModal({
@@ -61,48 +51,13 @@ const HelixRichEditor = ({value, onSave} : RichTextEditorProps) => {
             onConfirm: () => console.log('Confirmed'),
           });
           */
-      }
+      
     })
 
   });
 
 
   return (
-    <>  
-    <Button 
-      variant="filled" 
-      disabled={!isDirty}
-      onClick={() => { onSave(editor.getJSON()); setIsDirty(false)}}
-    >
-      save
-    </Button>
-    {blocker.state === "blocked" ? (
-        <>
-          <p style={{ color: "red" }}>
-            Blocked the last navigation to
-          </p>
-          <button
-            type="button"
-            onClick={() => blocker.proceed()}
-          >
-            Let me through
-          </button>
-          <button
-            type="button"
-            onClick={() => blocker.reset()}
-          >
-            Keep me here
-          </button>
-        </>
-      ) : blocker.state === "proceeding" ? (
-        <p style={{ color: "orange" }}>
-          Proceeding through blocked navigation
-        </p>
-      ) : (
-        <p style={{ color: "green" }}>
-          Blocker is currently unblocked {blocker.state}
-        </p>
-      )}
     <RichTextEditor editor={editor} variant="subtle">
       <RichTextEditor.Toolbar sticky stickyOffset={60}>
         <RichTextEditor.ControlsGroup>
@@ -116,11 +71,7 @@ const HelixRichEditor = ({value, onSave} : RichTextEditorProps) => {
       </RichTextEditor.Toolbar>
 
       <RichTextEditor.Content />
-    </RichTextEditor>
-    <Modal opened={opened} onClose={close} title="Authentication" centered>
-        {/* Modal content */}
-    </Modal>      
-    </>
+    </RichTextEditor>    
   );
 };
 

@@ -23,51 +23,6 @@ import Callback from '../callback';
 
 //import Callback from '../logto'; COCO
 
-const AppRouter = () => {
-  const ROLES = cnf.roles;
-  return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        {/* Public */}
-        <Route path="/logto" element={<Callback />} />
-        <Route path="login" element={<Login />} />
-        <Route path="unauthorized" element={<Unauthorized />} />
-        {/* Add pages for errors */}
-
-        {/* Protected */}
-        <Route element={<PersistentLogin />}>
-          <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN, ROLES.PRACTITIONER, ROLES.SECRETARY]} />}>
-            <Route path="/" element={<Home />} />
-            <Route path='contacts'>
-              <Route index element={<Contacts />} />
-              <Route path=":contactID" element={<Contact />} />
-            </Route>
-            {/*
-            <Route path="patients">
-              <Route index element={<Patients add={false} />} />
-              <Route path="add" element={<Patients add={true} />} />
-              <Route path=":patientID" element={<Contact />} />
-            </Route>
-            */}
-            <Route path="accounting" element={<Accounting />} />
-            {/*<Route path="calendar" element={<Calendar />} />*/}
-            <Route path="settings" element={<AdminPanel />} />
-            {/*
-            <Route path="appointments">
-              <Route index element={<Appointments add={false} />} />
-              <Route path="add" element={<Appointments add={true} />} />
-              <Route path=":appointmentID" element={<Appointment />} />
-            </Route>
-            */}
-          </Route>
-        </Route>
-
-        {/* 404 */}
-        <Route path="*" element={<NotFound />} />
-      </Route>
-    </Routes>
-  );
-};
 const ROLES = cnf.roles;
 export const router =  createBrowserRouter(
 
@@ -115,4 +70,4 @@ export const router =  createBrowserRouter(
   )
 )
 
-export default AppRouter;
+
