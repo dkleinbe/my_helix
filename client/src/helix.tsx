@@ -1,24 +1,28 @@
 import ThemeProvider from './pages/system/theme-provider';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import AppRouter from './pages/system/app-router';
+import { RouterProvider, Route, Routes, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
+import { router } from './pages/system/app-router';
 import HelixSpotlight from './config/spotlight.tsx';
 import { Notifications } from '@mantine/notifications';
 import { AuthProvider } from './components/auth/auth-provider.tsx';
+import { MantineProvider } from '@mantine/core';
+import { ModalsProvider } from '@mantine/modals';
 
 const Helix = () => (
+  <MantineProvider>
+  <ModalsProvider>
   <ThemeProvider>
     <Notifications />
-    <BrowserRouter>
+
       <AuthProvider>
         <>
-          <HelixSpotlight />
-          <Routes>
-            <Route path="/*" element={<AppRouter />} />
-          </Routes>
+
+          <RouterProvider router={router} />
         </>
       </AuthProvider>
-    </BrowserRouter>
+
   </ThemeProvider>
+  </ModalsProvider>
+  </MantineProvider>
 );
 
 export default Helix;
