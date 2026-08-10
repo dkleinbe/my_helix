@@ -1,15 +1,12 @@
 import Highlight from '@tiptap/extension-highlight';
 //import Underline from '@tiptap/extension-underline';
-import { useState, useCallback, useEffect} from 'react';
-import { Editor, JSONContent, useEditor } from '@tiptap/react';
+import { useEffect} from 'react';
+import { Editor, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { RichTextEditor } from '@mantine/tiptap';
-import { Button, Modal, Text } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
-import { modals  } from '@mantine/modals';
-import { BlockerFunction, useBlocker } from 'react-router-dom';
 
-const content = '<p>Subtle rich text editor variant</p>';
+
+//const content = '<p>Subtle rich text editor variant</p>';
 
 interface RichTextEditorProps {
   content: string;
@@ -18,15 +15,15 @@ interface RichTextEditorProps {
 
 const HelixRichEditor = ({content, onChange} : RichTextEditorProps) => {
  
-  let sendUpdateEvent = true
+  
   const editor = useEditor({
     extensions: [StarterKit, Highlight],
     content: content,
     
     onUpdate: (() => {
-      if (sendUpdateEvent)
+      
         onChange(editor)
-      sendUpdateEvent =true
+
     }),
 
   });
@@ -34,14 +31,14 @@ const HelixRichEditor = ({content, onChange} : RichTextEditorProps) => {
 
   useEffect(() => {
     // do not send updateEvent when content is new
-    sendUpdateEvent = false
+    //sendUpdateEvent = false
 
     if (editor) {
 
       editor.commands.setContent(content)
 
     }
-  }, [content])
+  }, [content, editor])
 
   return (
     <RichTextEditor editor={editor} variant="subtle">

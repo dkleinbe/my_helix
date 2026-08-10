@@ -1,8 +1,7 @@
-import { JSX, useEffect, useState } from 'react';
-import { Chip, Flex, Grid, Group, TextInput, Button, Textarea, Paper, Title, Divider } from '@mantine/core';
+import { useEffect, useState } from 'react';
+import { Chip, Flex, Grid, Group, TextInput, Button, Paper, Title, Divider } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { IconPhone, IconSend } from '@tabler/icons-react';
-import GrantAccess from '../../components/auth/grant-access';
 import { UseFormReturnType } from '@mantine/form';
 import { IContact } from '../../types/interfaces';
 import { useContactContext } from './context';
@@ -16,7 +15,6 @@ const Biodatas = ({ form }: { form: UseFormReturnType<IContact> }) => {
     const { t } = useTranslation();
     const { update } = useContactContext();
     const [types, setTypes] = useState<IContactType[]>([]);
-    const [typeValues, setTypeValues] = useState<string[]>();
     const routes = useApplicationRoutes();
 
     // const handleChipClick = (event: React.MouseEvent<HTMLInputElement>) => {
@@ -49,11 +47,6 @@ const Biodatas = ({ form }: { form: UseFormReturnType<IContact> }) => {
     fetchAllTypes();
     }, []);
 
-    useEffect(() => {
-        setTypeValues(contactTypesToStrs(form.values.type_bitfield))
-    }, [form.values.type_bitfield])
-
-
     return (
         <Paper shadow="md" p="md" radius="md" withBorder>
             <Title order={3}>Biodatas</Title>
@@ -66,10 +59,9 @@ const Biodatas = ({ form }: { form: UseFormReturnType<IContact> }) => {
       <Chip.Group 
         multiple={true}
         
-        value={typeValues}
+        value={contactTypesToStrs(form.values.type_bitfield)}
         onChange={(tv) => { 
-            setTypeValues(tv)
-            form.values.type_bitfield = strsTocontactTypes(tv)
+            form.setValues({type_bitfield: strsTocontactTypes(tv)})
             showNotification({
               title: `Clicked on ${tv}`,
               message: `You clicked on type ${tv}`,

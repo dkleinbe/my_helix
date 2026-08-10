@@ -41,7 +41,7 @@ function SeesionTimeLine({data, onSelect} : {data: ISession[], onSelect : (id: n
 
 const Contact = () => {
   //const id = window.location.href.split('/').slice(-1)[0];
-  let params = useParams();
+  const params = useParams();
   const id = params.contactID ? params.contactID : "0"
   const [isDirty, setIsDirty] = useState(false)
   const [editor, setEditor] = useState<Editor>()
@@ -79,15 +79,6 @@ const Contact = () => {
   );
   const blocker = useBlocker(shouldBlock);
 
-  useEffect(() => {
-    // do not send updateEvent when content is new
-    if (sessions.length > 0) {
-      setSessionIndex(sessions.length -1)
-      setSessionNotes(sessions[sessions.length -1].notes)
-    }
-
-  }, [sessions, sessionIndex, sessionNotes])
-
   function confirmLeaveModal(onCancel : () => void, onConfirm : () => void) {
     modals.openConfirmModal({
         title: 'Please confirm your action',
@@ -102,7 +93,7 @@ const Contact = () => {
       })
   }
 
-  function openConfirmModal(blocker: Blocker) {
+  const openConfirmModal = (blocker: Blocker) => { return (
     blocker.state === "blocked" ? (
       confirmLeaveModal(() => blocker.reset(), () => blocker.proceed())
     ) : blocker.state === "proceeding" ? (
@@ -113,7 +104,7 @@ const Contact = () => {
       <p style={{ color: "green" }}>
         Blocker is currently unblocked {blocker.state}
       </p>
-    )
+    ))
   }
   const [activeTab, setActiveTab] = useState<string | null>('biodata');
   const handleTabChange = (value: string | null) => {
