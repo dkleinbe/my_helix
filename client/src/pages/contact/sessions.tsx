@@ -1,9 +1,11 @@
 import { Button, Grid, Timeline, UnstyledButton } from "@mantine/core";
 import { ISession } from "../../types/interfaces";
 import HelixRichEditor from "../../components/rich-editor";
+import { Session } from "./session.tsx"
 import { Editor } from "@tiptap/react";
 import { confirmLeaveModal } from "../../components/modal-confirm-leave";
 import { useState } from "react";
+
 
 function SessionTimeLine({data, onSelect} : {data: ISession[], onSelect : (id: number) => void} ) {
 
@@ -32,6 +34,7 @@ const Sessions = ({ sessions } : { sessions: ISession[]}) => {
     
     const [sessionIndex, setSessionIndex] = useState(sessions.length - 1)
     const [prevSession, setPreviousSession] = useState(sessionIndex)
+    const [session, setSession] = useState(sessions[sessions.length - 1])
     const [isDirty, setIsDirty] = useState(false)
     const [editor, setEditor] = useState<Editor>()
     const notesChanged = (editor: Editor) => { 
@@ -44,10 +47,13 @@ const Sessions = ({ sessions } : { sessions: ISession[]}) => {
         setPreviousSession(sessionIndex)
         console.log('Dirty...: ' + isDirty); 
     }
-    
+    //
+    // Select the last session to start with
+    //
     const si = sessionIndex >= 0 ? sessionIndex : sessions.length -1
     if (sessionIndex !== si) {
         setSessionIndex(si)
+        setSession(sessions[si])
     }
     const onSessionSelect = (id: number) => {
         console.log('Session : ' + id)
@@ -56,10 +62,12 @@ const Sessions = ({ sessions } : { sessions: ISession[]}) => {
             if (isDirty) {
                 confirmLeaveModal(() => {}, () => { 
                     setSessionIndex(id)
+                    setSession(sessions[id])
                     setIsDirty(false)})
             }
             else {
                 setSessionIndex(id)
+                setSession(sessions[id])
                 setIsDirty(false); 
             }
         }
@@ -70,16 +78,7 @@ const Sessions = ({ sessions } : { sessions: ISession[]}) => {
             <SessionTimeLine data={sessions} onSelect={onSessionSelect}/>    
         </Grid.Col>
         <Grid.Col span={10}>
-            <Button 
-            variant="filled" 
-            disabled={!isDirty}
-            onClick={() => { setIsDirty(false); console.log(editor ? editor.getJSON(): 'no conent')}}
-            >
-            save
-        </Button>
-            <HelixRichEditor content={si >= 0 ? 
-                                        sessions[si].notes : 
-                                        'pas de note'} onChange={notesChanged}/>    
+            <Session session={session} onChange={() => setIsDirty(true)}/>
         </Grid.Col>                
         </Grid>
     )
