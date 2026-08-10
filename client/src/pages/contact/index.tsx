@@ -1,8 +1,9 @@
 import { useParams } from "react-router";
-import { useState, useCallback} from 'react';
-import { BlockerFunction, useBlocker } from 'react-router-dom';
+import { useEffect, useState, useCallback} from 'react';
+import { Blocker, BlockerFunction, useBlocker } from 'react-router-dom';
 import { Biodatas } from './biodatas.tsx';
 import { Button, Grid, Tabs, Timeline, Text, UnstyledButton  } from '@mantine/core';
+import { modals  } from '@mantine/modals';
 import { PatientAccounting } from './accounting.tsx';
 //import { PatientAppointments } from './appointments.tsx';
 import { ContactNavBar } from './header.tsx';
@@ -12,23 +13,25 @@ import HelixRichEditor from '../../components/rich-editor';
 import { ISession } from "../../types/interfaces.ts";
 import { Editor } from "@tiptap/react";
 
-function TimeLine({data} : {data: ISession[]} ) {
+function SeesionTimeLine({data, onSelect} : {data: ISession[], onSelect : (id: number) => void} ) {
 
   if (data.length === 0)
     return (
       <h4>No session</h4>
     )
 
-  const items = data.map(item => 
-        <Timeline.Item title={item.type}>
-        <UnstyledButton c="dimmed" size="sm">
-         {item.mode}
-        </UnstyledButton>
+  const items = data.map((item, index) => 
+        <Timeline.Item title={<UnstyledButton size="sm" onClick={() => onSelect(index)}>
+                          {item.type}
+                          </UnstyledButton>}>
+          <UnstyledButton  size="sm" value={1}>
+            {item.mode}
+          </UnstyledButton>
       </Timeline.Item>
   )
 
   return (
-    <Timeline bulletSize={24}>
+    <Timeline active={items.length - 1} bulletSize={24}>
       {items}
     </Timeline>
   );
@@ -40,14 +43,35 @@ const Contact = () => {
   //const id = window.location.href.split('/').slice(-1)[0];
   let params = useParams();
   const id = params.contactID ? params.contactID : "0"
-
   const [isDirty, setIsDirty] = useState(false)
-  const saveNotes = (editor: Editor) => { 
+  const [editor, setEditor] = useState<Editor>()
+  const notesChanged = (editor: Editor) => { 
+
     setIsDirty(true); 
-    console.log('Saving...'); 
-    console.log(editor.getJSON())
+    setEditor(editor)
+    console.log('Dirty...'); 
   }
   const { form, sessions, transactions } = useContact(id);
+  const [sessionIndex, setSessionIndex] = useState(-1)
+  const [sessionNotes, setSessionNotes] = useState('coucou')
+
+  const onSessionSelect = (id: number) => {
+    console.log('Session : ' + id)
+    if (id !== sessionIndex) {
+      if (isDirty) {
+        confirmLeaveModal(() => {}, () => { 
+          setSessionNotes((/*sessions[id].notes +*/ id).toString()); 
+          setSessionIndex(id)
+          setIsDirty(false)})
+      }
+      else {
+        setSessionNotes((/*sessions[id].notes +*/ id).toString())
+        setSessionIndex(id)
+        setIsDirty(false); 
+      }
+    }
+  }
+  //onSessionSelect(sessionIndex)
 
   const shouldBlock = useCallback<BlockerFunction>(
     () => isDirty === true,
@@ -55,47 +79,61 @@ const Contact = () => {
   );
   const blocker = useBlocker(shouldBlock);
 
+  useEffect(() => {
+    // do not send updateEvent when content is new
+    if (sessions.length > 0) {
+      setSessionIndex(sessions.length -1)
+      setSessionNotes(sessions[sessions.length -1].notes)
+    }
+
+  }, [sessions, sessionIndex, sessionNotes])
+
+  function confirmLeaveModal(onCancel : () => void, onConfirm : () => void) {
+    modals.openConfirmModal({
+        title: 'Please confirm your action',
+        children: (
+          <Text size="sm">
+            Il y a des modifications non sauvegardées. Si vous continuez, les données seront perdues
+          </Text>
+        ),
+        labels: { confirm: 'Continuer', cancel: 'Annuler' },
+        onCancel: onCancel,
+        onConfirm: onConfirm,
+      })
+  }
+
+  function openConfirmModal(blocker: Blocker) {
+    blocker.state === "blocked" ? (
+      confirmLeaveModal(() => blocker.reset(), () => blocker.proceed())
+    ) : blocker.state === "proceeding" ? (
+      <p style={{ color: "orange" }}>
+        Proceeding through blocked navigation
+      </p>
+    ) : (
+      <p style={{ color: "green" }}>
+        Blocker is currently unblocked {blocker.state}
+      </p>
+    )
+  }
+  const [activeTab, setActiveTab] = useState<string | null>('biodata');
+  const handleTabChange = (value: string | null) => {
+    if (value !== activeTab) {
+      if (isDirty )
+        confirmLeaveModal(() => {}, () => { setActiveTab(value); setIsDirty(false)})
+      else {
+        setActiveTab(value);
+      }
+    }
+  };
+
   return (
     <ContactProvider>
       <>
-        <Button 
-          variant="filled" 
-          disabled={!isDirty}
-          onClick={() => { setIsDirty(false)}}
-        >
-          save
-        </Button>
-        {blocker.state === "blocked" ? (
-            <>
-              <p style={{ color: "red" }}>
-                Blocked the last navigation to
-              </p>
-              <button
-                type="button"
-                onClick={() => blocker.proceed()}
-              >
-                Let me through
-              </button>
-              <button
-                type="button"
-                onClick={() => blocker.reset()}
-              >
-                Keep me here
-              </button>
-            </>
-          ) : blocker.state === "proceeding" ? (
-            <p style={{ color: "orange" }}>
-              Proceeding through blocked navigation
-            </p>
-          ) : (
-            <p style={{ color: "green" }}>
-              Blocker is currently unblocked {blocker.state}
-            </p>
-          )}
+      {openConfirmModal(blocker)}
       <Grid columns={12}>
         <ContactNavBar form={form} />
         <Grid.Col span={8}>
-          <Tabs defaultValue="biodata">
+          <Tabs value={activeTab} defaultValue="biodata" onChange={handleTabChange}>
             <Tabs.List>
               <Tabs.Tab value="biodata" >
                 <h2>Biodata</h2>
@@ -113,10 +151,17 @@ const Contact = () => {
             <Tabs.Panel value="file">
               <Grid columns={12}>
                 <Grid.Col span={2}>
-                  <TimeLine data={sessions}/>    
+                  <SeesionTimeLine data={sessions} onSelect={onSessionSelect}/>    
                 </Grid.Col>
                 <Grid.Col span={10}>
-                  <HelixRichEditor content='coucou' onChange={saveNotes}/>    
+                  <Button 
+                    variant="filled" 
+                    disabled={!isDirty}
+                    onClick={() => { setIsDirty(false); console.log(editor ? editor.getJSON(): 'no conent')}}
+                  >
+                    save
+                </Button>
+                  <HelixRichEditor content={sessionNotes} onChange={notesChanged}/>    
                 </Grid.Col>                
               </Grid>
 
