@@ -1,14 +1,12 @@
 'use client';
 import sortBy from 'lodash/sortBy';
-import { useEffect, useState, useMemo, useRef, useCallback } from 'react';
-import { IconSearch, IconX, IconEye, IconEdit, IconTrash, IconUser } from '@tabler/icons-react';
-import { Box, Group, TextInput, ActionIcon, MultiSelect, Modal, Text } from '@mantine/core';
+import { useEffect, useState, useMemo } from 'react';
+import { IconSearch, IconX, IconEdit, IconTrash } from '@tabler/icons-react';
+import { Box, Group, TextInput, ActionIcon, MultiSelect } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
-import { useDebouncedValue, useDisclosure } from '@mantine/hooks';
+import { useDebouncedValue } from '@mantine/hooks';
 import { DataTable, DataTableSortStatus  } from 'mantine-datatable';
 import { ID, Role, UserStatus } from '../../components/custom-badges';
-import setNotification from '../../components/errors/feedback-notification';
-import useApplicationRoutes from '../../api/routes';
 import { IUser } from '../../types/interfaces';
 import { ModalUserDetails, Mode } from './modalUserDetails';
 import { useTranslation } from 'react-i18next';
@@ -24,7 +22,6 @@ export function UsersTable({ data ,  fetching, onAction } : IProps)
   const { t } = useTranslation();
   const [sortedData, setSortedData] = useState(data);
   const [query, setQuery] = useState('');
-  const routes = useApplicationRoutes();
   const [sortStatus, setSortStatus] = useState<DataTableSortStatus<IUser>>({
     columnAccessor: 'login',
     direction: 'asc',

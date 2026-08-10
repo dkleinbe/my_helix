@@ -1,41 +1,15 @@
 import { useParams } from "react-router";
-import { useEffect, useState, useCallback} from 'react';
+import { useState, useCallback} from 'react';
 import { Blocker, BlockerFunction, useBlocker } from 'react-router-dom';
 import { Biodatas } from './biodatas.tsx';
-import { Button, Grid, Tabs, Timeline, Text, UnstyledButton  } from '@mantine/core';
+import { Grid, Tabs, Text } from '@mantine/core';
 import { modals  } from '@mantine/modals';
 import { PatientAccounting } from './accounting.tsx';
 //import { PatientAppointments } from './appointments.tsx';
 import { ContactNavBar } from './header.tsx';
 import { ContactProvider } from './context.tsx';
 import { useContact } from './logic.ts';
-import HelixRichEditor from '../../components/rich-editor';
-import { ISession } from "../../types/interfaces.ts";
-import { Editor } from "@tiptap/react";
-
-function SeesionTimeLine({data, onSelect} : {data: ISession[], onSelect : (id: number) => void} ) {
-
-  if (data.length === 0)
-    return (
-      <h4>No session</h4>
-    )
-
-  const items = data.map((item, index) => 
-        <Timeline.Item title={<UnstyledButton size="sm" onClick={() => onSelect(index)}>
-                          {item.type}
-                          </UnstyledButton>}>
-          <UnstyledButton  size="sm" value={1}>
-            {item.mode}
-          </UnstyledButton>
-      </Timeline.Item>
-  )
-
-  return (
-    <Timeline active={items.length - 1} bulletSize={24}>
-      {items}
-    </Timeline>
-  );
-}
+import { Sessions } from "./sessions.tsx";
 
 
 
@@ -44,34 +18,7 @@ const Contact = () => {
   const params = useParams();
   const id = params.contactID ? params.contactID : "0"
   const [isDirty, setIsDirty] = useState(false)
-  const [editor, setEditor] = useState<Editor>()
-  const notesChanged = (editor: Editor) => { 
-
-    setIsDirty(true); 
-    setEditor(editor)
-    console.log('Dirty...'); 
-  }
   const { form, sessions, transactions } = useContact(id);
-  const [sessionIndex, setSessionIndex] = useState(-1)
-  const [sessionNotes, setSessionNotes] = useState('coucou')
-
-  const onSessionSelect = (id: number) => {
-    console.log('Session : ' + id)
-    if (id !== sessionIndex) {
-      if (isDirty) {
-        confirmLeaveModal(() => {}, () => { 
-          setSessionNotes((/*sessions[id].notes +*/ id).toString()); 
-          setSessionIndex(id)
-          setIsDirty(false)})
-      }
-      else {
-        setSessionNotes((/*sessions[id].notes +*/ id).toString())
-        setSessionIndex(id)
-        setIsDirty(false); 
-      }
-    }
-  }
-  //onSessionSelect(sessionIndex)
 
   const shouldBlock = useCallback<BlockerFunction>(
     () => isDirty === true,
@@ -140,22 +87,7 @@ const Contact = () => {
               <Biodatas form={form} />
             </Tabs.Panel>
             <Tabs.Panel value="file">
-              <Grid columns={12}>
-                <Grid.Col span={2}>
-                  <SeesionTimeLine data={sessions} onSelect={onSessionSelect}/>    
-                </Grid.Col>
-                <Grid.Col span={10}>
-                  <Button 
-                    variant="filled" 
-                    disabled={!isDirty}
-                    onClick={() => { setIsDirty(false); console.log(editor ? editor.getJSON(): 'no conent')}}
-                  >
-                    save
-                </Button>
-                  <HelixRichEditor content={sessionNotes} onChange={notesChanged}/>    
-                </Grid.Col>                
-              </Grid>
-
+              <Sessions sessions={sessions} />
             </Tabs.Panel>  
             <Tabs.Panel value="relations">
               <h3>RELATIONS</h3>

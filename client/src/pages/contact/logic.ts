@@ -75,23 +75,14 @@ const useContact = (id: string) => {
             }
         };
 
-        const fetchPatientTransactions = async () => {
-            try {
-                const response = await routes.accounting.getByPatient(id);
-                setTransactions(response.data);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
         fetchContact();
         fetchPatientSessions();
-        //fetchPatientAppointments();
-        //fetchPatientTransactions();
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
     return { form, sessions, transactions };
 };
+
 
 export { useContact  };

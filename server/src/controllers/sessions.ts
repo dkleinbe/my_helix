@@ -5,7 +5,7 @@ import queries from '../database/queries.js';
 
 const  getByParticipant = async (req: Request, res: Response) => {
   const sqlQuery = `
-    SELECT s.id, st.label AS type, sm.label AS mode FROM sessions s
+    SELECT s.id, st.label AS type, sm.label AS mode, s.notes FROM sessions s
         INNER JOIN session_participants sp ON s.id = sp.session_id
         INNER JOIN session_types st ON s.session_type = st.id
         INNER JOIN session_modes sm ON s.mode = sm.id
